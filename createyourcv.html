@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern CV Builder - Rwanda</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+    
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --color-blue: #00AEEF;
+            --color-yellow: #FFD200;
+            --color-green: #007847;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .dark {
+            color-scheme: dark;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--color-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .dark .toast {
+            background: #1e293b;
+            color: white;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Imigongo pattern background */
+        .imigongo-pattern {
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 174, 239, 0.03) 10px, rgba(0, 174, 239, 0.03) 20px),
+                repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(0, 120, 71, 0.03) 10px, rgba(0, 120, 71, 0.03) 20px);
+        }
+        
+        /* Print styles for CV */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+            }
+        }
+        
+        /* Input styles */
+        input, textarea, select {
+            outline: none;
+            transition: all 0.2s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--color-blue);
+            box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.1);
+        }
+        
+        /* Button hover effects */
+        button {
+            transition: all 0.2s;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        /* Card hover effect */
+        .card-hover {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--color-blue), var(--color-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef, forwardRef } = React;
+        const { motion, AnimatePresence } = Motion;
+        
+        // ==================== TRANSLATIONS ====================
+        const translations = {
+            en: {
+                appTitle: "Modern CV Builder",
+                motto: "Create your CV, preview it, and download it for free.",
+                startBuilding: "Start Building Your CV",
+                language: "Language",
+                theme: "Theme",
+                lightMode: "Light Mode",
+                darkMode: "Dark Mode",
+                personalInfo: "Personal Information",
+                professionalSummary: "Professional Summary/Objective",
+                education: "Education",
+                workExperience: "Work Experience",
+                skills: "Skills",
+                languages: "Languages",
+                volunteerism: "Volunteerism & Civic Duty",
+                references: "References",
+                fullName: "Full Name",
+                fullNamePlaceholder: "Jean Paul Mugabo",
+                email: "Email Address",
+                emailPlaceholder: "jpmugabo@example.com",
+                phone: "Phone Number",
+                phonePlaceholder: "+250 788 123 456",
+                location: "Location",
+                locationPlaceholder: "Kigali, Rwanda",
+                uploadPhoto: "Upload Photo",
+                summaryPlaceholder: "A dedicated professional committed to contributing to Rwanda's national development goals through innovative solutions and collaborative teamwork...",
+                summaryGuide: "Highlight how your expertise aligns with Rwanda's Vision 2050 and national development priorities.",
+                addEducation: "Add Education",
+                schoolName: "Institution Name",
+                schoolPlaceholder: "University of Rwanda, IPRC Kigali, etc.",
+                degree: "Degree/Level",
+                degreePlaceholder: "Bachelor's in Computer Science",
+                graduationYear: "Graduation Year",
+                addExperience: "Add Work Experience",
+                jobTitle: "Job Title",
+                jobTitlePlaceholder: "Software Developer",
+                employer: "Employer/Organization",
+                employerPlaceholder: "Ministry of ICT & Innovation",
+                startDate: "Start Date",
+                endDate: "End Date",
+                current: "Current Position",
+                description: "Job Description",
+                descriptionPlaceholder: "Led digital transformation initiatives that improved service delivery by 40%, aligning with Imihigo performance targets...",
+                descriptionGuide: "Use the Imihigo mindset: focus on measurable results and community impact.",
+                softwareSkills: "Software Proficiency",
+                softwarePlaceholder: "Microsoft Office, Adobe Suite, AutoCAD",
+                dataTools: "Data & Analytics Tools",
+                dataPlaceholder: "Excel, Tableau, Power BI, SQL",
+                programmingSkills: "Programming & Development",
+                programmingPlaceholder: "Python, JavaScript, React, Java",
+                kinyarwanda: "Kinyarwanda",
+                english: "English",
+                french: "French",
+                proficiency: "Proficiency",
+                native: "Native",
+                fluent: "Fluent",
+                intermediate: "Intermediate",
+                basic: "Basic",
+                addVolunteer: "Add Volunteer Activity",
+                volunteerTitle: "Activity/Role",
+                volunteerPlaceholder: "Umuganda Community Leader",
+                organization: "Organization/Community",
+                volunteerDescription: "Description",
+                volunteerDescriptionPlaceholder: "Organized weekly community cleaning and development projects...",
+                addReference: "Add Reference",
+                refName: "Reference Name",
+                refNamePlaceholder: "Dr. Marie Uwase",
+                refTitle: "Title/Position",
+                refTitlePlaceholder: "Senior Manager, RDB",
+                refEmail: "Email",
+                refPhone: "Phone Number",
+                minReferences: "At least two professional references are recommended.",
+                preview: "Live Preview",
+                downloadPDF: "Download PDF",
+                exportSheets: "Export to Google Sheets",
+                backToBuilder: "Back to Builder",
+                previewTitle: "CV Preview",
+                objective: "Professional Objective",
+                volunteer: "Volunteer Experience",
+            },
+            rw: {
+                appTitle: "Icyegeranyo cya CV Kigezweho",
+                motto: "Kora CV yawe, uyisuzume, hanyuma uyikurure ku buntu.",
+                startBuilding: "Tangira Gukora CV Yawe",
+                language: "Ururimi",
+                theme: "Imiterere",
+                lightMode: "Urumuri",
+                darkMode: "Umwijima",
+                personalInfo: "Amakuru Bwite",
+                professionalSummary: "Incamake y'Umwuga",
+                education: "Amashuri",
+                workExperience: "Uburambe bw'Akazi",
+                skills: "Ubumenyi n'Ubushobozi",
+                languages: "Indimi",
+                volunteerism: "Ibikorwa bya Volunteerism",
+                references: "Abantu Mworeka",
+                fullName: "Amazina Yombi",
+                fullNamePlaceholder: "Jean Paul Mugabo",
+                email: "Imeli",
+                emailPlaceholder: "jpmugabo@example.com",
+                phone: "Telefoni",
+                phonePlaceholder: "+250 788 123 456",
+                location: "Aho Utuye",
+                locationPlaceholder: "Kigali, Rwanda",
+                uploadPhoto: "Shyiramo Ifoto",
+                summaryPlaceholder: "Umukozi wiyemeje gutanga umusanzu mu iterambere ry'igihugu cy'u Rwanda hakoreshejwe ibisubizo bishya...",
+                summaryGuide: "Sobanura uburyo ubumenyi bwawe bwashoboye kuzuza intego z'igihugu n'imihigo.",
+                addEducation: "Ongeraho Ishuri",
+                schoolName: "Izina ry'Ishuri",
+                schoolPlaceholder: "Kaminuza y'u Rwanda, IPRC Kigali",
+                degree: "Icyiciro/Impamyabumenyi",
+                degreePlaceholder: "Icyiciro cya kabiri - Ikoranabuhanga",
+                graduationYear: "Umwaka Wahoje",
+                addExperience: "Ongeraho Akazi",
+                jobTitle: "Umwanya/Akazi",
+                jobTitlePlaceholder: "Umukozi wa Software",
+                employer: "Umukoresha/Ishirahamwe",
+                employerPlaceholder: "Minisiteri y'Ikoranabuhanga",
+                startDate: "Itariki Watangiriye",
+                endDate: "Itariki Warangiriye",
+                current: "Akazi Ukorera Ubu",
+                description: "Ibisobanuro by'Akazi",
+                descriptionPlaceholder: "Nayoboye gahunda z'ikoranabuhanga zongereye serivisi ku baturage ku kigero cya 40%...",
+                descriptionGuide: "Koresha imihigo: ugaragaze ibisubizo byagezweho n'ingaruka ku muryango.",
+                softwareSkills: "Ubumenyi bwa Software",
+                softwarePlaceholder: "Microsoft Office, Adobe Suite",
+                dataTools: "Ibikoresho bya Data",
+                dataPlaceholder: "Excel, Tableau, Power BI",
+                programmingSkills: "Guhanga Porogaramu",
+                programmingPlaceholder: "Python, JavaScript, React",
+                kinyarwanda: "Ikinyarwanda",
+                english: "Icyongereza",
+                french: "Igifaransa",
+                proficiency: "Urwego",
+                native: "Kavukire",
+                fluent: "Nziza",
+                intermediate: "Hagati",
+                basic: "Ibyibanze",
+                addVolunteer: "Ongeraho Igikorwa cya Volunteerism",
+                volunteerTitle: "Igikorwa/Umwanya",
+                volunteerPlaceholder: "Umuyobozi wa Umuganda",
+                organization: "Ishirahamwe/Umuryango",
+                volunteerDescription: "Ibisobanuro",
+                volunteerDescriptionPlaceholder: "Nateguye ibikorwa byo gusukura no guteza imbere umuryango...",
+                addReference: "Ongeraho Uwomwereka",
+                refName: "Amazina",
+                refNamePlaceholder: "Dr. Marie Uwase",
+                refTitle: "Umwanya/Akazi",
+                refTitlePlaceholder: "Umuyobozi Mukuru, RDB",
+                refEmail: "Imeli",
+                refPhone: "Telefoni",
+                minReferences: "Byiza ko ugira abantu babiri bawe ba reference.",
+                preview: "Reba Mbere",
+                downloadPDF: "Kurura PDF",
+                exportSheets: "Ohereza kuri Google Sheets",
+                backToBuilder: "Subira ku Rukuta",
+                previewTitle: "Isuzuma rya CV",
+                objective: "Intego z'Umwuga",
+                volunteer: "Ibikorwa bya Volunteerism",
+            },
+            fr: {
+                appTitle: "Constructeur de CV Moderne",
+                motto: "Créez votre CV, prévisualisez-le et téléchargez-le gratuitement.",
+                startBuilding: "Commencer à Créer Votre CV",
+                language: "Langue",
+                theme: "Thème",
+                lightMode: "Mode Clair",
+                darkMode: "Mode Sombre",
+                personalInfo: "Informations Personnelles",
+                professionalSummary: "Résumé/Objectif Professionnel",
+                education: "Éducation",
+                workExperience: "Expérience Professionnelle",
+                skills: "Compétences",
+                languages: "Langues",
+                volunteerism: "Bénévolat & Engagement Civique",
+                references: "Références",
+                fullName: "Nom Complet",
+                fullNamePlaceholder: "Jean Paul Mugabo",
+                email: "Adresse Email",
+                emailPlaceholder: "jpmugabo@example.com",
+                phone: "Numéro de Téléphone",
+                phonePlaceholder: "+250 788 123 456",
+                location: "Localisation",
+                locationPlaceholder: "Kigali, Rwanda",
+                uploadPhoto: "Télécharger Photo",
+                summaryPlaceholder: "Un professionnel dévoué engagé à contribuer aux objectifs de développement national du Rwanda...",
+                summaryGuide: "Mettez en évidence comment votre expertise s'aligne avec la Vision 2050 du Rwanda.",
+                addEducation: "Ajouter Formation",
+                schoolName: "Nom de l'Institution",
+                schoolPlaceholder: "Université du Rwanda, IPRC Kigali",
+                degree: "Diplôme/Niveau",
+                degreePlaceholder: "Licence en Informatique",
+                graduationYear: "Année de Graduation",
+                addExperience: "Ajouter Expérience",
+                jobTitle: "Titre du Poste",
+                jobTitlePlaceholder: "Développeur de Logiciels",
+                employer: "Employeur/Organisation",
+                employerPlaceholder: "Ministère des TIC",
+                startDate: "Date de Début",
+                endDate: "Date de Fin",
+                current: "Poste Actuel",
+                description: "Description du Poste",
+                descriptionPlaceholder: "Dirigé des initiatives de transformation numérique ayant amélioré la prestation de services de 40%...",
+                descriptionGuide: "Utilisez l'esprit Imihigo : concentrez-vous sur les résultats mesurables.",
+                softwareSkills: "Maîtrise des Logiciels",
+                softwarePlaceholder: "Microsoft Office, Adobe Suite",
+                dataTools: "Outils de Données",
+                dataPlaceholder: "Excel, Tableau, Power BI",
+                programmingSkills: "Programmation & Développement",
+                programmingPlaceholder: "Python, JavaScript, React",
+                kinyarwanda: "Kinyarwanda",
+                english: "Anglais",
+                french: "Français",
+                proficiency: "Niveau",
+                native: "Natif",
+                fluent: "Courant",
+                intermediate: "Intermédiaire",
+                basic: "Basique",
+                addVolunteer: "Ajouter Activité Bénévole",
+                volunteerTitle: "Activité/Rôle",
+                volunteerPlaceholder: "Leader Communautaire Umuganda",
+                organization: "Organisation/Communauté",
+                volunteerDescription: "Description",
+                volunteerDescriptionPlaceholder: "Organisé des projets hebdomadaires de nettoyage communautaire...",
+                addReference: "Ajouter Référence",
+                refName: "Nom de la Référence",
+                refNamePlaceholder: "Dr. Marie Uwase",
+                refTitle: "Titre/Poste",
+                refTitlePlaceholder: "Directrice Senior, RDB",
+                refEmail: "Email",
+                refPhone: "Téléphone",
+                minReferences: "Au moins deux références professionnelles sont recommandées.",
+                preview: "Aperçu en Direct",
+                downloadPDF: "Télécharger PDF",
+                exportSheets: "Exporter vers Google Sheets",
+                backToBuilder: "Retour au Constructeur",
+                previewTitle: "Aperçu du CV",
+                objective: "Objectif Professionnel",
+                volunteer: "Expérience Bénévole",
+            }
+        };
+        
+        // ==================== TOAST COMPONENT ====================
+        const Toast = ({ message, onClose }) => {
+            useEffect(() => {
+                const timer = setTimeout(onClose, 3000);
+                return () => clearTimeout(timer);
+            }, []);
+            
+            return (
+                <div className="toast">
+                    {message}
+                </div>
+            );
+        };
+        
+        // ==================== ICON COMPONENTS ====================
+        const Icon = ({ name, className = "w-5 h-5", ...props }) => {
+            return <i data-lucide={name} className={className} {...props}></i>;
+        };
+        
+        // ==================== BACKGROUND COMPONENT ====================
+        const RwandanBackground = () => {
+            return (
+                <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 imigongo-pattern" />
+                    
+                    <motion.div
+                        className="absolute top-20 left-10 w-32 h-32 rounded-full bg-blue-400/10 dark:bg-blue-400/5 blur-3xl"
+                        animate={{
+                            y: [0, 30, 0],
+                            x: [0, 20, 0],
+                        }}
+                        transition={{
+                            duration: 8,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }}
+                    />
+                    
+                    <motion.div
+                        className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-green-400/10 dark:bg-green-400/5 blur-3xl"
+                        animate={{
+                            y: [0, -40, 0],
+                            x: [0, -15, 0],
+                        }}
+                        transition={{
+                            duration: 10,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }}
+                    />
+                    
+                    <motion.div
+                        className="absolute top-1/2 left-1/3 w-36 h-36 rounded-full bg-yellow-400/10 dark:bg-yellow-400/5 blur-3xl"
+                        animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.3, 0.5, 0.3],
+                        }}
+                        transition={{
+                            duration: 6,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }}
+                    />
+                </div>
+            );
+        };
+        
+        // ==================== HEADER COMPONENT ====================
+        const Header = ({ language, setLanguage, theme, setTheme }) => {
+            const toggleTheme = () => {
+                setTheme(theme === 'light' ? 'dark' : 'light');
+            };
+            
+            return (
+                <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 no-print">
+                    <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00AEEF] via-[#007847] to-[#FFD200] flex items-center justify-center">
+                                <span className="text-white font-bold">CV</span>
+                            </div>
+                            <span className="font-semibold text-slate-900 dark:text-white">Modern CV Builder</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                            <select
+                                value={language}
+                                onChange={(e) => setLanguage(e.target.value)}
+                                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm"
+                            >
+                                <option value="en">English</option>
+                                <option value="rw">Kinyarwanda</option>
+                                <option value="fr">Français</option>
+                            </select>
+                            
+                            <button
+                                onClick={toggleTheme}
+                                className="w-9 h-9 rounded-full border border-slate-300 dark:border-slate-600 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800"
+                            >
+                                {theme === 'light' ? '🌙' : '☀️'}
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+        
+        // ==================== LANDING PAGE ====================
+        const LandingPage = ({ language, onStartBuilding }) => {
+            const t = translations[language];
+            
+            return (
+                <div className="min-h-screen flex items-center justify-center px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="max-w-4xl mx-auto text-center"
+                    >
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                            className="inline-flex mb-8"
+                        >
+                            <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#00AEEF] via-[#007847] to-[#FFD200] flex items-center justify-center shadow-2xl">
+                                <span className="text-white text-4xl">📄</span>
+                            </div>
+                        </motion.div>
+                        
+                        <motion.h1
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                            className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white"
+                        >
+                            {t.appTitle}
+                        </motion.h1>
+                        
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.4 }}
+                            className="text-lg md:text-xl mb-8 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
+                        >
+                            {t.motto}
+                        </motion.p>
+                        
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto"
+                        >
+                            <div className="p-6 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700">
+                                <div className="w-12 h-12 rounded-lg bg-[#00AEEF]/10 dark:bg-[#00AEEF]/20 flex items-center justify-center mb-3 mx-auto">
+                                    <span className="text-2xl">📝</span>
+                                </div>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                    {language === 'en' && 'Professional Templates'}
+                                    {language === 'rw' && 'Imiterere Yiza'}
+                                    {language === 'fr' && 'Modèles Professionnels'}
+                                </p>
+                            </div>
+                            
+                            <div className="p-6 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700">
+                                <div className="w-12 h-12 rounded-lg bg-[#007847]/10 dark:bg-[#007847]/20 flex items-center justify-center mb-3 mx-auto">
+                                    <span className="text-2xl">👁️</span>
+                                </div>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                    {language === 'en' && 'Live Preview'}
+                                    {language === 'rw' && 'Reba Mbere'}
+                                    {language === 'fr' && 'Aperçu en Direct'}
+                                </p>
+                            </div>
+                            
+                            <div className="p-6 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700">
+                                <div className="w-12 h-12 rounded-lg bg-[#FFD200]/10 dark:bg-[#FFD200]/20 flex items-center justify-center mb-3 mx-auto">
+                                    <span className="text-2xl">⬇️</span>
+                                </div>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                    {language === 'en' && 'Free PDF Download'}
+                                    {language === 'rw' && 'Kurura PDF ku Buntu'}
+                                    {language === 'fr' && 'Téléchargement PDF Gratuit'}
+                                </p>
+                            </div>
+                        </motion.div>
+                        
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.6 }}
+                        >
+                            <button
+                                onClick={onStartBuilding}
+                                className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#00AEEF] to-[#007847] hover:opacity-90 text-white rounded-lg shadow-xl hover:shadow-2xl transition-all"
+                            >
+                                {t.startBuilding}
+                            </button>
+                        </motion.div>
+                        
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.7 }}
+                            className="mt-12 flex items-center justify-center gap-2"
+                        >
+                            <div className="w-12 h-1 rounded-full bg-[#00AEEF]" />
+                            <div className="w-12 h-1 rounded-full bg-[#FFD200]" />
+                            <div className="w-12 h-1 rounded-full bg-[#007847]" />
+                        </motion.div>
+                    </motion.div>
+                </div>
+            );
+        };
+        
+        // ==================== CV PREVIEW COMPONENT ====================
+        const CVPreview = forwardRef(({ data, language }, ref) => {
+            const t = translations[language];
+            
+            return (
+                <div ref={ref} className="bg-white p-8 shadow-lg" style={{ width: '210mm', minHeight: '297mm' }}>
+                    {/* Header */}
+                    <div className="flex items-start gap-6 mb-6 pb-6 border-b-2 border-[#00AEEF]">
+                        {data.personalInfo.photo && (
+                            <img
+                                src={data.personalInfo.photo}
+                                alt={data.personalInfo.fullName}
+                                className="w-24 h-24 rounded-lg object-cover border-2 border-slate-200"
+                            />
+                        )}
+                        <div className="flex-1">
+                            <h1 className="text-3xl font-bold text-slate-900 mb-2">
+                                {data.personalInfo.fullName || 'Your Name'}
+                            </h1>
+                            <div className="flex flex-wrap gap-4 text-sm text-slate-600">
+                                {data.personalInfo.email && (
+                                    <div className="flex items-center gap-1">
+                                        ✉️ {data.personalInfo.email}
+                                    </div>
+                                )}
+                                {data.personalInfo.phone && (
+                                    <div className="flex items-center gap-1">
+                                        📞 {data.personalInfo.phone}
+                                    </div>
+                                )}
+                                {data.personalInfo.location && (
+                                    <div className="flex items-center gap-1">
+                                        📍 {data.personalInfo.location}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Professional Summary */}
+                    {data.professionalSummary && (
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-[#00AEEF] mb-3 pb-2 border-b border-slate-200">
+                                {t.objective}
+                            </h2>
+                            <p className="text-sm text-slate-700 leading-relaxed">{data.professionalSummary}</p>
+                        </div>
+                    )}
+                    
+                    {/* Education */}
+                    {data.education.length > 0 && data.education[0].schoolName && (
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-[#007847] mb-3 pb-2 border-b border-slate-200">
+                                {t.education}
+                            </h2>
+                            {data.education.map((edu) => edu.schoolName && (
+                                <div key={edu.id} className="mb-3">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="font-semibold text-slate-900">{edu.schoolName}</p>
+                                            <p className="text-sm text-slate-600">{edu.degree}</p>
+                                        </div>
+                                        <span className="text-sm text-slate-500">{edu.graduationYear}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    
+                    {/* Work Experience */}
+                    {data.workExperience.length > 0 && (
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-[#00AEEF] mb-3 pb-2 border-b border-slate-200">
+                                {t.workExperience}
+                            </h2>
+                            {data.workExperience.map((exp) => (
+                                <div key={exp.id} className="mb-4">
+                                    <div className="flex justify-between items-start mb-1">
+                                        <p className="font-semibold text-slate-900">{exp.jobTitle}</p>
+                                        <span className="text-sm text-slate-500">
+                                            {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-slate-600 mb-2">{exp.employer}</p>
+                                    <p className="text-sm text-slate-700 leading-relaxed">{exp.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    
+                    {/* Skills */}
+                    {(data.skills.software || data.skills.dataTools || data.skills.programming) && (
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-yellow-700 mb-3 pb-2 border-b border-slate-200">
+                                {t.skills}
+                            </h2>
+                            {data.skills.software && (
+                                <div className="mb-2">
+                                    <span className="text-sm text-slate-700">
+                                        <strong>{t.softwareSkills}:</strong> {data.skills.software}
+                                    </span>
+                                </div>
+                            )}
+                            {data.skills.dataTools && (
+                                <div className="mb-2">
+                                    <span className="text-sm text-slate-700">
+                                        <strong>{t.dataTools}:</strong> {data.skills.dataTools}
+                                    </span>
+                                </div>
+                            )}
+                            {data.skills.programming && (
+                                <div className="mb-2">
+                                    <span className="text-sm text-slate-700">
+                                        <strong>{t.programmingSkills}:</strong> {data.skills.programming}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    
+                    {/* Languages */}
+                    {data.languages.length > 0 && (
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-[#007847] mb-3 pb-2 border-b border-slate-200">
+                                {t.languages}
+                            </h2>
+                            <div className="flex flex-wrap gap-4">
+                                {data.languages.map((lang, index) => (
+                                    <span key={index} className="text-sm text-slate-700">
+                                        {t[lang.language.toLowerCase()] || lang.language}: {t[lang.proficiency] || lang.proficiency}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    
+                    {/* Volunteerism */}
+                    {data.volunteerism.length > 0 && (
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-[#00AEEF] mb-3 pb-2 border-b border-slate-200">
+                                {t.volunteer}
+                            </h2>
+                            {data.volunteerism.map((vol) => (
+                                <div key={vol.id} className="mb-3">
+                                    <p className="font-semibold text-slate-900">{vol.title}</p>
+                                    <p className="text-sm text-slate-600 mb-1">{vol.organization}</p>
+                                    <p className="text-sm text-slate-700">{vol.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    
+                    {/* References */}
+                    {data.references.length > 0 && data.references[0].name && (
+                        <div className="mb-6">
+                            <h2 className="text-xl font-semibold text-[#007847] mb-3 pb-2 border-b border-slate-200">
+                                {t.references}
+                            </h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                {data.references.map((ref) => ref.name && (
+                                    <div key={ref.id} className="text-sm">
+                                        <p className="font-semibold text-slate-900">{ref.name}</p>
+                                        <p className="text-slate-600">{ref.title}</p>
+                                        {ref.email && <p className="text-slate-600">{ref.email}</p>}
+                                        {ref.phone && <p className="text-slate-600">{ref.phone}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    
+                    {/* Rwanda Flag Colors Footer */}
+                    <div className="mt-8 pt-4 border-t border-slate-200">
+                        <div className="flex gap-1 h-1">
+                            <div className="flex-1 bg-[#00AEEF]"></div>
+                            <div className="flex-1 bg-[#FFD200]"></div>
+                            <div className="flex-1 bg-[#007847]"></div>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+        
+        // ==================== CV BUILDER COMPONENT ====================
+        const CVBuilder = ({ language, cvData, setCVData, onBack }) => {
+            const t = translations[language];
+            const previewRef = useRef(null);
+            const [toast, setToast] = useState(null);
+            
+            const showToast = (message) => {
+                setToast(message);
+            };
+            
+            const handleDownloadPDF = async () => {
+                if (!previewRef.current) return;
+                
+                try {
+                    const canvas = await html2canvas(previewRef.current, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4',
+                    });
+                    
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+                    
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save(`${cvData.personalInfo.fullName || 'CV'}_Rwanda.pdf`);
+                    
+                    showToast(language === 'en' ? 'CV downloaded successfully!' : 
+                             language === 'rw' ? 'CV yakuwe neza!' : 
+                             'CV téléchargé avec succès!');
+                } catch (error) {
+                    showToast(language === 'en' ? 'Error downloading PDF' : 
+                             language === 'rw' ? 'Ikibazo mu gukurura PDF' : 
+                             'Erreur lors du téléchargement');
+                }
+            };
+            
+            const handleExportToSheets = () => {
+                const csvRows = [
+                    ['Section', 'Field', 'Value'],
+                    ['Personal Info', 'Name', cvData.personalInfo.fullName],
+                    ['Personal Info', 'Email', cvData.personalInfo.email],
+                    ['Personal Info', 'Phone', cvData.personalInfo.phone],
+                    ['Personal Info', 'Location', cvData.personalInfo.location],
+                    ['Summary', 'Professional Summary', cvData.professionalSummary],
+                ];
+                
+                const csvContent = csvRows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${cvData.personalInfo.fullName || 'CV'}_Data.csv`;
+                a.click();
+                
+                showToast(language === 'en' ? 'Data exported! Import this CSV to Google Sheets.' : 
+                          language === 'rw' ? 'Amakuru yoherejwe! Yinjize muri Google Sheets.' : 
+                          'Données exportées! Importez ce CSV dans Google Sheets.');
+            };
+            
+            const handlePhotoUpload = (e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setCVData({
+                            ...cvData,
+                            personalInfo: { ...cvData.personalInfo, photo: reader.result }
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            return (
+                <div className="min-h-screen pt-20 pb-12">
+                    <div className="container mx-auto px-4">
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="mb-6"
+                        >
+                            <button
+                                onClick={onBack}
+                                className="px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-2"
+                            >
+                                ← {t.backToBuilder}
+                            </button>
+                        </motion.div>
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            {/* Form Section */}
+                            <div className="lg:col-span-2 space-y-6">
+                                {/* Personal Info Section */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#00AEEF] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        👤 {t.personalInfo}
+                                    </h2>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="md:col-span-2 flex items-start gap-6">
+                                            {/* Photo Upload */}
+                                            <div className="flex-shrink-0">
+                                                <label className="block text-sm font-medium mb-2">{t.uploadPhoto}</label>
+                                                {cvData.personalInfo.photo ? (
+                                                    <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-slate-200">
+                                                        <img src={cvData.personalInfo.photo} alt="Profile" className="w-full h-full object-cover" />
+                                                        <label className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 cursor-pointer transition-opacity">
+                                                            <span className="text-white">📷</span>
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                className="hidden"
+                                                                onChange={handlePhotoUpload}
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                ) : (
+                                                    <label className="w-32 h-32 rounded-lg border-2 border-dashed border-slate-300 flex flex-col items-center justify-center cursor-pointer hover:border-[#00AEEF] transition-colors">
+                                                        <span className="text-3xl mb-2">📷</span>
+                                                        <span className="text-xs text-slate-500">Upload</span>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            className="hidden"
+                                                            onChange={handlePhotoUpload}
+                                                        />
+                                                    </label>
+                                                )}
+                                            </div>
+                                            
+                                            {/* Full Name */}
+                                            <div className="flex-1">
+                                                <label className="block text-sm font-medium mb-2">{t.fullName}</label>
+                                                <input
+                                                    type="text"
+                                                    value={cvData.personalInfo.fullName}
+                                                    onChange={(e) => setCVData({
+                                                        ...cvData,
+                                                        personalInfo: { ...cvData.personalInfo, fullName: e.target.value }
+                                                    })}
+                                                    placeholder={t.fullNamePlaceholder}
+                                                    className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                />
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-medium mb-2">{t.email}</label>
+                                            <input
+                                                type="email"
+                                                value={cvData.personalInfo.email}
+                                                onChange={(e) => setCVData({
+                                                    ...cvData,
+                                                    personalInfo: { ...cvData.personalInfo, email: e.target.value }
+                                                })}
+                                                placeholder={t.emailPlaceholder}
+                                                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                            />
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-medium mb-2">{t.phone}</label>
+                                            <input
+                                                type="tel"
+                                                value={cvData.personalInfo.phone}
+                                                onChange={(e) => setCVData({
+                                                    ...cvData,
+                                                    personalInfo: { ...cvData.personalInfo, phone: e.target.value }
+                                                })}
+                                                placeholder={t.phonePlaceholder}
+                                                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                            />
+                                        </div>
+                                        
+                                        <div className="md:col-span-2">
+                                            <label className="block text-sm font-medium mb-2">{t.location}</label>
+                                            <input
+                                                type="text"
+                                                value={cvData.personalInfo.location}
+                                                onChange={(e) => setCVData({
+                                                    ...cvData,
+                                                    personalInfo: { ...cvData.personalInfo, location: e.target.value }
+                                                })}
+                                                placeholder={t.locationPlaceholder}
+                                                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Professional Summary */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#FFD200] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        💼 {t.professionalSummary}
+                                    </h2>
+                                    <p className="text-xs text-slate-500 mb-4">💡 {t.summaryGuide}</p>
+                                    <textarea
+                                        value={cvData.professionalSummary}
+                                        onChange={(e) => setCVData({ ...cvData, professionalSummary: e.target.value })}
+                                        placeholder={t.summaryPlaceholder}
+                                        rows="4"
+                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                    />
+                                </div>
+                                
+                                {/* Education Section */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#007847] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        🎓 {t.education}
+                                    </h2>
+                                    
+                                    {cvData.education.map((edu, index) => (
+                                        <div key={edu.id} className="mb-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="md:col-span-2">
+                                                    <label className="block text-sm font-medium mb-2">{t.schoolName}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={edu.schoolName}
+                                                        onChange={(e) => {
+                                                            const newEducation = [...cvData.education];
+                                                            newEducation[index].schoolName = e.target.value;
+                                                            setCVData({ ...cvData, education: newEducation });
+                                                        }}
+                                                        placeholder={t.schoolPlaceholder}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.degree}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={edu.degree}
+                                                        onChange={(e) => {
+                                                            const newEducation = [...cvData.education];
+                                                            newEducation[index].degree = e.target.value;
+                                                            setCVData({ ...cvData, education: newEducation });
+                                                        }}
+                                                        placeholder={t.degreePlaceholder}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.graduationYear}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={edu.graduationYear}
+                                                        onChange={(e) => {
+                                                            const newEducation = [...cvData.education];
+                                                            newEducation[index].graduationYear = e.target.value;
+                                                            setCVData({ ...cvData, education: newEducation });
+                                                        }}
+                                                        placeholder="2024"
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    
+                                    <button
+                                        onClick={() => setCVData({
+                                            ...cvData,
+                                            education: [...cvData.education, { id: Date.now().toString(), schoolName: '', degree: '', graduationYear: '' }]
+                                        })}
+                                        className="w-full py-2 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg hover:border-[#007847] transition-colors"
+                                    >
+                                        ➕ {t.addEducation}
+                                    </button>
+                                </div>
+                                
+                                {/* Work Experience */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#00AEEF] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        🏢 {t.workExperience}
+                                    </h2>
+                                    <p className="text-xs text-slate-500 mb-4">💡 {t.descriptionGuide}</p>
+                                    
+                                    {cvData.workExperience.map((exp, index) => (
+                                        <div key={exp.id} className="mb-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.jobTitle}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={exp.jobTitle}
+                                                        onChange={(e) => {
+                                                            const newExp = [...cvData.workExperience];
+                                                            newExp[index].jobTitle = e.target.value;
+                                                            setCVData({ ...cvData, workExperience: newExp });
+                                                        }}
+                                                        placeholder={t.jobTitlePlaceholder}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.employer}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={exp.employer}
+                                                        onChange={(e) => {
+                                                            const newExp = [...cvData.workExperience];
+                                                            newExp[index].employer = e.target.value;
+                                                            setCVData({ ...cvData, workExperience: newExp });
+                                                        }}
+                                                        placeholder={t.employerPlaceholder}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.startDate}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={exp.startDate}
+                                                        onChange={(e) => {
+                                                            const newExp = [...cvData.workExperience];
+                                                            newExp[index].startDate = e.target.value;
+                                                            setCVData({ ...cvData, workExperience: newExp });
+                                                        }}
+                                                        placeholder="Jan 2020"
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.endDate}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={exp.endDate}
+                                                        onChange={(e) => {
+                                                            const newExp = [...cvData.workExperience];
+                                                            newExp[index].endDate = e.target.value;
+                                                            setCVData({ ...cvData, workExperience: newExp });
+                                                        }}
+                                                        placeholder="Dec 2023"
+                                                        disabled={exp.current}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div className="md:col-span-2 flex items-center gap-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        id={`current-${exp.id}`}
+                                                        checked={exp.current}
+                                                        onChange={(e) => {
+                                                            const newExp = [...cvData.workExperience];
+                                                            newExp[index].current = e.target.checked;
+                                                            setCVData({ ...cvData, workExperience: newExp });
+                                                        }}
+                                                        className="w-4 h-4"
+                                                    />
+                                                    <label htmlFor={`current-${exp.id}`} className="text-sm cursor-pointer">{t.current}</label>
+                                                </div>
+                                                
+                                                <div className="md:col-span-2">
+                                                    <label className="block text-sm font-medium mb-2">{t.description}</label>
+                                                    <textarea
+                                                        value={exp.description}
+                                                        onChange={(e) => {
+                                                            const newExp = [...cvData.workExperience];
+                                                            newExp[index].description = e.target.value;
+                                                            setCVData({ ...cvData, workExperience: newExp });
+                                                        }}
+                                                        placeholder={t.descriptionPlaceholder}
+                                                        rows="3"
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            <button
+                                                onClick={() => {
+                                                    const newExp = cvData.workExperience.filter((_, i) => i !== index);
+                                                    setCVData({ ...cvData, workExperience: newExp });
+                                                }}
+                                                className="mt-4 text-red-500 text-sm hover:text-red-700"
+                                            >
+                                                🗑️ Remove
+                                            </button>
+                                        </div>
+                                    ))}
+                                    
+                                    <button
+                                        onClick={() => setCVData({
+                                            ...cvData,
+                                            workExperience: [...cvData.workExperience, {
+                                                id: Date.now().toString(),
+                                                jobTitle: '',
+                                                employer: '',
+                                                startDate: '',
+                                                endDate: '',
+                                                current: false,
+                                                description: ''
+                                            }]
+                                        })}
+                                        className="w-full py-2 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg hover:border-[#00AEEF] transition-colors"
+                                    >
+                                        ➕ {t.addExperience}
+                                    </button>
+                                </div>
+                                
+                                {/* Skills */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#FFD200] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        🔧 {t.skills}
+                                    </h2>
+                                    
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-medium mb-2">💻 {t.softwareSkills}</label>
+                                            <input
+                                                type="text"
+                                                value={cvData.skills.software}
+                                                onChange={(e) => setCVData({
+                                                    ...cvData,
+                                                    skills: { ...cvData.skills, software: e.target.value }
+                                                })}
+                                                placeholder={t.softwarePlaceholder}
+                                                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                            />
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-medium mb-2">📊 {t.dataTools}</label>
+                                            <input
+                                                type="text"
+                                                value={cvData.skills.dataTools}
+                                                onChange={(e) => setCVData({
+                                                    ...cvData,
+                                                    skills: { ...cvData.skills, dataTools: e.target.value }
+                                                })}
+                                                placeholder={t.dataPlaceholder}
+                                                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                            />
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-medium mb-2">💻 {t.programmingSkills}</label>
+                                            <input
+                                                type="text"
+                                                value={cvData.skills.programming}
+                                                onChange={(e) => setCVData({
+                                                    ...cvData,
+                                                    skills: { ...cvData.skills, programming: e.target.value }
+                                                })}
+                                                placeholder={t.programmingPlaceholder}
+                                                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Languages */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#007847] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        🌍 {t.languages}
+                                    </h2>
+                                    
+                                    {cvData.languages.map((lang, index) => (
+                                        <div key={index} className="grid grid-cols-2 gap-4 mb-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+                                            <div>
+                                                <label className="block text-sm font-medium mb-2">
+                                                    {t[lang.language.toLowerCase()] || lang.language}
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <select
+                                                    value={lang.proficiency}
+                                                    onChange={(e) => {
+                                                        const newLangs = [...cvData.languages];
+                                                        newLangs[index].proficiency = e.target.value;
+                                                        setCVData({ ...cvData, languages: newLangs });
+                                                    }}
+                                                    className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                >
+                                                    <option value="native">{t.native}</option>
+                                                    <option value="fluent">{t.fluent}</option>
+                                                    <option value="intermediate">{t.intermediate}</option>
+                                                    <option value="basic">{t.basic}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                {/* Volunteerism */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#00AEEF] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        ❤️ {t.volunteerism}
+                                    </h2>
+                                    
+                                    {cvData.volunteerism.map((vol, index) => (
+                                        <div key={vol.id} className="mb-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.volunteerTitle}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={vol.title}
+                                                        onChange={(e) => {
+                                                            const newVol = [...cvData.volunteerism];
+                                                            newVol[index].title = e.target.value;
+                                                            setCVData({ ...cvData, volunteerism: newVol });
+                                                        }}
+                                                        placeholder={t.volunteerPlaceholder}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.organization}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={vol.organization}
+                                                        onChange={(e) => {
+                                                            const newVol = [...cvData.volunteerism];
+                                                            newVol[index].organization = e.target.value;
+                                                            setCVData({ ...cvData, volunteerism: newVol });
+                                                        }}
+                                                        placeholder="Umudugudu/Community"
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div className="md:col-span-2">
+                                                    <label className="block text-sm font-medium mb-2">{t.volunteerDescription}</label>
+                                                    <textarea
+                                                        value={vol.description}
+                                                        onChange={(e) => {
+                                                            const newVol = [...cvData.volunteerism];
+                                                            newVol[index].description = e.target.value;
+                                                            setCVData({ ...cvData, volunteerism: newVol });
+                                                        }}
+                                                        placeholder={t.volunteerDescriptionPlaceholder}
+                                                        rows="2"
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            <button
+                                                onClick={() => {
+                                                    const newVol = cvData.volunteerism.filter((_, i) => i !== index);
+                                                    setCVData({ ...cvData, volunteerism: newVol });
+                                                }}
+                                                className="mt-4 text-red-500 text-sm hover:text-red-700"
+                                            >
+                                                🗑️ Remove
+                                            </button>
+                                        </div>
+                                    ))}
+                                    
+                                    <button
+                                        onClick={() => setCVData({
+                                            ...cvData,
+                                            volunteerism: [...cvData.volunteerism, {
+                                                id: Date.now().toString(),
+                                                title: '',
+                                                organization: '',
+                                                description: ''
+                                            }]
+                                        })}
+                                        className="w-full py-2 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg hover:border-[#00AEEF] transition-colors"
+                                    >
+                                        ➕ {t.addVolunteer}
+                                    </button>
+                                </div>
+                                
+                                {/* References */}
+                                <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg border-l-4 border-l-[#FFD200] shadow">
+                                    <h2 className="text-xl font-semibold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                                        👥 {t.references}
+                                    </h2>
+                                    <p className="text-xs text-slate-500 mb-4">{t.minReferences}</p>
+                                    
+                                    {cvData.references.map((ref, index) => (
+                                        <div key={ref.id} className="mb-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.refName}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={ref.name}
+                                                        onChange={(e) => {
+                                                            const newRef = [...cvData.references];
+                                                            newRef[index].name = e.target.value;
+                                                            setCVData({ ...cvData, references: newRef });
+                                                        }}
+                                                        placeholder={t.refNamePlaceholder}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.refTitle}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={ref.title}
+                                                        onChange={(e) => {
+                                                            const newRef = [...cvData.references];
+                                                            newRef[index].title = e.target.value;
+                                                            setCVData({ ...cvData, references: newRef });
+                                                        }}
+                                                        placeholder={t.refTitlePlaceholder}
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.refEmail}</label>
+                                                    <input
+                                                        type="email"
+                                                        value={ref.email}
+                                                        onChange={(e) => {
+                                                            const newRef = [...cvData.references];
+                                                            newRef[index].email = e.target.value;
+                                                            setCVData({ ...cvData, references: newRef });
+                                                        }}
+                                                        placeholder="reference@example.com"
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-2">{t.refPhone}</label>
+                                                    <input
+                                                        type="tel"
+                                                        value={ref.phone}
+                                                        onChange={(e) => {
+                                                            const newRef = [...cvData.references];
+                                                            newRef[index].phone = e.target.value;
+                                                            setCVData({ ...cvData, references: newRef });
+                                                        }}
+                                                        placeholder="+250 788 000 000"
+                                                        className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    
+                                    <button
+                                        onClick={() => setCVData({
+                                            ...cvData,
+                                            references: [...cvData.references, {
+                                                id: Date.now().toString(),
+                                                name: '',
+                                                title: '',
+                                                email: '',
+                                                phone: ''
+                                            }]
+                                        })}
+                                        className="w-full py-2 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg hover:border-[#FFD200] transition-colors"
+                                    >
+                                        ➕ {t.addReference}
+                                    </button>
+                                </div>
+                                
+                                {/* Action Buttons */}
+                                <div className="flex flex-col sm:flex-row gap-4 sticky bottom-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-4 rounded-lg border border-slate-200 dark:border-slate-700 no-print">
+                                    <button
+                                        onClick={handleDownloadPDF}
+                                        className="flex-1 px-6 py-3 bg-gradient-to-r from-[#00AEEF] to-[#007847] hover:opacity-90 text-white rounded-lg font-semibold shadow-lg"
+                                    >
+                                        ⬇️ {t.downloadPDF}
+                                    </button>
+                                    
+                                    <button
+                                        onClick={handleExportToSheets}
+                                        className="flex-1 px-6 py-3 border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg font-semibold"
+                                    >
+                                        📊 {t.exportSheets}
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            {/* Preview Section - Hidden on mobile */}
+                            <div className="hidden lg:block">
+                                <div className="sticky top-24">
+                                    <div className="mb-4 flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                                        <span>👁️ {t.preview}</span>
+                                    </div>
+                                    <div className="max-h-[calc(100vh-200px)] overflow-auto border-2 border-slate-200 dark:border-slate-700 rounded-lg shadow-xl">
+                                        <div style={{ transform: 'scale(0.38)', transformOrigin: 'top left', width: '263%' }}>
+                                            <CVPreview ref={previewRef} data={cvData} language={language} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Toast notification */}
+                    {toast && <Toast message={toast} onClose={() => setToast(null)} />}
+                    
+                    {/* Hidden full-size preview for PDF generation */}
+                    <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
+                        <CVPreview ref={previewRef} data={cvData} language={language} />
+                    </div>
+                </div>
+            );
+        };
+        
+        // ==================== MAIN APP COMPONENT ====================
+        const App = () => {
+            const [language, setLanguage] = useState('en');
+            const [theme, setTheme] = useState('light');
+            const [showBuilder, setShowBuilder] = useState(false);
+            
+            const [cvData, setCVData] = useState({
+                personalInfo: {
+                    fullName: '',
+                    email: '',
+                    phone: '',
+                    location: '',
+                    photo: '',
+                },
+                professionalSummary: '',
+                education: [
+                    {
+                        id: '1',
+                        schoolName: '',
+                        degree: '',
+                        graduationYear: '',
+                    },
+                ],
+                workExperience: [],
+                skills: {
+                    software: '',
+                    dataTools: '',
+                    programming: '',
+                },
+                languages: [
+                    { language: 'kinyarwanda', proficiency: 'native' },
+                    { language: 'english', proficiency: 'intermediate' },
+                    { language: 'french', proficiency: 'basic' },
+                ],
+                volunteerism: [],
+                references: [
+                    {
+                        id: '1',
+                        name: '',
+                        title: '',
+                        email: '',
+                        phone: '',
+                    },
+                    {
+                        id: '2',
+                        name: '',
+                        title: '',
+                        email: '',
+                        phone: '',
+                    },
+                ],
+            });
+            
+            // Apply theme
+            useEffect(() => {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }, [theme]);
+            
+            // Save to localStorage
+            useEffect(() => {
+                if (showBuilder) {
+                    localStorage.setItem('cvData', JSON.stringify(cvData));
+                }
+            }, [cvData, showBuilder]);
+            
+            // Load from localStorage
+            useEffect(() => {
+                const saved = localStorage.getItem('cvData');
+                if (saved) {
+                    try {
+                        setCVData(JSON.parse(saved));
+                    } catch (e) {
+                        console.error('Failed to load saved CV data');
+                    }
+                }
+            }, []);
+            
+            // Initialize Lucide icons
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [showBuilder]);
+            
+            return (
+                <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
+                    <RwandanBackground />
+                    
+                    <Header
+                        language={language}
+                        setLanguage={setLanguage}
+                        theme={theme}
+                        setTheme={setTheme}
+                    />
+                    
+                    {!showBuilder ? (
+                        <LandingPage
+                            language={language}
+                            onStartBuilding={() => setShowBuilder(true)}
+                        />
+                    ) : (
+                        <CVBuilder
+                            language={language}
+                            cvData={cvData}
+                            setCVData={setCVData}
+                            onBack={() => setShowBuilder(false)}
+                        />
+                    )}
+                </div>
+            );
+        };
+        
+        // ==================== RENDER APP ====================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+        
+        // Initialize Lucide icons
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
