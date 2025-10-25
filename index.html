@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern CV Builder - Rwanda</title>
+    <title>Modern CV Builder</title>
     <link rel="stylesheet" href="index.css">
+    <!--super base -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -35,7 +37,7 @@
         // ==================== TRANSLATIONS ====================
         const translations = {
             en: {
-                appTitle: "Modern CV Builder",
+                appTitle: "MODERN CV BUILDER",
                 motto: "Create your CV, preview it, and download it for free.",
                 startBuilding: "Start Building Your CV",
                 language: "Language",
@@ -53,7 +55,7 @@
                 fullName: "Full Name",
                 fullNamePlaceholder: "Jean Paul Mugabo",
                 email: "Email Address",
-                emailPlaceholder: "jpmugabo@example.com",
+                emailPlaceholder: "tuyisengejeanchrisostome@gmail.com",
                 phone: "Phone Number",
                 phonePlaceholder: "+250 788 123 456",
                 location: "Location",
@@ -97,12 +99,12 @@
                 volunteerPlaceholder: "Umuganda Community Leader",
                 organization: "Organization/Community",
                 volunteerDescription: "Description",
-                volunteerDescriptionPlaceholder: "Organized weekly community cleaning and development projects...",
+                volunteerDescriptionPlaceholder: "Attended the program of ingando and others...",
                 addReference: "Add Reference",
                 refName: "Reference Name",
-                refNamePlaceholder: "Dr. Marie Uwase",
+                refNamePlaceholder: "TUYISHIMIRE Jean Pierre",
                 refTitle: "Title/Position",
-                refTitlePlaceholder: "Senior Manager, RDB",
+                refTitlePlaceholder: "Head of G.S NYIRARUKOBWA",
                 refEmail: "Email",
                 refPhone: "Phone Number",
                 minReferences: "At least two professional references are recommended.",
@@ -115,8 +117,8 @@
                 volunteer: "Volunteer Experience",
             },
             rw: {
-                appTitle: "Icyegeranyo cya CV Kigezweho",
-                motto: "Kora CV yawe, uyisuzume, hanyuma uyikurure ku buntu.",
+                appTitle: "KORA CV IGENDANYE N' IGIHE",
+                motto: "Kora CV yawe, uyisuzume, Ubashe no kuyikurura ku buntu.",
                 startBuilding: "Tangira Gukora CV Yawe",
                 language: "Ururimi",
                 theme: "Imiterere",
@@ -129,13 +131,13 @@
                 skills: "Ubumenyi n'Ubushobozi",
                 languages: "Indimi",
                 volunteerism: "Ibikorwa bya Volunteerism",
-                references: "Abantu Mworeka",
+                references: "bahamya",
                 fullName: "Amazina Yombi",
-                fullNamePlaceholder: "Jean Paul Mugabo",
+                fullNamePlaceholder: "TUYISENGE Jean Chrisostom",
                 email: "Imeli",
-                emailPlaceholder: "jpmugabo@example.com",
+                emailPlaceholder: "tuyisengejeanchrisostome@gmail.com",
                 phone: "Telefoni",
-                phonePlaceholder: "+250 788 123 456",
+                phonePlaceholder: "+250 78XXXXXXX",
                 location: "Aho Utuye",
                 locationPlaceholder: "Kigali, Rwanda",
                 uploadPhoto: "Shyiramo Ifoto",
@@ -146,15 +148,15 @@
                 schoolPlaceholder: "Kaminuza y'u Rwanda, IPRC Kigali",
                 degree: "Icyiciro/Impamyabumenyi",
                 degreePlaceholder: "Icyiciro cya kabiri - Ikoranabuhanga",
-                graduationYear: "Umwaka Wahoje",
-                addExperience: "Ongeraho Akazi",
+                graduationYear: "Umwaka Wasoje",
+                addExperience: "Ongeraho Uburambe",
                 jobTitle: "Umwanya/Akazi",
                 jobTitlePlaceholder: "Umukozi wa Software",
-                employer: "Umukoresha/Ishirahamwe",
+                employer: "Umukoresha/ikigo",
                 employerPlaceholder: "Minisiteri y'Ikoranabuhanga",
                 startDate: "Itariki Watangiriye",
                 endDate: "Itariki Warangiriye",
-                current: "Akazi Ukorera Ubu",
+                current: "Akazi Ukora Ubu",
                 description: "Ibisobanuro by'Akazi",
                 descriptionPlaceholder: "Nayoboye gahunda z'ikoranabuhanga zongereye serivisi ku baturage ku kigero cya 40%...",
                 descriptionGuide: "Koresha imihigo: ugaragaze ibisubizo byagezweho n'ingaruka ku muryango.",
@@ -168,8 +170,8 @@
                 english: "Icyongereza",
                 french: "Igifaransa",
                 proficiency: "Urwego",
-                native: "Kavukire",
-                fluent: "Nziza",
+                native: "Intyoza",
+                fluent: "Byiza",
                 intermediate: "Hagati",
                 basic: "Ibyibanze",
                 addVolunteer: "Ongeraho Igikorwa cya Volunteerism",
@@ -177,12 +179,12 @@
                 volunteerPlaceholder: "Umuyobozi wa Umuganda",
                 organization: "Ishirahamwe/Umuryango",
                 volunteerDescription: "Ibisobanuro",
-                volunteerDescriptionPlaceholder: "Nateguye ibikorwa byo gusukura no guteza imbere umuryango...",
-                addReference: "Ongeraho Uwomwereka",
+                volunteerDescriptionPlaceholder: "Nitabiriye gahunda z' ingando ndetse n' ibindi",
+                addReference: "Ongeraho Umuhamya",
                 refName: "Amazina",
-                refNamePlaceholder: "Dr. Marie Uwase",
+                refNamePlaceholder: "TUYISHIMIRE Jean Pierre",
                 refTitle: "Umwanya/Akazi",
-                refTitlePlaceholder: "Umuyobozi Mukuru, RDB",
+                refTitlePlaceholder: "Umuyobozi Mukuru wa G.S NYIRARUKOBWA",
                 refEmail: "Imeli",
                 refPhone: "Telefoni",
                 minReferences: "Byiza ko ugira abantu babiri bawe ba reference.",
@@ -190,7 +192,7 @@
                 downloadPDF: "Kurura PDF",
                 exportSheets: "Ohereza kuri Google Sheets",
                 backToBuilder: "Subira ku Rukuta",
-                previewTitle: "Isuzuma rya CV",
+                previewTitle: "Reba CV",
                 objective: "Intego z'Umwuga",
                 volunteer: "Ibikorwa bya Volunteerism",
             },
@@ -211,11 +213,11 @@
                 volunteerism: "Bénévolat & Engagement Civique",
                 references: "Références",
                 fullName: "Nom Complet",
-                fullNamePlaceholder: "Jean Paul Mugabo",
+                fullNamePlaceholder: "TUYISENGE Jean Chrisostom",
                 email: "Adresse Email",
-                emailPlaceholder: "jpmugabo@example.com",
+                emailPlaceholder: "tuyisengejeanchrisostome@gmail.com",
                 phone: "Numéro de Téléphone",
-                phonePlaceholder: "+250 788 123 456",
+                phonePlaceholder: "+250 78XXXXXXX",
                 location: "Localisation",
                 locationPlaceholder: "Kigali, Rwanda",
                 uploadPhoto: "Télécharger Photo",
@@ -260,7 +262,7 @@
                 volunteerDescriptionPlaceholder: "Organisé des projets hebdomadaires de nettoyage communautaire...",
                 addReference: "Ajouter Référence",
                 refName: "Nom de la Référence",
-                refNamePlaceholder: "Dr. Marie Uwase",
+                refNamePlaceholder: "TUYISHIMIRE Jean Pierre",
                 refTitle: "Titre/Poste",
                 refTitlePlaceholder: "Directrice Senior, RDB",
                 refEmail: "Email",
@@ -932,7 +934,6 @@
                                                         className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-white"
                                                     />
                                                 </div>
-                                                
                                                 <div>
                                                     <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">{t.degree}</label>
                                                     <input
@@ -1342,7 +1343,7 @@
                                                             newRef[index].phone = e.target.value;
                                                             setCVData({ ...cvData, references: newRef });
                                                         }}
-                                                        placeholder="+250 788 000 000"
+                                                        placeholder="+250 78XXXXXXX"
                                                         className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 dark:text-white"
                                                     />
                                                 </div>
