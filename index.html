@@ -1,1112 +1,2363 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <!-- 🚀 ACCURATE SEO TAGS -->
-  <title>IMENA CV BUILDER</title>
-  <meta name="description" content="Quick CV Builder - Fill our professional template and download as PDF instantly. Free, no registration required. Perfect for job applications in 2025.">
-  <meta name="keywords" content="free cv builder 2025, resume maker, download pdf cv, single template cv, quick resume creator, modern cv template, job application 2025">
-  
-  <!-- 🎯 ACCURATE SCHEMA MARKUP -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Modern CV Builder",
-    "description": "Free online CV builder with professional template - download as PDF instantly",
-    "url": "https://moderncvbuilderweb.netlify.app",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Any",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
-  }
-  </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>iMENA CV Builder</title>
+    <meta name="description" content="Build a beautiful, ATS-ready CV with iMENA AI.">
+    <style>
+        /* ── reset & base ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        :root {
+            --navy: #071329;
+            --navy2: #102a52;
+            --sky: #42a5ff;
+            --teal: #39e0bd;
+            --ink: #19233a;
+            --muted: #8492aa;
+            --paper: #fff;
+            --glass: #122a5299;
+            --line: #b6d5ff25;
+            --radius: 18px;
+            --shadow: 0 20px 60px #0005;
+            --font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            color: #eaf3ff;
+            background: var(--navy);
+            font: 14px/1.5 var(--font);
+            -webkit-font-smoothing: antialiased;
+        }
 
-  <!-- 🌐 OPEN GRAPH TAGS -->
-  <meta property="og:title" content="Free CV Builder 2025 - Download Professional Resume PDF">
-  <meta property="og:description" content="Fill our professional CV template and download as PDF instantly. Completely free, no signup required.">
-  <meta property="og:url" content="https://moderncvbuilderweb.netlify.app/">
-  <meta property="og:type" content="website">
+        /* ── space background ── */
+        .space {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 82% 0, #1266ac88, transparent 30%),
+                radial-gradient(circle at 8% 80%, #136b6180, transparent 29%),
+                linear-gradient(140deg, #061126, #091c3d 55%, #071329);
+        }
+        .space::after {
+            content: "";
+            position: absolute;
+            inset: -20%;
+            opacity: .3;
+            background-image: radial-gradient(#bce1ff 1px, transparent 1.4px);
+            background-size: 57px 57px;
+            animation: stars 30s linear infinite;
+        }
+        @keyframes stars {
+            to {
+                transform: translate(57px, 57px);
+            }
+        }
 
-  <!-- 🔗 CANONICAL URL -->
-  <link rel="canonical" href="https://moderncvbuilderweb.netlify.app/">
+        .orb {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            right: -70px;
+            top: 130px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 28%, #e5f6ff 0 2%, #5dc4ff 8%, #2069c7 35%, #112762 69%, #0d1539);
+            box-shadow: 0 0 100px #1699ff70;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .orb2 {
+            left: -90px;
+            bottom: 60px;
+            top: auto;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 40% 30%, #a8f0e0 0 2%, #39d5bd 12%, #1b6b8a 40%, #0d2a3f);
+            box-shadow: 0 0 70px #39e0bd50;
+            animation-delay: -3s;
+            opacity: .5;
+        }
+        @keyframes float {
+            50% {
+                transform: translateY(-28px) rotate(12deg);
+            }
+        }
 
-  <!-- ✅ FAVICON (Fix the filename) -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+        /* ── app shell ── */
+        .app {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 28px;
+            position: relative;
+            z-index: 1;
+        }
 
-  <!-- ✅ KEEP YOUR EXISTING STYLES & SCRIPTS -->
-  <link rel="stylesheet" href="index.css">
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+        /* ── header ── */
+        header {
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .logo {
+            height: 38px;
+            max-width: 190px;
+            object-fit: contain;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .language {
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            padding: 8px 10px;
+            background: #081a37aa;
+            color: #fff;
+            outline: 0;
+            font: inherit;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .language:focus {
+            border-color: var(--teal);
+        }
+        button {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font: 700 13px/1 inherit;
+            color: #eef7ff;
+            background: #ffffff0c;
+            cursor: pointer;
+            transition: transform .22s, background .22s, box-shadow .22s, border-color .22s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            background: #ffffff1b;
+            box-shadow: 0 10px 25px #0004;
+        }
+        .primary {
+            background: linear-gradient(110deg, #238eee, #39d5bd);
+            border-color: #95f6e690;
+            color: #06203a;
+        }
+        .primary:hover {
+            background: linear-gradient(110deg, #50abff, #60edcd);
+        }
+        .signout {
+            display: none;
+        }
+        .avatar {
+            display: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid #75f0d8;
+            object-fit: cover;
+            background: #152a50;
+        }
+        .welcome {
+            display: none;
+            color: #b9c9e7;
+            font-weight: 650;
+            font-size: 12px;
+        }
 
-  <!-- React & ReactDOM -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+        /* ── hero ── */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 38px;
+            align-items: center;
+            min-height: calc(100vh - 78px);
+            padding: 58px 0 48px;
+        }
+        .eyebrow {
+            color: var(--teal);
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 850;
+            letter-spacing: .16em;
+        }
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 78px);
+            letter-spacing: -.065em;
+            line-height: .96;
+            margin: 16px 0;
+        }
+        .hero h1 span {
+            color: transparent;
+            -webkit-text-stroke: 1px #9bcaff;
+        }
+        .hero p {
+            color: #b6c5e1;
+            max-width: 520px;
+            font-size: 16px;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 11px;
+            margin-top: 26px;
+            flex-wrap: wrap;
+        }
+        .trust {
+            display: flex;
+            gap: 18px;
+            margin-top: 31px;
+            color: #a4b7d8;
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+        .trust b {
+            color: #dfffe9;
+        }
 
-  <!-- Babel Standalone for JSX -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        /* ── feature card ── */
+        .feature-card {
+            position: relative;
+            min-height: 410px;
+            transform-style: preserve-3d;
+            pointer-events: none;
+        }
+        .holo {
+            position: absolute;
+            inset: 20px 8px 15px 25px;
+            border: 1px solid #b8eaff35;
+            border-radius: 22px;
+            background: linear-gradient(145deg, #1f5b999c, #081831a6);
+            backdrop-filter: blur(16px);
+            box-shadow: 25px 28px 55px #0006;
+            transform: rotateY(-10deg) rotateX(4deg);
+            padding: 25px;
+            pointer-events: none;
+        }
+        .holo .mini-logo {
+            height: 30px;
+            max-width: 150px;
+            object-fit: contain;
+        }
+        .ring {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            border: 1px solid #65dff880;
+            right: -35px;
+            bottom: -60px;
+            transform: rotateX(66deg);
+            box-shadow: 0 0 32px #1de2c344;
+        }
+        .ai-bubble {
+            margin-top: 62px;
+            background: #ffffff10;
+            border: 1px solid #bdeeff22;
+            border-radius: 13px;
+            padding: 13px 16px;
+            color: #d7eaff;
+            font-size: 12px;
+            max-width: 270px;
+        }
+        .ai-bubble b {
+            color: var(--teal);
+        }
+        .score {
+            position: absolute;
+            right: 25px;
+            top: 79px;
+            padding: 14px 18px;
+            border-radius: 15px;
+            background: #071a36d9;
+            border: 1px solid #7ff6db45;
+            box-shadow: 0 12px 30px #0005;
+            text-align: center;
+        }
+        .score strong {
+            font-size: 30px;
+            color: #71f0cd;
+            display: block;
+        }
+        .score small {
+            color: #b4c7e3;
+            font-size: 10px;
+        }
 
-  <!-- Framer Motion -->
-  <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.umd.js"></script>
+        /* ── builder ── */
+        #builder {
+            display: none;
+            padding: 28px 0 45px;
+        }
+        .workspace {
+            display: grid;
+            grid-template-columns: 390px minmax(440px, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
 
-  <!-- PDF Generation Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        /* side panel */
+        .side {
+            background: #0b1e3cbd;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(17px);
+        }
+        .side-top {
+            padding: 19px;
+            border-bottom: 1px solid var(--line);
+        }
+        .side-top h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+        .side-top p {
+            font-size: 11px;
+            color: #a7b9d8;
+            margin: 5px 0 0;
+        }
+        .tabs {
+            display: flex;
+            overflow: auto;
+            border-bottom: 1px solid var(--line);
+            gap: 2px;
+            padding: 0 4px;
+        }
+        .tab {
+            white-space: nowrap;
+            border: 0;
+            border-radius: 0;
+            padding: 12px 14px;
+            color: #a9b9d4;
+            background: none;
+            font-size: 12px;
+            font-weight: 600;
+            position: relative;
+            flex: 1;
+            justify-content: center;
+        }
+        .tab.active {
+            color: #6ff3d2;
+            box-shadow: inset 0 -2px #58e7ca;
+        }
+        .pane {
+            display: none;
+            padding: 18px;
+            max-height: calc(100vh - 245px);
+            overflow: auto;
+        }
+        .pane.active {
+            display: block;
+        }
+        .pane::-webkit-scrollbar {
+            width: 4px;
+        }
+        .pane::-webkit-scrollbar-thumb {
+            background: #39e0bd55;
+            border-radius: 9px;
+        }
 
-  <!-- Supabase JS (UMD) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+        .fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 11px;
+        }
+        .field {
+            display: grid;
+            gap: 5px;
+            margin-bottom: 11px;
+        }
+        .field.full {
+            grid-column: 1 / -1;
+        }
+        .field label {
+            color: #bac9e5;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-weight: 800;
+        }
+        input,
+        textarea,
+        select {
+            border: 1px solid #b6d5ff25;
+            background: #06142dcc;
+            color: #f5f8ff;
+            border-radius: 9px;
+            padding: 10px 12px;
+            font: inherit;
+            outline: 0;
+            width: 100%;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        textarea {
+            min-height: 76px;
+            resize: vertical;
+        }
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #52b5ff;
+            box-shadow: 0 0 0 3px #4ab4ff1c;
+        }
+        .repeater {
+            border: 1px solid var(--line);
+            background: #06142c62;
+            border-radius: 12px;
+            margin: 10px 0;
+            padding: 12px;
+            position: relative;
+        }
+        .remove {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            border: 0;
+            background: #ff66821b;
+            color: #ff9aaa;
+            padding: 4px 8px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .remove:hover {
+            background: #ff668244;
+        }
+        .add {
+            color: #71f0cd;
+            background: #39e0bd0c;
+            border-color: #39e0bd35;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        .photo-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            flex-wrap: wrap;
+        }
+        .photo {
+            width: 57px;
+            height: 57px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #152a50;
+            border: 1.5px solid #72e8d2;
+        }
+        .hint {
+            font-size: 11px;
+            color: #98afd1;
+            margin-top: 12px;
+        }
+        .save-line {
+            padding: 12px 18px;
+            border-top: 1px solid var(--line);
+            font-size: 11px;
+            color: #8ca2c4;
+        }
+
+        /* right preview */
+        .right-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 3px 4px 13px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .right-head b {
+            font-size: 11px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+        .template-choice {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .template-choice button {
+            font-size: 10px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: #ffffff08;
+            border-color: var(--line);
+            color: #b0c4e0;
+        }
+        .template-choice button.active {
+            color: #082040;
+            background: #83f4d6;
+            border-color: #83f4d6;
+        }
+        .cv-shell {
+            padding: 21px;
+            border-radius: 20px;
+            border: 1px solid var(--line);
+            background: #0b1c39ad;
+            box-shadow: 0 22px 60px #0008;
+            perspective: 1200px;
+            transition: transform .15s;
+        }
+        .cv {
+            width: 100%;
+            min-height: 780px;
+            background: #fff;
+            color: #19233a;
+            padding: 47px;
+            box-shadow: 0 20px 45px #0008;
+            transition: transform .35s, background .3s;
+            font-family: Arial, sans-serif;
+        }
+        .cv.modern {
+            border-top: 8px solid #1479c9;
+        }
+        .cv.elegant {
+            background: #f9f5ee;
+            border-top: 8px solid #234d55;
+        }
+        .cv.minimal {
+            border-top: 8px solid #1f1f1f;
+        }
+        .cv-top {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #dce4ee;
+        }
+        .cv-name {
+            font-size: 31px;
+            line-height: 1;
+            letter-spacing: -1.4px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #123e72;
+        }
+        .elegant .cv-name {
+            color: #21424a;
+        }
+        .minimal .cv-name {
+            color: #151515;
+        }
+        .cv-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: .14em;
+            color: #4483b7;
+            margin-top: 8px;
+        }
+        .cv-contact {
+            text-align: right;
+            color: #5d697b;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+        .cv-grid {
+            display: grid;
+            grid-template-columns: 31% 1fr;
+            gap: 25px;
+            padding-top: 20px;
+        }
+        .cv h3 {
+            font-size: 10px;
+            color: #3272aa;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            border-bottom: 1px solid #dce4ee;
+            padding-bottom: 5px;
+            margin: 0 0 8px;
+        }
+        .cv-section {
+            margin-bottom: 18px;
+        }
+        .cv p {
+            font-size: 10.5px;
+            line-height: 1.52;
+            margin: 0;
+            color: #425067;
+        }
+        .cv-item {
+            margin-bottom: 13px;
+        }
+        .cv-item b {
+            font-size: 11px;
+            color: #19263c;
+        }
+        .cv-meta {
+            font-size: 9.5px;
+            color: #6a7a91;
+        }
+        .cv-date {
+            float: right;
+            font-size: 9px;
+            color: #63728b;
+        }
+        .cv-desc {
+            font-size: 9.5px;
+            line-height: 1.45;
+            color: #4e5b70;
+            margin-top: 3px;
+            white-space: pre-line;
+        }
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .chips span {
+            font-size: 9px;
+            border-radius: 99px;
+            background: #eaf2fa;
+            padding: 4px 8px;
+            color: #3b5c82;
+        }
+        .empty {
+            font-style: italic;
+            color: #9aa5b5;
+        }
+        .empty.chips span {
+            background: none;
+            padding: 0;
+            font-style: italic;
+            color: #9aa5b5;
+        }
+
+        /* AI chat */
+        .ai {
+            margin-top: 19px;
+            border: 1px solid #7ff5d448;
+            background: linear-gradient(145deg, #0f3458e8, #0a2144e8);
+            border-radius: 17px;
+            box-shadow: 0 15px 38px #0004;
+            overflow: hidden;
+        }
+        .ai-head {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 13px 15px;
+            border-bottom: 1px solid #a4ebff22;
+        }
+        .ai-icon {
+            width: 27px;
+            height: 27px;
+            display: grid;
+            place-items: center;
+            background: #50e6c11f;
+            border: 1px solid #66f4d66b;
+            color: #74f3d3;
+            border-radius: 9px;
+            font-size: 14px;
+        }
+        .ai-head b {
+            font-size: 13px;
+        }
+        .ai-head small {
+            color: #a2b9d7;
+            margin-left: auto;
+            font-size: 10px;
+        }
+        .messages {
+            height: 158px;
+            overflow: auto;
+            padding: 12px;
+        }
+        .messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .messages::-webkit-scrollbar-thumb {
+            background: #39e0bd55;
+            border-radius: 9px;
+        }
+        .msg {
+            max-width: 85%;
+            font-size: 12px;
+            padding: 9px 12px;
+            border-radius: 11px;
+            margin-bottom: 8px;
+            background: #ffffff0d;
+            color: #d9e8ff;
+            word-break: break-word;
+        }
+        .msg.user {
+            margin-left: auto;
+            background: #3be0bf1c;
+            border: 1px solid #68f1d246;
+        }
+        .ask {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #a4ebff22;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .ask input {
+            flex: 1;
+            min-width: 150px;
+        }
+        .ask button {
+            padding: 9px 14px;
+        }
+
+        /* ── full site sections ── */
+        .full-site {
+            display: block;
+            padding: 32px 0 8px;
+        }
+        .section {
+            padding: 86px 0;
+            border-top: 1px solid var(--line);
+        }
+        .section:first-of-type {
+            border-top: 0;
+        }
+        .section-kicker {
+            font-size: 11px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: #67edcf;
+            font-weight: 850;
+        }
+        .section h2 {
+            font-size: clamp(30px, 4vw, 51px);
+            letter-spacing: -.055em;
+            line-height: 1.03;
+            margin: 12px 0;
+            max-width: 650px;
+        }
+        .section-lead {
+            color: #a9bbd7;
+            font-size: 15px;
+            max-width: 580px;
+            margin: 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 36px;
+        }
+        .stat {
+            padding: 21px;
+            border: 1px solid var(--line);
+            border-radius: 15px;
+            background: #0c2143a6;
+        }
+        .stat strong {
+            display: block;
+            font-size: 26px;
+            letter-spacing: -1px;
+            color: #83f3d7;
+        }
+        .stat span {
+            font-size: 11px;
+            color: #a3b6d5;
+        }
+
+        .workflow,
+        .templates,
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 36px;
+        }
+        .flow-card,
+        .benefit,
+        .testimonial,
+        .template-card {
+            background: #0c2041a8;
+            border: 1px solid var(--line);
+            border-radius: 17px;
+            box-shadow: 0 18px 45px #0003;
+        }
+        .flow-card {
+            padding: 23px;
+            min-height: 190px;
+        }
+        .flow-card i {
+            font-style: normal;
+            color: #78f0d2;
+            font-size: 25px;
+        }
+        .flow-card h3,
+        .benefit h3 {
+            font-size: 16px;
+            margin: 17px 0 6px;
+        }
+        .flow-card p,
+        .benefit p,
+        .testimonial p {
+            color: #a5b8d7;
+            font-size: 12px;
+            margin: 0;
+        }
+        .flow-number {
+            float: right;
+            color: #5d749a;
+            font: 750 12px monospace;
+        }
+
+        .template-card {
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform .25s, box-shadow .25s;
+        }
+        .template-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 25px 50px #0006;
+        }
+        .template-visual {
+            height: 205px;
+            padding: 22px;
+            background: #f7f9fc;
+            color: #17233a;
+            border-top: 6px solid #2588d7;
+        }
+        .template-visual.green {
+            background: #f7f5ef;
+            border-color: #41775e;
+        }
+        .template-visual.dark {
+            background: #eee;
+            border-color: #222;
+        }
+        .tiny-name {
+            width: 60%;
+            height: 11px;
+            background: #243f76;
+            margin-bottom: 8px;
+            border-radius: 2px;
+        }
+        .tiny-role {
+            width: 38%;
+            height: 5px;
+            background: #71a9d3;
+            margin-bottom: 22px;
+            border-radius: 2px;
+        }
+        .tiny-line {
+            height: 5px;
+            background: #d6e1ed;
+            margin: 8px 0;
+            border-radius: 2px;
+        }
+        .tiny-grid {
+            display: grid;
+            grid-template-columns: 30% 1fr;
+            gap: 12px;
+        }
+        .template-card h3 {
+            padding: 0 16px;
+            margin: 15px 0 3px;
+            font-size: 14px;
+        }
+        .template-card p {
+            padding: 0 16px 16px;
+            margin: 0;
+            color: #a5b8d7;
+            font-size: 11px;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 20px;
+            margin-top: 34px;
+        }
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .benefit {
+            padding: 19px;
+        }
+        .benefit b {
+            color: #79eed3;
+            font-size: 18px;
+        }
+
+        .ai-panel {
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #76eed343;
+            background: linear-gradient(135deg, #143d67dd, #0a2444dd);
+            box-shadow: 0 22px 60px #0005;
+        }
+        .ai-panel h3 {
+            font-size: 25px;
+            line-height: 1.1;
+            letter-spacing: -.9px;
+            margin: 12px 0;
+        }
+        .ai-panel p {
+            color: #afc6e4;
+            font-size: 13px;
+        }
+        .ai-lines {
+            margin-top: 26px;
+        }
+        .ai-line {
+            margin: 10px 0;
+            padding: 10px 13px;
+            border-radius: 10px;
+            background: #ffffff0b;
+            color: #dbeaff;
+            font-size: 12px;
+        }
+        .ai-line.user {
+            margin-left: 35px;
+            background: #56e4c819;
+        }
+
+        .person {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 16px;
+        }
+        .person i {
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-style: normal;
+            background: #56d9bd25;
+            color: #79efd3;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .person b {
+            font-size: 11px;
+        }
+        .person span {
+            display: block;
+            color: #8ca4c6;
+            font-size: 10px;
+        }
+
+        .faq {
+            margin-top: 30px;
+            max-width: 840px;
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--line);
+        }
+        .faq-q {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            border: 0;
+            border-radius: 0;
+            padding: 17px 2px;
+            background: none;
+            text-align: left;
+            color: #eaf3ff;
+            font: inherit;
+            gap: 12px;
+        }
+        .faq-q b {
+            font-size: 14px;
+        }
+        .faq-q span {
+            font-size: 18px;
+            color: var(--teal);
+            transition: transform .2s;
+        }
+        .faq-item.open .faq-q span {
+            transform: rotate(45deg);
+        }
+        .faq-a {
+            display: none;
+            color: #a9bbd8;
+            font-size: 12px;
+            padding: 0 2px 18px;
+            max-width: 700px;
+        }
+        .faq-item.open .faq-a {
+            display: block;
+        }
+        .faq-item.open .faq-q {
+            color: #72f0d1;
+        }
+
+        .cta {
+            margin: 30px 0 0;
+            padding: 43px;
+            border-radius: 22px;
+            border: 1px solid #78ead04a;
+            background: radial-gradient(circle at 85% 0, #39e0bd34, transparent 30%), #0b2548bd;
+            text-align: center;
+        }
+        .cta h2 {
+            margin: 0 auto 13px;
+        }
+        .cta p {
+            color: #adc2df;
+        }
+
+        .site-footer {
+            display: grid;
+            grid-template-columns: 1.3fr repeat(3, 1fr);
+            gap: 20px;
+            padding: 47px 0 24px;
+            border-top: 1px solid var(--line);
+            margin-top: 70px;
+        }
+        .site-footer .logo {
+            height: 35px;
+        }
+        .site-footer p,
+        .site-footer a {
+            font-size: 11px;
+            color: #95aac9;
+            text-decoration: none;
+        }
+        .site-footer h4 {
+            font-size: 11px;
+            color: #dbe8ff;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin: 0 0 12px;
+        }
+        .site-footer a {
+            display: block;
+            margin: 7px 0;
+        }
+        .site-footer a:hover {
+            color: #75efd1;
+        }
+
+        .footer {
+            padding: 25px 10px 5px;
+            text-align: center;
+            color: #93a7c6;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #7eedcf;
+            text-decoration: none;
+            font-weight: 750;
+        }
+        .footer img {
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
+            max-width: 95px;
+            object-fit: contain;
+        }
+
+        /* ── responsive ── */
+        @media(max-width: 920px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .feature-card {
+                display: none;
+            }
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            .pane {
+                max-height: none;
+            }
+            .cv-shell {
+                padding: 12px;
+            }
+            .cv {
+                padding: 27px;
+            }
+            .orb {
+                opacity: .4;
+            }
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .workflow,
+            .templates,
+            .testimonials {
+                grid-template-columns: 1fr;
+            }
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+            .site-footer {
+                grid-template-columns: 1fr 1fr;
+            }
+            .right-head {
+                margin-top: 22px;
+            }
+        }
+        @media(max-width: 560px) {
+            .app {
+                padding: 0 14px;
+            }
+            header {
+                height: 67px;
+            }
+            .logo {
+                max-width: 145px;
+            }
+            .welcome,
+            .save-line .save {
+                display: none !important;
+            }
+            .hero {
+                padding: 55px 0;
+            }
+            .hero h1 {
+                font-size: 47px;
+            }
+            .fields {
+                grid-template-columns: 1fr;
+            }
+            .cv {
+                padding: 22px;
+                min-height: 0;
+            }
+            .cv-grid {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            .cv-name {
+                font-size: 23px;
+            }
+            .cv-top {
+                gap: 5px;
+                grid-template-columns: 1fr;
+            }
+            .cv-contact {
+                text-align: left;
+            }
+            .template-choice button {
+                padding: 4px 8px;
+                font-size: 9px;
+            }
+            .trust {
+                gap: 9px;
+                font-size: 10px;
+            }
+            .stats,
+            .benefit-grid,
+            .site-footer {
+                grid-template-columns: 1fr;
+            }
+            .cta {
+                padding: 28px 18px;
+            }
+            .section {
+                padding: 59px 0;
+            }
+            .ai-panel {
+                padding: 18px;
+            }
+            .score {
+                right: 10px;
+                top: 60px;
+                padding: 10px 12px;
+            }
+            .score strong {
+                font-size: 22px;
+            }
+        }
+
+        @media print {
+            .space,
+            header,
+            .side,
+            .right-head,
+            .ai,
+            .footer,
+            .full-site .section:not(:first-of-type),
+            .full-site .cta,
+            .full-site .site-footer,
+            .full-site .testimonials,
+            .full-site .faq,
+            .full-site .benefits,
+            .full-site .workflow,
+            .full-site .templates,
+            .full-site .stats {
+                display: none !important;
+            }
+            body {
+                background: white;
+            }
+            .app {
+                padding: 0;
+            }
+            .workspace {
+                display: block;
+            }
+            .cv-shell {
+                padding: 0;
+                border: 0;
+                background: transparent;
+                box-shadow: none;
+                perspective: none;
+            }
+            .cv {
+                box-shadow: none;
+                transform: none !important;
+                width: 210mm;
+                min-height: 297mm;
+                padding: 15mm;
+            }
+            #builder {
+                padding: 0;
+            }
+            .full-site {
+                display: none !important;
+            }
+            .right-head {
+                display: none !important;
+            }
+            .side {
+                display: none !important;
+            }
+        }
+
+        /* ── utilities ── */
+        .hidden {
+            display: none !important;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <script type="text/babel">
-  (function () {
-    const { useState, useEffect, useRef, forwardRef } = React;
-    const Motion = window['framer-motion'] || {};
-    const motion = Motion.motion || (() => null);
+    <!-- background -->
+    <div class="space">
+        <div class="orb"></div>
+        <div class="orb orb2"></div>
+    </div>
 
-    // ==================== TRANSLATIONS ====================
-    const translations = {
-      en: {
-        // Header
-        appTitle: 'IMENA CV BUILDER',
-        // Landing
-        landingTitle: 'BUILD YOUR MODERN CV WITH IMENA CV BUILDER',
-        landingMotto: 'CREATE, PREVIEW, AND DOWNLOAD CV ALL FOR FREE',
-        startBuilding: 'START',
-        back: 'Back',
-        // Personal Info
-        personalInfo: 'Personal Information',
-        uploadPhoto: 'Upload Photo',
-        upload: 'Upload',
-        fullName: 'Full Name',
-        fullNamePlaceholder: 'TUYISENGE Jean Chrisostom',
-        email: 'Email',
-        emailPlaceholder: 'tuyisengejeanchrisostome@gmail.com',
-        phone: 'Phone',
-        phonePlaceholder: '+2507XXXXXXXX',
-        location: 'Location',
-        locationPlaceholder: 'Kigali, Rwanda',
-        // Professional Summary
-        professionalSummary: 'Professional Summary',
-        professionalSummaryPlaceholder: 'A dedicated professional...',
-        // Education
-        education: 'Education',
-        institutionName: 'Institution Name',
-        institutionPlaceholder: 'University of Rwanda',
-        degree: 'Degree',
-        degreePlaceholder: "A2 in Language Education",
-        graduationYear: 'Graduation Year',
-        graduationYearPlaceholder: '2026',
-        addEducation: 'Add Education',
-        // Work Experience
-        workExperience: 'Work Experience',
-        jobTitle: 'Job Title',
-        jobTitlePlaceholder: 'Job Title',
-        employer: 'Employer',
-        employerPlaceholder: 'Employer',
-        startDate: 'Start Date',
-        startDatePlaceholder: 'Start Date',
-        endDate: 'End Date',
-        endDatePlaceholder: 'End Date',
-        description: 'Description',
-        descriptionPlaceholder: 'Description',
-        addWork: 'Add Work',
-        present: 'Present',
-        // Skills
-        skills: 'Skills',
-        software: 'Skill 1',
-        softwarePlaceholder: 'Microsoft Office, Adobe Suite',
-        dataTools: 'Skill 2',
-        dataToolsPlaceholder: 'Excel, Tableau',
-        programming: 'Skill 3',
-        programmingPlaceholder: 'Python, JavaScript',
-        // Languages
-        languages: 'Languages',
-        kinyarwanda: 'Kinyarwanda',
-        english: 'English',
-        french: 'French',
-        native: 'Native',
-        fluent: 'Fluent',
-        intermediate: 'Intermediate',
-        basic: 'Basic',
-        // Volunteerism
-        volunteerism: 'Volunteerism',
-        activityRole: 'Activity/Role',
-        activityRolePlaceholder: 'Activity/Role',
-        organization: 'Organization',
-        organizationPlaceholder: 'Organization',
-        addVolunteer: 'Add Volunteer',
-        // References
-        references: 'References',
-        referenceName: 'Reference Name',
-        referenceNamePlaceholder: 'Reference Name',
-        referenceTitle: 'Title',
-        referenceTitlePlaceholder: 'Title',
-        referenceEmail: 'Email',
-        referenceEmailPlaceholder: 'reference@example.com',
-        referencePhone: 'Phone',
-        referencePhonePlaceholder: '+250 788 000 000',
-        addReference: 'Add Reference',
-        // Buttons
-        downloadPdf: 'Download PDF',
-        exportCsv: 'Export CSV',
-        livePreview: 'Live Preview',
-        // CV Preview
-        professionalObjective: 'Professional Objective',
-        // Toast messages
-        photoUploadError: 'Error uploading photo (submission will continue without photo).',
-        savingError: 'Error saving submission (check server).',
-        supabaseUnavailable: 'Supabase unavailable — submission skipped.',
-        submissionSaved: 'Submission saved.',
-        cvDownloaded: 'CV downloaded successfully!',
-        dataExported: 'Data exported as CSV',
-        unexpectedError: 'Unexpected error. Check console.',
-      },
-      fr: {
-        // Header
-        appTitle: 'CRÉATEUR DE CV MODERNE',
-        // Landing
-        landingTitle: 'Créateur de CV Moderne',
-        landingMotto: 'Créez votre CV, prévisualisez-le et téléchargez-le gratuitement.',
-        startBuilding: 'Commencer',
-        back: 'Retour',
-        // Personal Info
-        personalInfo: 'Informations Personnelles',
-        uploadPhoto: 'Télécharger une Photo',
-        upload: 'Télécharger',
-        fullName: 'Nom Complet',
-        fullNamePlaceholder: 'TUYISENGE Jean Chrisostom',
-        email: 'Email',
-        emailPlaceholder: 'tuyisengejeanchrisostome@gmail.com',
-        phone: 'Téléphone',
-        phonePlaceholder: '+2507XXXXXXXX',
-        location: 'Localisation',
-        locationPlaceholder: 'Kigali, Rwanda',
-        // Professional Summary
-        professionalSummary: 'Résumé Professionnel',
-        professionalSummaryPlaceholder: 'Un professionnel dévoué...',
-        // Education
-        education: 'Éducation',
-        institutionName: "Nom de l'Institution",
-        institutionPlaceholder: 'Université du Rwanda',
-        degree: 'Diplôme',
-        degreePlaceholder: 'Licence en Informatique',
-        graduationYear: "Année d'Obtention",
-        graduationYearPlaceholder: '2024',
-        addEducation: 'Ajouter une Éducation',
-        // Work Experience
-        workExperience: 'Expérience Professionnelle',
-        jobTitle: "Titre du Poste",
-        jobTitlePlaceholder: 'Titre du Poste',
-        employer: 'Employeur',
-        employerPlaceholder: 'Employeur',
-        startDate: 'Date de Début',
-        startDatePlaceholder: 'Date de Début',
-        endDate: 'Date de Fin',
-        endDatePlaceholder: 'Date de Fin',
-        description: 'Description',
-        descriptionPlaceholder: 'Description',
-        addWork: 'Ajouter une Expérience',
-        present: 'Présent',
-        // Skills
-        skills: 'Compétences',
-        software: 'Logiciels',
-        softwarePlaceholder: 'Microsoft Office, Adobe Suite',
-        dataTools: 'Données et Analyses',
-        dataToolsPlaceholder: 'Excel, Tableau',
-        programming: 'Programmation',
-        programmingPlaceholder: 'Python, JavaScript',
-        // Languages
-        languages: 'Langues',
-        kinyarwanda: 'Kinyarwanda',
-        english: 'Anglais',
-        french: 'Français',
-        native: 'Langue Maternelle',
-        fluent: 'Courant',
-        intermediate: 'Intermédiaire',
-        basic: 'Basique',
-        // Volunteerism
-        volunteerism: 'Bénévolat',
-        activityRole: 'Activité/Rôle',
-        activityRolePlaceholder: 'Activité/Rôle',
-        organization: 'Organisation',
-        organizationPlaceholder: 'Organisation',
-        addVolunteer: 'Ajouter un Bénévolat',
-        // References
-        references: 'Références',
-        referenceName: 'Nom de la Référence',
-        referenceNamePlaceholder: 'Nom de la Référence',
-        referenceTitle: 'Titre',
-        referenceTitlePlaceholder: 'Titre',
-        referenceEmail: 'Email',
-        referenceEmailPlaceholder: 'reference@exemple.com',
-        referencePhone: 'Téléphone',
-        referencePhonePlaceholder: '+250 788 000 000',
-        addReference: 'Ajouter une Référence',
-        // Buttons
-        downloadPdf: 'Télécharger PDF',
-        exportCsv: 'Exporter CSV',
-        livePreview: 'Aperçu en Direct',
-        // CV Preview
-        professionalObjective: 'Objectif Professionnel',
-        // Toast messages
-        photoUploadError: 'Erreur de téléchargement de la photo (la soumission continuera sans photo).',
-        savingError: 'Erreur lors de la sauvegarde (vérifiez le serveur).',
-        supabaseUnavailable: 'Supabase indisponible — soumission ignorée.',
-        submissionSaved: 'Soumission enregistrée.',
-        cvDownloaded: 'CV téléchargé avec succès!',
-        dataExported: 'Données exportées en CSV',
-        unexpectedError: 'Erreur inattendue. Consultez la console.',
-      },
-      rw: {
-        // Header
-        appTitle: 'IMENA CV BUILDER',
-        // Landing
-        landingTitle: "KORA CV IGEZWEHO HAMWE N' IMENA CV BUILDER",
-        landingMotto: 'HANGA, UREBE MBERE, KANDI UBIKE CV YAWE BYOSE KU BUNTU.',
-        startBuilding: 'TANGIRA',
-        back: 'Gusubira Inyuma',
-        // Personal Info
-        personalInfo: 'Amakuru Yihariye',
-        uploadPhoto: 'Ohereza Ifoto',
-        upload: 'Ohereza',
-        fullName: 'Amazina Yombi',
-        fullNamePlaceholder: 'TUYISENGE Jean Chrisostom',
-        email: 'Imeri',
-        emailPlaceholder: 'tuyisengejeanchrisostome@gmail.com',
-        phone: 'Telefoni',
-        phonePlaceholder: '+2507XXXXXXXX',
-        location: 'Aho Ubarizwa',
-        locationPlaceholder: 'Kigali, Rwanda',
-        // Professional Summary
-        professionalSummary: 'Incamake y\'Umwuga',
-        professionalSummaryPlaceholder: 'Umukozi wiyemeje...',
-        // Education
-        education: 'Amashuri',
-        institutionName: 'Izina ry\'Ishuri',
-        institutionPlaceholder: 'Kaminuza y\'u Rwanda',
-        degree: 'Impamyabumenyi',
-        degreePlaceholder: 'Impamyabushobozi y icyiciro cy amashuri yisumbuye mu ndimi n uburezi',
-        graduationYear: 'Umwaka wo Kurangiza',
-        graduationYearPlaceholder: '2024',
-        addEducation: 'Ongeraho Amashuri',
-        // Work Experience
-        workExperience: 'Uburambe bw\'Akazi',
-        jobTitle: 'Umwanya w\'Akazi',
-        jobTitlePlaceholder: 'Umwanya w\'Akazi',
-        employer: 'Umukoresha',
-        employerPlaceholder: 'Umukoresha',
-        startDate: 'Itariki yo Gutangira',
-        startDatePlaceholder: 'Itariki yo Gutangira',
-        endDate: 'Itariki yo Kurangiza',
-        endDatePlaceholder: 'Itariki yo Kurangiza',
-        description: 'Ibisobanuro',
-        descriptionPlaceholder: 'Ibisobanuro',
-        addWork: 'Ongeraho Akazi',
-        present: 'Ubu',
-        // Skills
-        skills: 'Ubumenyi',
-        software: 'Ubumenyi 1',
-        softwarePlaceholder: 'Microsoft Office, Adobe Suite',
-        dataTools: 'Ubumenyi 2',
-        dataToolsPlaceholder: 'Excel, Tableau',
-        programming: 'Ubumenyi 3',
-        programmingPlaceholder: 'Python, JavaScript',
-        // Languages
-        languages: 'Indimi',
-        kinyarwanda: 'Ikinyarwanda',
-        english: 'Icyongereza',
-        french: 'Igifaransa',
-        native: 'Ururimi Kavukire',
-        fluent: 'Neza Cyane',
-        intermediate: 'Hagati',
-        basic: 'Shingiro',
-        // Volunteerism
-        volunteerism: 'Ubushake',
-        activityRole: 'Igikorwa/Uruhare',
-        activityRolePlaceholder: 'Igikorwa/Uruhare',
-        organization: 'Ishyirahamwe',
-        organizationPlaceholder: 'Ishyirahamwe',
-        addVolunteer: 'Ongeraho Ubushake',
-        // References
-        references: 'Abantu Baguha Icyiyerekano',
-        referenceName: 'Izina ry\'Uwaguha Icyiyerekano',
-        referenceNamePlaceholder: 'Izina ry\'Uwaguha Icyiyerekano',
-        referenceTitle: 'Umutwe',
-        referenceTitlePlaceholder: 'Umutwe',
-        referenceEmail: 'Imeri',
-        referenceEmailPlaceholder: 'icyiyerekano@urugero.com',
-        referencePhone: 'Telefoni',
-        referencePhonePlaceholder: '+250 788 000 000',
-        addReference: 'Ongeraho Icyiyerekano',
-        // Buttons
-        downloadPdf: 'Pakura PDF',
-        exportCsv: 'Kohereza CSV',
-        livePreview: 'Kureba Ako Kanya',
-        // CV Preview
-        professionalObjective: 'Intego z\'Umwuga',
-        // Toast messages
-        photoUploadError: 'Ikosa mu kohereza ifoto.',
-        savingError: 'Ikosa mu kubika (reba seriveri).',
-        supabaseUnavailable: 'Supabase ntiboneka — kohereza byaretswe.',
-        submissionSaved: 'Kohereza byabitswe.',
-        cvDownloaded: 'CV yapakuruwe neza!',
-        dataExported: 'Amakuru yoherejwe muri CSV',
-        unexpectedError: 'Ikosa ritunguranye. Reba console.',
-      }
-    };
+    <div class="app">
 
-    // Translation helper
-    const useTranslation = (language) => {
-      return (key) => translations[language]?.[key] || translations.en[key] || key;
-    };
-
-    // ==================== Supabase config & client ====================
-    const SUPABASE_URL = 'https://hjbgrykqfffaptgrrgte.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_ia54-SrDLWB8upMOtPqCOg_FdWMC_Js';
-
-    // UMD exposes `supabase` global with createClient function
-    const supabase = (window.supabase && typeof window.supabase.createClient === 'function')
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-      : null;
-
-    if (!supabase) console.warn('Supabase client not available. Make sure @supabase/supabase-js UMD is loaded.');
-
-    // Helper: convert dataURL -> File
-    const dataUrlToFile = (dataUrl, filename) => {
-      const arr = dataUrl.split(',');
-      const mimeMatch = arr[0].match(/:(.*?);/);
-      const mime = mimeMatch ? mimeMatch[1] : 'image/png';
-      const bstr = atob(arr[1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-      while (n--) u8arr[n] = bstr.charCodeAt(n);
-      try {
-        return new File([u8arr], filename, { type: mime });
-      } catch (err) {
-        const blob = new Blob([u8arr], { type: mime });
-        blob.name = filename;
-        return blob;
-      }
-    };
-
-    // Robust public URL extractor for different supabase-js UMD shapes
-    const extractPublicUrl = (res) => {
-      if (!res) return null;
-      if (res.data && (res.data.publicUrl || res.data.publicURL)) return res.data.publicUrl || res.data.publicURL;
-      if (res.publicUrl || res.publicURL) return res.publicUrl || res.publicURL;
-      return null;
-    };
-
-    // Check whether a storage bucket exists (best-effort).
-    // With anon keys, missing bucket typically yields 404; permission errors may still occur.
-    async function bucketExists(bucketName) {
-      if (!supabase) return false;
-      try {
-        const { data, error } = await supabase.storage.from(bucketName).list({ limit: 1 });
-        if (error) {
-          // 404 => bucket missing. Other errors likely permission-related: assume exists but inaccessible.
-          if (error.status === 404 || (error?.message && /not found/i.test(error.message))) return false;
-          console.warn('Storage list returned error (permission?/inaccessible):', error);
-          return true;
-        }
-        return true;
-      } catch (err) {
-        console.warn('bucketExists check failed:', err);
-        return false;
-      }
-    }
-
-    // Simple Toast
-    function Toast({ message, onClose }) {
-      useEffect(() => {
-        const t = setTimeout(onClose, 3000);
-        return () => clearTimeout(t);
-      }, [onClose]);
-      return (
-        <div className="toast">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">✓</span>
-            <span>{message}</span>
-          </div>
-        </div>
-      );
-    }
-
-    // Minimal Header
-    function Header({ language, setLanguage, theme, setTheme }) {
-      const t = useTranslation(language);
-      const toggleTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-        if (newTheme === 'dark') document.documentElement.classList.add('dark');
-        else document.documentElement.classList.remove('dark');
-      };
-      return (
-        <header className="fixed top-0 left-0 right-0 z-50 glass no-print transition-colors duration-300">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-sm">CV</span>
-              </div>
-              <span className="font-semibold text-white hidden sm:inline">{t('appTitle')}</span>
+        <!-- header -->
+        <header>
+            <img class="logo" src="https://i.postimg.cc/76dxBhN8/i-MENA-CV-Builder.png" alt="iMENA CV Builder">
+            <div class="nav-right">
+                <select id="lang" class="language" aria-label="Select language">
+                    <option value="en">English</option>
+                    <option value="rw">Kinyarwanda</option>
+                    <option value="fr">Français</option>
+                    <option value="sw">Kiswahili</option>
+                </select>
+                <span class="welcome" id="welcome"></span>
+                <img id="avatar" class="avatar" alt="User avatar">
+                <button id="login" class="primary">Continue with Google</button>
+                <button id="logout" class="signout">Sign out</button>
             </div>
-
-            <div className="flex items-center gap-3">
-              <select value={language} onChange={(e) => setLanguage(e.target.value)} className="px-3 py-1.5 rounded-lg text-sm transition-colors duration-300">
-                <option value="en">English</option>
-                <option value="rw">Kinyarwanda</option>
-                <option value="fr">Français</option>
-              </select>
-
-              <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-                <div className="theme-toggle-circle">{theme === 'light' ? '☀️' : '🌙'}</div>
-              </button>
-            </div>
-          </div>
         </header>
-      );
-    }
 
-    // Footer Component
-    function Footer() {
-      return (
-        <footer className="w-full py-6 mt-12 border-t border-white/20 no-print">
-          <div className="container mx-auto px-4 text-center">
-            <p className="text-white/80 text-sm">
-              Developed by{' '}
-              <a
-                 href="https://stomcodev.github.io/TUYISENGE-Jean-Chrisostom/"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                className="text-white font-semibold hover:text-indigo-300 transition-colors duration-200 underline"
-              >
-                TUYISENGE Jean Chrisostom [StomCodeV]
-              </a>
-            </p>
-          </div>
+        <!-- hero / landing -->
+        <section id="landing" class="hero">
+            <div>
+                <div class="eyebrow" data-t="eyebrow">Africa to Europe · your career, clearly told</div>
+                <h1 data-t="headline">A CV that opens<br>the <span>right doors.</span></h1>
+                <p data-t="subhead">Build a confident, ATS-ready CV with a thoughtful AI partner at your side. Designed for the world; made for your story.</p>
+                <div class="hero-actions">
+                    <button id="start" class="primary" data-t="start">Build my CV →</button>
+                    <button id="demo" data-t="demo">Explore the builder</button>
+                </div>
+                <div class="trust">
+                    <span><b>✓</b> <span data-t="trust1">Private by design</span></span>
+                    <span><b>✓</b> <span data-t="trust2">PDF-ready</span></span>
+                    <span><b>✓</b> <span data-t="trust3">AI-guided</span></span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="holo">
+                    <img class="mini-logo" src="https://i.postimg.cc/76dxBhN8/i-MENA-CV-Builder.png" alt="">
+                    <div class="ai-bubble">
+                        <b>iMENA AI</b><br>
+                        "Tell me about your last role. I'll turn it into a strong, human achievement."
+                    </div>
+                    <div class="score">
+                        <strong>92</strong>
+                        <small>CV clarity score</small>
+                    </div>
+                    <div class="ring"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- builder -->
+        <section id="builder">
+            <div class="workspace">
+
+                <!-- side panel -->
+                <aside class="side">
+                    <div class="side-top">
+                        <h2 data-t="editor">Your CV studio</h2>
+                        <p data-t="editorSub">Edit on the left. Your CV updates immediately.</p>
+                    </div>
+                    <nav class="tabs" role="tablist">
+                        <button class="tab active" data-pane="identity" role="tab" data-t="tabIdentity">Identity</button>
+                        <button class="tab" data-pane="experience" role="tab" data-t="tabExperience">Experience</button>
+                        <button class="tab" data-pane="details" role="tab" data-t="tabDetails">Details</button>
+                    </nav>
+
+                    <!-- identity pane -->
+                    <div id="identity" class="pane active" role="tabpanel">
+                        <div class="photo-row">
+                            <img id="photoPreview" class="photo" alt="Profile photo">
+                            <div>
+                                <button id="photoButton" data-t="photo">Upload photo</button>
+                                <input id="photoInput" type="file" accept="image/*" hidden>
+                                <div class="hint" data-t="photoHint">Optional · JPG or PNG</div>
+                            </div>
+                        </div>
+                        <div class="fields" style="margin-top:16px">
+                            <div class="field full">
+                                <label data-t="name">Full name</label>
+                                <input data-field="name" placeholder="Aline Uwase">
+                            </div>
+                            <div class="field">
+                                <label data-t="role">Professional title</label>
+                                <input data-field="title" placeholder="Marketing specialist">
+                            </div>
+                            <div class="field">
+                                <label data-t="location">Location</label>
+                                <input data-field="location" placeholder="Kigali, Rwanda">
+                            </div>
+                            <div class="field">
+                                <label data-t="email">Email</label>
+                                <input data-field="email" type="email" placeholder="you@email.com">
+                            </div>
+                            <div class="field">
+                                <label data-t="phone">Phone</label>
+                                <input data-field="phone" placeholder="+250 7xx xxx xxx">
+                            </div>
+                            <div class="field full">
+                                <label data-t="summary">Professional summary</label>
+                                <textarea data-field="summary" placeholder="Your clearest, most compelling professional introduction."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- experience pane -->
+                    <div id="experience" class="pane" role="tabpanel">
+                        <div id="jobs"></div>
+                        <button class="add" id="addJob" data-t="addExperience">+ Add experience</button>
+                    </div>
+
+                    <!-- details pane -->
+                    <div id="details" class="pane" role="tabpanel">
+                        <div class="field">
+                            <label data-t="skills">Skills</label>
+                            <textarea data-field="skills" placeholder="Communication, Excel, Project management"></textarea>
+                        </div>
+                        <div class="field">
+                            <label data-t="languages">Languages</label>
+                            <input data-field="languages" placeholder="Kinyarwanda — Native, English — Fluent">
+                        </div>
+                        <div class="field">
+                            <label data-t="website">LinkedIn or portfolio</label>
+                            <input data-field="site" placeholder="linkedin.com/in/yourname">
+                        </div>
+                        <div id="education"></div>
+                        <button class="add" id="addEducation" data-t="addEducation">+ Add education</button>
+                        <p class="hint" data-t="secure">Sign in to securely save your CV and conversations.</p>
+                    </div>
+
+                    <div class="save-line" id="saveStatus" data-t="local">Working locally. Sign in to save to your account.</div>
+                </aside>
+
+                <!-- preview & AI -->
+                <main>
+                    <div class="right-head">
+                        <b data-t="preview">Live American-style CV</b>
+                        <div class="template-choice">
+                            <button data-style="modern" class="active">Modern</button>
+                            <button data-style="elegant">Elegant</button>
+                            <button data-style="minimal">Minimal</button>
+                            <button id="export" class="primary" data-t="export">Export PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="cv-shell" id="tilt">
+                        <article id="cv" class="cv modern">
+                            <header class="cv-top">
+                                <div>
+                                    <div class="cv-name" id="pName">YOUR NAME</div>
+                                    <div class="cv-title" id="pTitle">Professional title</div>
+                                </div>
+                                <div class="cv-contact">
+                                    <div id="pEmail"></div>
+                                    <div id="pPhone"></div>
+                                    <div id="pLocation"></div>
+                                    <div id="pSite"></div>
+                                </div>
+                            </header>
+                            <div class="cv-grid">
+                                <aside>
+                                    <section class="cv-section">
+                                        <h3 data-t="skills">Skills</h3>
+                                        <div id="pSkills" class="chips"><span class="empty" data-t="skillsEmpty">Add your strengths</span></div>
+                                    </section>
+                                    <section class="cv-section">
+                                        <h3 data-t="languages">Languages</h3>
+                                        <p id="pLanguages" class="empty" data-t="languagesEmpty">Add languages</p>
+                                    </section>
+                                </aside>
+                                <div>
+                                    <section class="cv-section">
+                                        <h3 data-t="profile">Profile</h3>
+                                        <p id="pSummary" class="empty" data-t="summaryEmpty">Introduce the person behind the CV.</p>
+                                    </section>
+                                    <section class="cv-section">
+                                        <h3 data-t="experienceTitle">Experience</h3>
+                                        <div id="pJobs" class="empty" data-t="experienceEmpty">Add your strongest work experience.</div>
+                                    </section>
+                                    <section class="cv-section">
+                                        <h3 data-t="educationTitle">Education</h3>
+                                        <div id="pEducation" class="empty" data-t="educationEmpty">Add your education and credentials.</div>
+                                    </section>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- AI chat -->
+                    <section class="ai">
+                        <div class="ai-head">
+                            <div class="ai-icon">✦</div>
+                            <b>iMENA AI</b>
+                            <small data-t="aiStatus">your CV co-pilot</small>
+                        </div>
+                        <div class="messages" id="messages">
+                            <div class="msg" data-t="aiHello">Hi! I'm iMENA AI. Tell me about a job, a dream role, or ask me anything—I'll help you create a CV that still sounds like you.</div>
+                        </div>
+                        <form class="ask" id="chatForm">
+                            <input id="chatInput" autocomplete="off" data-t-placeholder="ask" placeholder="Ask iMENA AI anything…">
+                            <button class="primary" data-t="send">Send</button>
+                        </form>
+                    </section>
+                </main>
+            </div>
+        </section>
+
+        <!-- full website -->
+        <section id="fullSite" class="full-site">
+
+            <!-- stats -->
+            <section class="section">
+                <div class="section-kicker">A clearer path to opportunity</div>
+                <h2>Everything you need to tell your career story well.</h2>
+                <p class="section-lead">iMENA brings thoughtful career tools together in one friendly place—whether you are applying in Kigali, Nairobi, Paris, Brussels, or beyond.</p>
+                <div class="stats">
+                    <div class="stat"><strong>4</strong><span>languages at launch</span></div>
+                    <div class="stat"><strong>3</strong><span>professional CV styles</span></div>
+                    <div class="stat"><strong>100%</strong><span>your data, your control</span></div>
+                    <div class="stat"><strong>1</strong><span>AI career co-pilot</span></div>
+                </div>
+            </section>
+
+            <!-- workflow -->
+            <section class="section">
+                <div class="section-kicker">Simple, powerful workflow</div>
+                <h2>From a blank page to a memorable application.</h2>
+                <div class="workflow">
+                    <article class="flow-card">
+                        <span class="flow-number">01</span>
+                        <i>◎</i>
+                        <h3>Bring your story</h3>
+                        <p>Add your experience, education, skills, languages, achievements, and a professional photo at your own pace.</p>
+                    </article>
+                    <article class="flow-card">
+                        <span class="flow-number">02</span>
+                        <i>✦</i>
+                        <h3>Shape it with iMENA AI</h3>
+                        <p>Turn rough notes into confident achievement statements while keeping your voice, facts, and ambition intact.</p>
+                    </article>
+                    <article class="flow-card">
+                        <span class="flow-number">03</span>
+                        <i>↗</i>
+                        <h3>Apply with confidence</h3>
+                        <p>Select a style, review your live preview, then export a clean American-style PDF that is ready to share.</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- templates -->
+            <section class="section">
+                <div class="section-kicker">Designed for real opportunities</div>
+                <h2>Choose a style that feels like you.</h2>
+                <p class="section-lead">Every template is readable, polished, and built to make hiring teams focus on the content—not the formatting.</p>
+                <div class="templates">
+                    <article class="template-card" data-site-style="modern">
+                        <div class="template-visual">
+                            <div class="tiny-name"></div>
+                            <div class="tiny-role"></div>
+                            <div class="tiny-grid">
+                                <div><div class="tiny-line"></div><div class="tiny-line"></div></div>
+                                <div><div class="tiny-line"></div><div class="tiny-line"></div><div class="tiny-line"></div></div>
+                            </div>
+                        </div>
+                        <h3>Modern Cobalt</h3>
+                        <p>Clear hierarchy for ambitious professionals.</p>
+                    </article>
+                    <article class="template-card" data-site-style="elegant">
+                        <div class="template-visual green">
+                            <div class="tiny-name"></div>
+                            <div class="tiny-role"></div>
+                            <div class="tiny-grid">
+                                <div><div class="tiny-line"></div><div class="tiny-line"></div></div>
+                                <div><div class="tiny-line"></div><div class="tiny-line"></div><div class="tiny-line"></div></div>
+                            </div>
+                        </div>
+                        <h3>Editorial Elegance</h3>
+                        <p>Warm, composed, and distinctly human.</p>
+                    </article>
+                    <article class="template-card" data-site-style="minimal">
+                        <div class="template-visual dark">
+                            <div class="tiny-name"></div>
+                            <div class="tiny-role"></div>
+                            <div class="tiny-grid">
+                                <div><div class="tiny-line"></div><div class="tiny-line"></div></div>
+                                <div><div class="tiny-line"></div><div class="tiny-line"></div><div class="tiny-line"></div></div>
+                            </div>
+                        </div>
+                        <h3>Minimal Mono</h3>
+                        <p>Quiet confidence with a crisp finish.</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- benefits + AI panel -->
+            <section class="section">
+                <div class="section-kicker">Not just a writer—your co-pilot</div>
+                <h2>Career guidance that still sounds like you.</h2>
+                <div class="benefits">
+                    <div class="benefit-grid">
+                        <article class="benefit"><b>01</b><h3>Write better bullets</h3><p>Transform responsibilities into specific, outcome-led achievements.</p></article>
+                        <article class="benefit"><b>02</b><h3>Tailor to a role</h3><p>Use a job description to focus your CV on the right strengths.</p></article>
+                        <article class="benefit"><b>03</b><h3>Unlock a strong summary</h3><p>Find the words for what you do best, even when you are unsure where to start.</p></article>
+                        <article class="benefit"><b>04</b><h3>Practice your interview</h3><p>Prepare clear, natural answers based on the story in your CV.</p></article>
+                    </div>
+                    <aside class="ai-panel">
+                        <div class="section-kicker">iMENA AI</div>
+                        <h3>"Let's make your work impossible to overlook."</h3>
+                        <p>Ask naturally, in your preferred language. The assistant will guide your next step and never judge your starting point.</p>
+                        <div class="ai-lines">
+                            <div class="ai-line user">I managed social media for a small business.</div>
+                            <div class="ai-line">Great start. What changed because of your work—more customers, stronger reach, better engagement?</div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <!-- testimonials -->
+            <section class="section">
+                <div class="section-kicker">Built with people in mind</div>
+                <h2>For your first application and your next big move.</h2>
+                <div class="testimonials">
+                    <article class="testimonial">
+                        <p>"I finally understood how to explain my experience. My CV sounded like me, only more confident."</p>
+                        <div class="person"><i>A</i><div><b>Aline U.</b><span>Marketing professional · Kigali</span></div></div>
+                    </article>
+                    <article class="testimonial">
+                        <p>"The clean layout and AI suggestions helped me apply for international roles without feeling overwhelmed."</p>
+                        <div class="person"><i>D</i><div><b>David K.</b><span>Software graduate · Nairobi</span></div></div>
+                    </article>
+                    <article class="testimonial">
+                        <p>"I love that I could work in French, then export an English CV for an opportunity abroad."</p>
+                        <div class="person"><i>M</i><div><b>Marie N.</b><span>Operations coordinator · Brussels</span></div></div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="section">
+                <div class="section-kicker">Answers, before you ask</div>
+                <h2>Frequently asked questions.</h2>
+                <div class="faq">
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Is iMENA CV Builder free to use?</b><span>+</span></button>
+                        <div class="faq-a">The core CV builder, templates, and PDF export are designed to be accessible. Advanced AI features can be introduced with transparent limits later.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Where is my CV information stored?</b><span>+</span></button>
+                        <div class="faq-a">When you sign in, your drafts are stored in your private Firebase account space. The app is designed so users can manage their own data.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Can I use my CV internationally?</b><span>+</span></button>
+                        <div class="faq-a">Yes. The default template follows a clean American-style structure that works well for many international applications. You can choose a style that best matches your industry.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Does iMENA AI write false information?</b><span>+</span></button>
+                        <div class="faq-a">No. It should help users phrase and organize their real experience. Always review and approve every suggestion before exporting.</div>
+                    </div>
+                </div>
+                <div class="cta">
+                    <div class="section-kicker">Your opportunity deserves a clear introduction</div>
+                    <h2>Ready to build a CV with momentum?</h2>
+                    <p>Create it in minutes, refine it with iMENA AI, and take the next step with confidence.</p>
+                    <button id="siteStart" class="primary">Start my CV →</button>
+                </div>
+            </section>
+
+            <!-- footer -->
+            <footer class="site-footer">
+                <div>
+                    <img class="logo" src="https://i.postimg.cc/76dxBhN8/i-MENA-CV-Builder.png" alt="iMENA CV Builder">
+                    <p>Meaningful career tools for ambitious people, wherever opportunity leads.</p>
+                </div>
+                <div>
+                    <h4>Product</h4>
+                    <a href="#builder">CV Builder</a>
+                    <a href="#fullSite">Templates</a>
+                    <a href="#fullSite">iMENA AI</a>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <a href="#fullSite">Help centre</a>
+                    <a href="#fullSite">Privacy</a>
+                    <a href="#fullSite">Contact</a>
+                </div>
+                <div>
+                    <h4>Created by</h4>
+                    <a href="https://imena-hub.vercel.app" target="_blank" rel="noopener">iMENA Hub ↗</a>
+                    <a href="#">Back to top ↑</a>
+                </div>
+            </footer>
+        </section>
+
+        <footer class="footer">
+            <a href="https://imena-hub.vercel.app" target="_blank" rel="noopener">
+                <img src="https://i.postimg.cc/C174zVC4/i-MENA-Hub-logo.png" alt="iMENA Hub">
+                Developed by iMENA Hub ↗
+            </a>
         </footer>
-      );
-    }
 
-    // Minimal Landing
-    function Landing({ onStart, language }) {
-      const t = useTranslation(language);
-      return (
-        <div className="min-h-screen flex items-center justify-center px-4 pt-20">
-          <div className="max-w-3xl text-center">
-            <div className="inline-flex mb-8">
-              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl">
-                <span className="text-4xl">📄</span>
-              </div>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">{t('landingTitle')}</h1>
-            <p className="text-lg md:text-xl mb-8 text-white opacity-90 max-w-2xl mx-auto">{t('landingMotto')}</p>
-            <button onClick={onStart} className="px-8 py-4 text-lg font-semibold bg-white text-purple-600 rounded-xl shadow-2xl"> {t('startBuilding')} </button>
-          </div>
-        </div>
-      );
-    }
+    </div><!-- /app -->
 
-    // CV Preview (used for PDF render)
-    const CVPreview = forwardRef(({ data, language }, ref) => {
-      const t = useTranslation(language);
-      return (
-        <div ref={ref} className="bg-white p-8 shadow-lg" style={{ width: '210mm', minHeight: '297mm' }}>
-          <div className="flex items-start gap-6 mb-6 pb-6 border-b-2 border-indigo-500">
-            {data.personalInfo?.photo ? (
-              <img src={data.personalInfo.photo} alt="profile" className="w-24 h-24 rounded-lg object-cover border-2 border-slate-200" />
-            ) : null}
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">{data.personalInfo?.fullName || 'Your Name'}</h1>
-              <div className="flex flex-wrap gap-4 text-sm text-slate-600">
-                {data.personalInfo?.email && <div className="flex items-center gap-1">✉️ {data.personalInfo.email}</div>}
-                {data.personalInfo?.phone && <div className="flex items-center gap-1">📞 {data.personalInfo.phone}</div>}
-                {data.personalInfo?.location && <div className="flex items-center gap-1">📍 {data.personalInfo.location}</div>}
-              </div>
-            </div>
-          </div>
+    <!-- ─── JAVASCRIPT ─── -->
+    <script type="module">
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  FIREBASE CONFIG — replace with your own values if needed.
+        //  This config is already set to the project from the prompt.
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js';
+        import {
+            getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js';
+        import {
+            getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp
+        } from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js';
+        import {
+            getStorage, ref, uploadBytes, getDownloadURL
+        } from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-storage.js';
 
-          {data.professionalSummary && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-indigo-600 mb-3">{t('professionalObjective')}</h2>
-              <p className="text-sm text-slate-700 leading-relaxed">{data.professionalSummary}</p>
-            </div>
-          )}
-
-          {/* Education (first entry) */}
-          {data.education?.[0]?.schoolName && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-purple-600 mb-3">{t('education')}</h2>
-              <div className="mb-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-semibold text-slate-900">{data.education[0].schoolName}</p>
-                    <p className="text-sm text-slate-600">{data.education[0].degree}</p>
-                  </div>
-                  <span className="text-sm text-slate-500">{data.education[0].graduationYear}</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Work (first entry) */}
-          {data.workExperience?.[0] && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-indigo-600 mb-3">{t('workExperience')}</h2>
-              <div className="mb-4">
-                <div className="flex justify-between items-start mb-1">
-                  <p className="font-semibold text-slate-900">{data.workExperience[0].jobTitle}</p>
-                  <span className="text-sm text-slate-500">{data.workExperience[0].startDate} - {data.workExperience[0].current ? t('present') : data.workExperience[0].endDate}</span>
-                </div>
-                <p className="text-sm text-slate-600 mb-2">{data.workExperience[0].employer}</p>
-                <p className="text-sm text-slate-700 leading-relaxed">{data.workExperience[0].description}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Skills */}
-          {(data.skills?.software || data.skills?.dataTools || data.skills?.programming) && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-pink-600 mb-3">{t('skills')}</h2>
-              {data.skills?.software && <div className="mb-2"><strong>{t('software')}:</strong> {data.skills.software}</div>}
-              {data.skills?.dataTools && <div className="mb-2"><strong>{t('dataTools')}:</strong> {data.skills.dataTools}</div>}
-              {data.skills?.programming && <div className="mb-2"><strong>{t('programming')}:</strong> {data.skills.programming}</div>}
-            </div>
-          )}
-
-          {/* Languages */}
-          {data.languages && data.languages.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-cyan-600 mb-3">{t('languages')}</h2>
-              <div className="flex gap-4 flex-wrap">
-                {data.languages.map((l, i) => <span key={i} className="text-sm text-slate-700">{l.language}: {l.proficiency}</span>)}
-              </div>
-            </div>
-          )}
-
-          {/* Volunteer */}
-          {data.volunteerism?.[0] && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-purple-600 mb-3">{t('volunteerism')}</h2>
-              <p className="font-semibold">{data.volunteerism[0].title}</p>
-              <p className="text-sm text-slate-600">{data.volunteerism[0].organization}</p>
-              <p className="text-sm text-slate-700">{data.volunteerism[0].description}</p>
-            </div>
-          )}
-
-          {/* References */}
-          {data.references?.[0] && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-indigo-600 mb-3">{t('references')}</h2>
-              <div className="grid grid-cols-2 gap-4">
-                {data.references.slice(0,2).map((r, i) => (
-                  <div key={i} className="text-sm">
-                    <p className="font-semibold text-slate-900">{r.name}</p>
-                    <p className="text-slate-600">{r.title}</p>
-                    {r.email && <p className="text-slate-600">{r.email}</p>}
-                    {r.phone && <p className="text-slate-600">{r.phone}</p>}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="mt-8 pt-4 border-t border-slate-200">
-            <div className="flex gap-1 h-1">
-              <div className="flex-1 bg-indigo-500"></div>
-              <div className="flex-1 bg-purple-500"></div>
-              <div className="flex-1 bg-pink-500"></div>
-              <div className="flex-1 bg-cyan-500"></div>
-            </div>
-          </div>
-        </div>
-      );
-    });
-
-    // CV Builder - main interactive area
-    function CVBuilder({ onBack, language }) {
-      const t = useTranslation(language);
-      const [cvData, setCVData] = useState({
-        personalInfo: { fullName: '', email: '', phone: '', location: '', photo: '', photoFile: null },
-        professionalSummary: '',
-        education: [{ id: Date.now().toString(), schoolName: '', degree: '', graduationYear: '' }],
-        workExperience: [],
-        skills: { software: '', dataTools: '', programming: '' },
-        languages: [
-          { language: t('kinyarwanda'), proficiency: t('native') },
-          { language: t('english'), proficiency: t('intermediate') },
-          { language: t('french'), proficiency: t('basic') },
-        ],
-        volunteerism: [],
-        references: [{ id: Date.now().toString(), name: '', title: '', email: '', phone: '' }, { id: (Date.now()+1).toString(), name: '', title: '', email: '', phone: '' }],
-      });
-
-      const previewRef = useRef(null);
-      const [toast, setToast] = useState(null);
-      const [isSubmitting, setIsSubmitting] = useState(false);
-
-      const showToast = (msg) => setToast(msg);
-
-      // handle file input - store both dataURL for preview and file for upload
-      const handlePhotoChange = (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
-          setCVData((prev) => ({
-            ...prev,
-            personalInfo: { ...prev.personalInfo, photo: reader.result, photoFile: file }
-          }));
-        };
-        reader.readAsDataURL(file);
-      };
-
-      // Upload profile photo (if provided) and return public URL or null
-      const uploadPhotoIfNeeded = async () => {
-        try {
-          const p = cvData.personalInfo;
-          // If there's a file object, upload it
-          if (p.photoFile && supabase) {
-            const ext = (p.photoFile.name || '').split('.').pop();
-            const filename = `profile_${(p.fullName || 'user').replace(/\s+/g,'_')}_${Date.now()}.${ext || 'png'}`;
-            const path = filename; // root of bucket
-            const { data, error } = await supabase.storage.from('profile-photos').upload(path, p.photoFile, { upsert: false, cacheControl: '3600' });
-            if (error) {
-              // If upload fails, log and return null (do not inform the user in UI about upload status)
-              console.error('Supabase upload error:', error);
-              return { error };
-            }
-            const publicRes = await supabase.storage.from('profile-photos').getPublicUrl(path);
-            const publicUrl = extractPublicUrl(publicRes);
-            return { publicUrl };
-          }
-          // If photo is already a URL (e.g., previously uploaded), return it
-          if (p.photo && typeof p.photo === 'string' && p.photo.startsWith('http')) {
-            return { publicUrl: p.photo };
-          }
-          // Nothing to upload
-          return { publicUrl: null };
-        } catch (err) {
-          console.error('uploadPhotoIfNeeded error', err);
-          return { error: err };
-        }
-      };
-
-      // Map CV data to the exact table columns required and insert
-      const saveToSupabase = async (photoUrl) => {
-        if (!supabase) {
-          console.warn('Supabase client unavailable — skipping DB insert.');
-          return { skipped: true };
-        }
-
-        const firstEducation = cvData.education?.[0] || {};
-        const firstWork = cvData.workExperience?.[0] || {};
-        const firstVolunteer = cvData.volunteerism?.[0] || {};
-        const firstReference = cvData.references?.[0] || {};
-
-        const kiny = (cvData.languages || []).find(l => l.language.toLowerCase().includes('kinya'))?.proficiency || null;
-        const eng = (cvData.languages || []).find(l => l.language.toLowerCase().includes('english') || l.language.toLowerCase() === 'english')?.proficiency || null;
-        const fr = (cvData.languages || []).find(l => l.language.toLowerCase().includes('french'))?.proficiency || null;
-
-        // Build payload with only the exact keys requested
-        const payload = {
-          full_name: cvData.personalInfo.fullName || null,
-          email_address: cvData.personalInfo.email || null,
-          phone_number: cvData.personalInfo.phone || null,
-          location: cvData.personalInfo.location || null,
-          professional_summary: cvData.professionalSummary || null,
-
-          institution_name: firstEducation.schoolName || null,
-          degree_level: firstEducation.degree || null,
-          graduation_year: firstEducation.graduationYear || null,
-
-          job_title: firstWork.jobTitle || null,
-          employer: firstWork.employer || null,
-          start_date: firstWork.startDate || null,
-          end_date: firstWork.endDate || null,
-
-          software_proficiency: cvData.skills.software || null,
-          data_analytics_tools: cvData.skills.dataTools || null,
-          programming_development: cvData.skills.programming || null,
-
-          kinyarwanda_level: kiny || null,
-          english_level: eng || null,
-          french_level: fr || null,
-
-          activity_role: firstVolunteer.title || null,
-          organization: firstVolunteer.organization || null,
-          description: firstVolunteer.description || null,
-
-          reference_name: firstReference.name || null,
-          reference_title: firstReference.title || null,
-          reference_email: firstReference.email || null,
-          reference_phone: firstReference.phone || null,
-
-          photo_url: photoUrl || null
+        const firebaseConfig = {
+            apiKey: 'AIzaSyBf5M38U2u_jX126FxFcJgGZGZFnYX78R0',
+            authDomain: 'imena-cv-builder.firebaseapp.com',
+            projectId: 'imena-cv-builder',
+            storageBucket: 'imena-cv-builder.firebasestorage.app',
+            messagingSenderId: '1098356304084',
+            appId: '1:1098356304084:web:29695079a909e7182af341',
+            measurementId: 'G-1RLQF6YWJZ'
         };
 
-        // IMPORTANT: ensure payload keys exactly match your table columns to avoid PGRST204
-        try {
-          const { data, error } = await supabase.from('cv_submissions').insert([payload]);
-          if (error) {
-            console.error('Supabase insert error:', error);
-            return { error };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const provider = new GoogleAuthProvider();
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  AI CLOUD FUNCTION ENDPOINT
+        //  Deploy a secure Firebase Cloud Function named "imenaAi" and
+        //  set this URL to your function's endpoint.
+        //  Example: https://us-central1-YOUR_PROJECT.cloudfunctions.net/imenaAi
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const AI_ENDPOINT = 'https://us-central1-imena-cv-builder.cloudfunctions.net/imenaAi';
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  STATE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const blank = {
+            name: '',
+            title: '',
+            location: '',
+            email: '',
+            phone: '',
+            summary: '',
+            skills: '',
+            languages: '',
+            site: '',
+            photo: '',
+            style: 'modern',
+            jobs: [{ role: '', company: '', start: '', end: '', description: '' }],
+            education: [{ degree: '', school: '', year: '' }]
+        };
+        let cv = structuredClone(blank);
+        let user = null;
+        let lang = 'en';
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  TRANSLATIONS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const tx = {
+            en: {
+                eyebrow: 'Africa to Europe · your career, clearly told',
+                headline: 'A CV that opens<br>the <span>right doors.</span>',
+                subhead: 'Build a confident, ATS-ready CV with a thoughtful AI partner at your side. Designed for the world; made for your story.',
+                start: 'Build my CV →',
+                demo: 'Explore the builder',
+                trust1: 'Private by design',
+                trust2: 'PDF-ready',
+                trust3: 'AI-guided',
+                editor: 'Your CV studio',
+                editorSub: 'Edit on the left. Your CV updates immediately.',
+                tabIdentity: 'Identity',
+                tabExperience: 'Experience',
+                tabDetails: 'Details',
+                photo: 'Upload photo',
+                photoHint: 'Optional · JPG or PNG',
+                name: 'Full name',
+                role: 'Professional title',
+                location: 'Location',
+                email: 'Email',
+                phone: 'Phone',
+                summary: 'Professional summary',
+                addExperience: '+ Add experience',
+                skills: 'Skills',
+                languages: 'Languages',
+                website: 'LinkedIn or portfolio',
+                addEducation: '+ Add education',
+                secure: 'Sign in to securely save your CV and conversations.',
+                local: 'Working locally. Sign in to save to your account.',
+                preview: 'Live American-style CV',
+                export: 'Export PDF',
+                profile: 'Profile',
+                experienceTitle: 'Experience',
+                educationTitle: 'Education',
+                skillsEmpty: 'Add your strengths',
+                languagesEmpty: 'Add languages',
+                summaryEmpty: 'Introduce the person behind the CV.',
+                experienceEmpty: 'Add your strongest work experience.',
+                educationEmpty: 'Add your education and credentials.',
+                aiStatus: 'your CV co-pilot',
+                aiHello: 'Hi! I\'m iMENA AI. Tell me about a job, a dream role, or ask me anything—I\'ll help you create a CV that still sounds like you.',
+                ask: 'Ask iMENA AI anything…',
+                send: 'Send'
+            },
+            fr: {
+                eyebrow: 'Afrique · Europe · votre carrière, clairement racontée',
+                headline: 'Un CV qui ouvre<br>les <span>bonnes portes.</span>',
+                subhead: 'Construisez un CV sûr, adapté aux ATS, avec un partenaire IA à vos côtés. Pensé pour le monde, fait pour votre histoire.',
+                start: 'Créer mon CV →',
+                demo: 'Explorer',
+                trust1: 'Privé par conception',
+                trust2: 'Prêt pour PDF',
+                trust3: 'Guidé par IA',
+                editor: 'Votre studio CV',
+                editorSub: 'Modifiez à gauche. Votre CV se met à jour instantanément.',
+                tabIdentity: 'Profil',
+                tabExperience: 'Expérience',
+                tabDetails: 'Détails',
+                photo: 'Ajouter une photo',
+                photoHint: 'Optionnel · JPG ou PNG',
+                name: 'Nom complet',
+                role: 'Titre professionnel',
+                location: 'Localisation',
+                email: 'E-mail',
+                phone: 'Téléphone',
+                summary: 'Résumé professionnel',
+                addExperience: '+ Ajouter une expérience',
+                skills: 'Compétences',
+                languages: 'Langues',
+                website: 'LinkedIn ou portfolio',
+                addEducation: '+ Ajouter une formation',
+                secure: 'Connectez-vous pour sauvegarder votre CV et vos conversations.',
+                local: 'Travail local. Connectez-vous pour sauvegarder.',
+                preview: 'CV américain en direct',
+                export: 'Exporter PDF',
+                profile: 'Profil',
+                experienceTitle: 'Expérience',
+                educationTitle: 'Formation',
+                skillsEmpty: 'Ajoutez vos atouts',
+                languagesEmpty: 'Ajoutez des langues',
+                summaryEmpty: 'Présentez la personne derrière le CV.',
+                experienceEmpty: 'Ajoutez votre expérience professionnelle.',
+                educationEmpty: 'Ajoutez votre formation et diplômes.',
+                aiStatus: 'votre co-pilote CV',
+                aiHello: 'Bonjour ! Je suis iMENA AI. Parlez-moi d\'un poste, d\'un rêve de carrière, ou demandez-moi n\'importe quoi—je vous aiderai à créer un CV qui vous ressemble.',
+                ask: 'Demandez à iMENA AI…',
+                send: 'Envoyer'
+            },
+            rw: {
+                eyebrow: 'Afrika · Uburayi · umwuga wawe, ugaragazwa neza',
+                headline: 'CV ifungura<br><span>inzira nyakuri.</span>',
+                subhead: 'Kora CV yizewe, yakira ATS, hamwe n\'umufasha wa AI. Yateguriwe isi yose, yakozwe kuri wawe.',
+                start: 'Tangira gukora CV →',
+                demo: 'Reba uko ikora',
+                trust1: 'Ibanga ryawe',
+                trust2: 'PDF ikora',
+                trust3: 'AI igukura',
+                editor: 'Aho ukorera CV',
+                editorSub: 'Hindura ibumoso. CV yawe ihita ihinduka.',
+                tabIdentity: 'Umwirondoro',
+                tabExperience: 'Uburambe',
+                tabDetails: 'Birambuye',
+                photo: 'Ohereza ifoto',
+                photoHint: 'Bishakiwe · JPG cyangwa PNG',
+                name: 'Amazina yawe',
+                role: 'Umwanya w\'akazi',
+                location: 'Aho ubarizwa',
+                email: 'Imeri',
+                phone: 'Telefoni',
+                summary: 'Incamake y\'umwuga',
+                addExperience: '+ Ongeraho uburambe',
+                skills: 'Ubumenyi',
+                languages: 'Indimi',
+                website: 'LinkedIn cyangwa portfolio',
+                addEducation: '+ Ongeraho amashuri',
+                secure: 'Injira kugira ngo ubike CV n\'ibiganiro byawe.',
+                local: 'Ubikira hano. Injira kugira ngo ubike.',
+                preview: 'CV ya Amerika iboneka ako kanya',
+                export: 'Bika PDF',
+                profile: 'Incamake',
+                experienceTitle: 'Uburambe',
+                educationTitle: 'Amashuri',
+                skillsEmpty: 'Ongeraho ubumenyi',
+                languagesEmpty: 'Ongeraho indimi',
+                summaryEmpty: 'Tangaza umuntu uri inyuma ya CV.',
+                experienceEmpty: 'Ongeraho uburambe bw\'akazi.',
+                educationEmpty: 'Ongeraho amashuri yawe.',
+                aiStatus: 'umufasha wa CV',
+                aiHello: 'Mwaramutse! Ni iMENA AI. Mbwira akazi, icyifuzo cyawe, cyangwa ubaze ikintu icyo aricyo cyose—nzakubariza CV ikugeza aho ushaka.',
+                ask: 'Baza iMENA AI…',
+                send: 'Ohereza'
+            },
+            sw: {
+                eyebrow: 'Afrika · Ulaya · kazi yako, inaelezwa wazi',
+                headline: 'CV inayofungua<br><span>milango sahihi.</span>',
+                subhead: 'Jenga CV thabiti, inayokubaliwa na ATS, na mshirika wa AI. Imebuniwa kwa ajili ya dunia, imetengenezwa kwa ajili ya hadithi yako.',
+                start: 'Jenga CV yangu →',
+                demo: 'Fungua mtengenezaji',
+                trust1: 'Faragha kwa muundo',
+                trust2: 'Tayari kwa PDF',
+                trust3: 'Inaongozwa na AI',
+                editor: 'Studio yako ya CV',
+                editorSub: 'Hariri upande wa kushoto. CV yako inasasishwa mara moja.',
+                tabIdentity: 'Wasifu',
+                tabExperience: 'Uzoefu',
+                tabDetails: 'Maelezo',
+                photo: 'Pakia picha',
+                photoHint: 'Hiari · JPG au PNG',
+                name: 'Jina kamili',
+                role: 'Cheo cha kazi',
+                location: 'Mahali',
+                email: 'Barua pepe',
+                phone: 'Simu',
+                summary: 'Muhtasari wa kitaaluma',
+                addExperience: '+ Ongeza uzoefu',
+                skills: 'Ujuzi',
+                languages: 'Lugha',
+                website: 'LinkedIn au portfolio',
+                addEducation: '+ Ongeza elimu',
+                secure: 'Ingia ili uhifadhi CV na mazungumzo yako.',
+                local: 'Unahifadhi hapa. Ingia ili uhifadhi.',
+                preview: 'CV ya mtindo wa Marekani',
+                export: 'Hamisha PDF',
+                profile: 'Wasifu',
+                experienceTitle: 'Uzoefu',
+                educationTitle: 'Elimu',
+                skillsEmpty: 'Ongeza ujuzi wako',
+                languagesEmpty: 'Ongeza lugha',
+                summaryEmpty: 'Tambulisha mtu aliye nyuma ya CV.',
+                experienceEmpty: 'Ongeza uzoefu wako wa kazi.',
+                educationEmpty: 'Ongeza elimu na vyeti vyako.',
+                aiStatus: 'mshiriki wako wa CV',
+                aiHello: 'Habari! Mimi ni iMENA AI. Niambie kuhusu kazi, ndoto yako, au uniulize chochote—nitakusaidia kuunda CV inayokufaa.',
+                ask: 'Muulize iMENA AI…',
+                send: 'Tuma'
+            }
+        };
+
+        function tr(key) { return tx[lang]?.[key] || tx.en[key] || key; }
+
+        function esc(v) {
+            return String(v || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;',
+                "'": '&#39;' }[c] || c));
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  DOM refs
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const $ = s => document.querySelector(s);
+        const $$ = s => [...document.querySelectorAll(s)];
+
+        const $lang = $('#lang');
+        const $login = $('#login');
+        const $logout = $('#logout');
+        const $welcome = $('#welcome');
+        const $avatar = $('#avatar');
+        const $start = $('#start');
+        const $demo = $('#demo');
+        const $siteStart = $('#siteStart');
+        const $export = $('#export');
+        const $photoButton = $('#photoButton');
+        const $photoInput = $('#photoInput');
+        const $photoPreview = $('#photoPreview');
+        const $saveStatus = $('#saveStatus');
+        const $messages = $('#messages');
+        const $chatForm = $('#chatForm');
+        const $chatInput = $('#chatInput');
+        const $tilt = $('#tilt');
+        const $cv = $('#cv');
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  RENDER
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function renderRepeaters() {
+            const jobsContainer = $('#jobs');
+            jobsContainer.innerHTML = cv.jobs.map((j, i) => `
+            <div class="repeater">
+              <button class="remove" data-remove="jobs" data-i="${i}" aria-label="Remove job">×</button>
+              <div class="fields">
+                <div class="field"><label>Role</label><input data-array="jobs" data-i="${i}" data-key="role" value="${esc(j.role)}" placeholder="Job title"></div>
+                <div class="field"><label>Employer</label><input data-array="jobs" data-i="${i}" data-key="company" value="${esc(j.company)}" placeholder="Company"></div>
+                <div class="field"><label>Start</label><input data-array="jobs" data-i="${i}" data-key="start" value="${esc(j.start)}" placeholder="2022"></div>
+                <div class="field"><label>End</label><input data-array="jobs" data-i="${i}" data-key="end" value="${esc(j.end)}" placeholder="Present"></div>
+                <div class="field full"><label>Impact</label><textarea data-array="jobs" data-i="${i}" data-key="description" placeholder="What changed because of your work?">${esc(j.description)}</textarea></div>
+              </div>
+            </div>
+          `).join('');
+
+            const eduContainer = $('#education');
+            eduContainer.innerHTML = cv.education.map((x, i) => `
+            <div class="repeater">
+              <button class="remove" data-remove="education" data-i="${i}" aria-label="Remove education">×</button>
+              <div class="fields">
+                <div class="field full"><label>Degree / credential</label><input data-array="education" data-i="${i}" data-key="degree" value="${esc(x.degree)}" placeholder="Bachelor of…"></div>
+                <div class="field"><label>School</label><input data-array="education" data-i="${i}" data-key="school" value="${esc(x.school)}" placeholder="University"></div>
+                <div class="field"><label>Year</label><input data-array="education" data-i="${i}" data-key="year" value="${esc(x.year)}" placeholder="2024"></div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        function render(keepRepeat = true) {
+            // fields
+            $$('[data-field]').forEach(e => {
+                if (document.activeElement !== e) e.value = cv[e.dataset.field] || '';
+            });
+
+            if (keepRepeat) renderRepeaters();
+
+            // preview
+            $('#pName').textContent = cv.name || 'YOUR NAME';
+            $('#pTitle').textContent = cv.title || 'Professional title';
+            ['Email', 'Phone', 'Location', 'Site'].forEach(x => {
+                const el = $('#p' + x);
+                const key = x.toLowerCase();
+                el.textContent = cv[key] || '';
+            });
+
+            const summaryEl = $('#pSummary');
+            summaryEl.textContent = cv.summary || tr('summaryEmpty');
+            summaryEl.className = cv.summary ? '' : 'empty';
+
+            const langEl = $('#pLanguages');
+            langEl.textContent = cv.languages || tr('languagesEmpty');
+            langEl.className = cv.languages ? '' : 'empty';
+
+            const skillsEl = $('#pSkills');
+            if (cv.skills) {
+                skillsEl.innerHTML = cv.skills.split(',').filter(Boolean).map(x => `<span>${esc(x.trim())}</span>`).join('');
+            } else {
+                skillsEl.innerHTML = `<span class="empty">${tr('skillsEmpty')}</span>`;
+            }
+
+            const jobsEl = $('#pJobs');
+            if (cv.jobs.some(x => x.role || x.company)) {
+                jobsEl.innerHTML = cv.jobs.filter(x => x.role || x.company).map(x => `
+              <div class="cv-item">
+                <span class="cv-date">${esc([x.start,x.end].filter(Boolean).join(' — '))}</span>
+                <b>${esc(x.role||'Role')}</b>
+                <div class="cv-meta">${esc(x.company)}</div>
+                <div class="cv-desc">${esc(x.description)}</div>
+              </div>
+            `).join('');
+                jobsEl.className = '';
+            } else {
+                jobsEl.innerHTML = tr('experienceEmpty');
+                jobsEl.className = 'empty';
+            }
+
+            const eduEl = $('#pEducation');
+            if (cv.education.some(x => x.degree || x.school)) {
+                eduEl.innerHTML = cv.education.filter(x => x.degree || x.school).map(x => `
+              <div class="cv-item">
+                <span class="cv-date">${esc(x.year)}</span>
+                <b>${esc(x.degree||'Degree')}</b>
+                <div class="cv-meta">${esc(x.school)}</div>
+              </div>
+            `).join('');
+                eduEl.className = '';
+            } else {
+                eduEl.innerHTML = tr('educationEmpty');
+                eduEl.className = 'empty';
+            }
+
+            // photo
+            if (cv.photo) {
+                $photoPreview.src = cv.photo;
+            } else {
+                $photoPreview.src =
+                    'data:image/svg+xml,' + encodeURIComponent(
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="100%" height="100%" fill="#152a50"/><circle cx="40" cy="29" r="14" fill="#6e9dc5"/><path d="M14 75c4-20 48-20 52 0" fill="#6e9dc5"/></svg>'
+                        );
+            }
+
+            // style
+            $cv.className = 'cv ' + cv.style;
+            $$('[data-style]').forEach(b => b.classList.toggle('active', b.dataset.style === cv.style));
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  EVENT DELEGATION
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        document.addEventListener('input', e => {
+            const t = e.target;
+            if (t.dataset.field) {
+                cv[t.dataset.field] = t.value;
+                render(false);
+            } else if (t.dataset.array) {
+                const idx = parseInt(t.dataset.i);
+                cv[t.dataset.array][idx][t.dataset.key] = t.value;
+                render(false);
+            }
+        });
+
+        document.addEventListener('click', e => {
+            const b = e.target.closest('[data-remove],[data-style]');
+            if (!b) return;
+            if (b.dataset.remove) {
+                cv[b.dataset.remove].splice(parseInt(b.dataset.i), 1);
+                render(true);
+                saveCV();
+            }
+            if (b.dataset.style) {
+                cv.style = b.dataset.style;
+                $$('[data-style]').forEach(x => x.classList.toggle('active', x === b));
+                render(false);
+                saveCV();
+            }
+        });
+
+        // tabs
+        $$('.tab').forEach(b => {
+            b.addEventListener('click', () => {
+                $$('.tab, .pane').forEach(x => x.classList.remove('active'));
+                b.classList.add('active');
+                const pane = document.getElementById(b.dataset.pane);
+                if (pane) pane.classList.add('active');
+            });
+        });
+
+        // add buttons
+        $('#addJob').addEventListener('click', () => {
+            cv.jobs.push({ role: '', company: '', start: '', end: '', description: '' });
+            render(true);
+            saveCV();
+        });
+        $('#addEducation').addEventListener('click', () => {
+            cv.education.push({ degree: '', school: '', year: '' });
+            render(true);
+            saveCV();
+        });
+
+        // template cards
+        $$('[data-site-style]').forEach(card => {
+            card.addEventListener('click', () => {
+                cv.style = card.dataset.siteStyle;
+                $$('[data-style]').forEach(x => x.classList.toggle('active', x.dataset.style === cv.style));
+                render(false);
+                openBuilder();
+                saveCV();
+            });
+        });
+
+        // FAQ
+        $$('.faq-q').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const open = item.classList.toggle('open');
+                btn.querySelector('span').textContent = open ? '−' : '+';
+            });
+        });
+
+        // photo
+        $photoButton.addEventListener('click', () => $photoInput.click());
+        $photoInput.addEventListener('change', async e => {
+            const f = e.target.files[0];
+            if (!f) return;
+            const local = URL.createObjectURL(f);
+            cv.photo = local;
+            render(false);
+            if (user) {
+                try {
+                    const path = `users/${user.uid}/profile-${Date.now()}-${f.name}`;
+                    const r = ref(storage, path);
+                    await uploadBytes(r, f);
+                    const url = await getDownloadURL(r);
+                    cv.photo = url;
+                    render(false);
+                    await saveCV();
+                } catch (err) {
+                    addMessage('Photo saved for this session; Firebase Storage rules may need configuration.');
+                }
+            }
+        });
+
+        // export
+        $export.addEventListener('click', () => window.print());
+
+        // open builder
+        function openBuilder() {
+            const landing = $('#landing');
+            const builder = $('#builder');
+            landing.style.display = 'none';
+            builder.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        $start.addEventListener('click', () => user ? openBuilder() : $login.click());
+        $demo.addEventListener('click', openBuilder);
+        $siteStart.addEventListener('click', () => user ? openBuilder() : $login.click());
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  FIREBASE AUTH
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        $login.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (e) {
+                addMessage('Google sign-in could not open. Confirm the authorized domain in Firebase Authentication.');
+            }
+        });
+
+        $logout.addEventListener('click', () => signOut(auth));
+
+        async function saveCV() {
+            if (!user) return;
+            try {
+                const refDoc = doc(db, 'users', user.uid, 'documents', 'primary');
+                await setDoc(refDoc, { ...cv, updatedAt: serverTimestamp() }, { merge: true });
+                $saveStatus.textContent = '✓ Saved to your iMENA account';
+            } catch (e) {
+                $saveStatus.textContent = 'Could not save yet — check Firestore rules.';
+            }
+        }
+
+        onAuthStateChanged(auth, async u => {
+            user = u;
+            if (u) {
+                $login.style.display = 'none';
+                $logout.style.display = 'block';
+                $welcome.style.display = 'block';
+                $welcome.textContent = u.displayName?.split(' ')[0] || 'Signed in';
+                $avatar.style.display = 'block';
+                $avatar.src = u.photoURL || '';
+                try {
+                    const snap = await getDoc(doc(db, 'users', u.uid, 'documents', 'primary'));
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        cv = { ...blank, ...data, jobs: data.jobs || blank.jobs, education: data.education || blank
+                                .education };
+                        render(true);
+                    }
+                    $saveStatus.textContent = '✓ Your CV saves securely to Firebase';
+                } catch (e) {
+                    $saveStatus.textContent = 'Signed in — Firestore rules need checking.';
+                }
+                // If the builder is hidden, show it.
+                if ($('#builder').style.display === 'none') openBuilder();
+            } else {
+                $login.style.display = 'block';
+                $logout.style.display = 'none';
+                $welcome.style.display = 'none';
+                $avatar.style.display = 'none';
+                // keep local CV but don't overwrite
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  AI CHAT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function addMessage(text, who = 'ai') {
+            const el = document.createElement('div');
+            el.className = 'msg' + (who === 'user' ? ' user' : '');
+            el.textContent = text;
+            $messages.appendChild(el);
+            $messages.scrollTop = 99999;
+        }
+
+        $chatForm.addEventListener('submit', async e => {
+            e.preventDefault();
+            const q = $chatInput.value.trim();
+            if (!q) return;
+            addMessage(q, 'user');
+            $chatInput.value = '';
+
+            const thinking = document.createElement('div');
+            thinking.className = 'msg';
+            thinking.textContent = 'iMENA AI is thinking…';
+            $messages.appendChild(thinking);
+            $messages.scrollTop = 99999;
+
+            try {
+                const resp = await fetch(AI_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: q,
+                        language: lang,
+                        cv: cv,
+                        userId: user?.uid || null
+                    })
+                });
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const out = await resp.json();
+                thinking.textContent = out.reply || 'I\'m here—could you tell me a little more?';
+            } catch (err) {
+                thinking.textContent =
+                    'iMENA AI is ready for connection. Deploy the secure Firebase Cloud Function named "imenaAi" to activate live AI replies.';
+            }
+
+            // store chat in Firestore if signed in
+            if (user) {
+                try {
+                    await addDoc(collection(db, 'users', user.uid, 'chats', 'default', 'messages'), {
+                        role: 'user',
+                        content: q,
+                        createdAt: serverTimestamp()
+                    });
+                } catch (_) { /* ignore */ }
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  3D TILT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        $tilt.addEventListener('pointermove', e => {
+            if (window.innerWidth < 920) return;
+            const r = $tilt.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            $tilt.style.transform = `rotateY(${x*3}deg) rotateX(${y*-3}deg)`;
+        });
+        $tilt.addEventListener('pointerleave', () => $tilt.style.transform = '');
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  LANGUAGE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function applyLanguage() {
+            document.documentElement.lang = lang;
+            $$('[data-t]').forEach(el => {
+                const key = el.dataset.t;
+                const val = tr(key);
+                if (val) el.innerHTML = val;
+            });
+            $$('[data-t-placeholder]').forEach(el => {
+                const key = el.dataset.tPlaceholder;
+                const val = tr(key);
+                if (val) el.placeholder = val;
+            });
+            // re-render empty states with new language
+            render(false);
+        }
+
+        $lang.addEventListener('change', e => {
+            lang = e.target.value;
+            applyLanguage();
+            // re-render to update empty-state strings
+            render(false);
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  INIT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        applyLanguage();
+        render(true);
+
+        // if user is already signed in from previous session, open builder
+        // onAuthStateChanged will handle that.
+
+        console.log('✅ iMENA CV Builder loaded.');
+        console.log('📌 To enable AI: deploy a Firebase Cloud Function named "imenaAi" and set AI_ENDPOINT.');
+        console.log('📌 Firestore rules: allow read, write if request.auth.uid != null;');
+        console.log('📌 Storage rules: allow read, write if request.auth.uid != null;');
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  FIREBASE RULES SUGGESTIONS (commented)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        /*
+          FIRESTORE RULES:
+          rules_version = '2';
+          service cloud.firestore {
+            match /databases/{database}/documents {
+              match /users/{uid}/documents/primary {
+                allow read, write: if request.auth.uid == uid;
+              }
+              match /users/{uid}/chats/{chatId}/messages/{msgId} {
+                allow read, write: if request.auth.uid == uid;
+              }
+            }
           }
-          return { data };
-        } catch (err) {
-          console.error('Unexpected insert exception:', err);
-          return { error: err };
-        }
-      };
 
-      // Generate PDF from hidden preview and trigger download
-      const generateAndDownloadPDF = async () => {
-        const node = previewRef.current;
-        if (!node) {
-          throw new Error('Preview not ready');
-        }
-
-        // html2canvas -> convert to image -> jsPDF
-        const canvas = await html2canvas(node, { scale: 2, useCORS: true, logging: false });
-        const imgData = canvas.toDataURL('image/png');
-
-        // jsPDF may be exposed as window.jspdf (umd) or window.jsPDF
-        let pdfInstance;
-        if (window.jspdf && window.jspdf.jsPDF) {
-          const { jsPDF } = window.jspdf;
-          pdfInstance = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-        } else if (window.jsPDF) {
-          pdfInstance = new window.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-        } else {
-          throw new Error('jsPDF library missing');
-        }
-
-        const pdfWidth = pdfInstance.internal.pageSize.getWidth();
-        const pdfHeight = pdfInstance.internal.pageSize.getHeight();
-        pdfInstance.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        const filename = `${(cvData.personalInfo.fullName || 'CV').replace(/\s+/g, '_')}_Rwanda.pdf`;
-        pdfInstance.save(filename);
-      };
-
-      // Main click handler: upload photo, save to DB, generate PDF
-      // NOTE: per request, we will NOT show toasts indicating DB/photo upload/save status here.
-      // Those events are still attempted and logged to console, but the user will not see "submission saved" or related messages.
-      const handleDownloadClick = async () => {
-        setIsSubmitting(true);
-        try {
-            // Upload photo if needed
-            let photoUrl = null;
-            const uploadResult = await uploadPhotoIfNeeded();
-            if (uploadResult?.error) {
-                // Log only; do not show user-facing toast about upload failure
-                console.error('Photo upload error:', uploadResult.error);
-            } else {
-                photoUrl = uploadResult.publicUrl || null;
+          STORAGE RULES:
+          rules_version = '2';
+          service firebase.storage {
+            match /b/{bucket}/o {
+              match /users/{uid}/{allPaths=**} {
+                allow read, write: if request.auth.uid == uid;
+              }
             }
-
-            // Insert into DB (only the exact keys required)
-            const insertResult = await saveToSupabase(photoUrl);
-            if (insertResult?.error) {
-                // Log only; do not show user-facing toast about DB insert failure
-                console.error('Insert error:', insertResult.error);
-            } else if (insertResult?.skipped) {
-                // Supabase not available: log and proceed
-                console.warn('Supabase insert skipped.');
-            } else {
-                // Successful insert: log for server-side visibility, do NOT show to user
-                console.info('Submission saved (logged, not shown to user).');
-            }
-
-            // Generate and download PDF for user
-            await generateAndDownloadPDF();
-            // Only show the download-success toast (user-visible) after PDF is created
-            showToast(t('cvDownloaded'));
-        } catch (err) {
-            console.error('Error in handleDownloadClick:', err);
-            // It's acceptable to inform the user of unexpected errors (optional).
-            // If you prefer to not show any error message at all, remove the next line.
-            showToast(t('unexpectedError'));
-        } finally {
-            setIsSubmitting(false);
-        }
-      };
-
-      // Basic UI: only key pieces to keep example contained.
-      return (
-        <div className="min-h-screen pt-20 pb-12">
-          <div className="container mx-auto px-4">
-            <div className="mb-6">
-              <button onClick={onBack} className="px-4 py-2 text-white hover:bg-white/20 rounded-lg flex items-center gap-2 transition-colors duration-300">← {t('back')}</button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-6">
-                {/* Personal Info */}
-                <div className="p-6 card border-l-4 border-l-indigo-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">👤 {t('personalInfo')}</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="md:col-span-2 flex items-start gap-6">
-                      <div className="flex-shrink-0">
-                        <label className="block text-sm font-medium mb-2">{t('uploadPhoto')}</label>
-                        {cvData.personalInfo.photo ? (
-                          <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-300">
-                            <img src={cvData.personalInfo.photo} alt="Profile" className="w-full h-full object-cover" />
-                            <label className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 cursor-pointer transition-opacity">
-                              <span className="text-white text-2xl">📷</span>
-                              <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
-                            </label>
-                          </div>
-                        ) : (
-                          <label className="w-32 h-32 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500 transition-colors">
-                            <span className="text-3xl mb-2">📷</span>
-                            <span className="text-xs text-gray-500">{t('upload')}</span>
-                            <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
-                          </label>
-                        )}
-                      </div>
-
-                      <div className="flex-1 w-full">
-                        <label className="block text-sm font-medium mb-2">{t('fullName')}</label>
-                        <input type="text" value={cvData.personalInfo.fullName} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, fullName: e.target.value } }))} placeholder={t('fullNamePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">{t('email')}</label>
-                      <input type="email" value={cvData.personalInfo.email} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, email: e.target.value } }))} placeholder={t('emailPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">{t('phone')}</label>
-                      <input type="tel" value={cvData.personalInfo.phone} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, phone: e.target.value } }))} placeholder={t('phonePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium mb-2">{t('location')}</label>
-                      <input type="text" value={cvData.personalInfo.location} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, location: e.target.value } }))} placeholder={t('locationPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Professional Summary */}
-                <div className="p-6 card border-l-4 border-l-purple-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">💼 {t('professionalSummary')}</h2>
-                  <textarea value={cvData.professionalSummary} onChange={(e) => setCVData(prev => ({ ...prev, professionalSummary: e.target.value }))} rows={4} placeholder={t('professionalSummaryPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                </div>
-
-                {/* Education - only minimal UI for example */}
-                <div className="p-6 card border-l-4 border-l-pink-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🎓 {t('education')}</h2>
-                  {cvData.education.map((edu, i) => (
-                    <div key={edu.id} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <label className="block text-sm font-medium mb-2">{t('institutionName')}</label>
-                      <input type="text" value={edu.schoolName} onChange={(e) => {
-                        const arr = [...cvData.education]; arr[i] = { ...arr[i], schoolName: e.target.value }; setCVData(prev => ({ ...prev, education: arr }));
-                      }} placeholder={t('institutionPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium mb-2">{t('degree')}</label>
-                          <input type="text" value={edu.degree} onChange={(e) => { const arr=[...cvData.education]; arr[i]={...arr[i], degree:e.target.value}; setCVData(prev=>({...prev, education:arr})); }} placeholder={t('degreePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-2">{t('graduationYear')}</label>
-                          <input type="text" value={edu.graduationYear} onChange={(e) => { const arr=[...cvData.education]; arr[i]={...arr[i], graduationYear:e.target.value}; setCVData(prev=>({...prev, education:arr})); }} placeholder={t('graduationYearPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, education: [...prev.education, { id: Date.now().toString(), schoolName:'', degree:'', graduationYear:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addEducation')}</button>
-                </div>
-
-                {/* Work Experience (first entry is mapped) */}
-                <div className="p-6 card border-l-4 border-l-cyan-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🏢 {t('workExperience')}</h2>
-                  {cvData.workExperience.map((w, idx) => (
-                    <div key={w.id || idx} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <label className="block text-sm font-medium mb-2">{t('jobTitle')}</label>
-                      <input type="text" value={w.jobTitle} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], jobTitle:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('jobTitlePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <label className="block text-sm font-medium mb-2">{t('employer')}</label>
-                      <input type="text" value={w.employer} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], employer:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('employerPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium mb-2">{t('startDate')}</label>
-                          <input type="text" value={w.startDate} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], startDate:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('startDatePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-2">{t('endDate')}</label>
-                          <input type="text" value={w.endDate} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], endDate:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('endDatePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                        </div>
-                      </div>
-                      <label className="block text-sm font-medium mb-2 mt-2">{t('description')}</label>
-                      <textarea value={w.description} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], description:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('descriptionPlaceholder')} rows={3} className="w-full px-4 py-2 rounded-lg"></textarea>
-                    </div>
-                  ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, workExperience: [...prev.workExperience, { id: Date.now().toString(), jobTitle:'', employer:'', startDate:'', endDate:'', current:false, description:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addWork')}</button>
-                </div>
-
-                {/* Skills */}
-                <div className="p-6 card border-l-4 border-l-indigo-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🔧 {t('skills')}</h2>
-                  <label className="block text-sm font-medium mb-2">{t('software')}</label>
-                  <input type="text" value={cvData.skills.software} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, software: e.target.value } }))} placeholder={t('softwarePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                  <label className="block text-sm font-medium mb-2">{t('dataTools')}</label>
-                  <input type="text" value={cvData.skills.dataTools} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, dataTools: e.target.value } }))} placeholder={t('dataToolsPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                  <label className="block text-sm font-medium mb-2">{t('programming')}</label>
-                  <input type="text" value={cvData.skills.programming} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, programming: e.target.value } }))} placeholder={t('programmingPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                </div>
-
-                {/* Languages */}
-                <div className="p-6 card border-l-4 border-l-purple-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🌍 {t('languages')}</h2>
-                  {cvData.languages.map((lang, idx) => (
-                    <div key={idx} className="grid grid-cols-2 gap-4 mb-4">
-                      <input type="text" value={lang.language} onChange={(e) => { const arr=[...cvData.languages]; arr[idx]={...arr[idx], language:e.target.value}; setCVData(prev=>({...prev, languages:arr})); }} className="w-full px-4 py-2 rounded-lg" />
-                      <select value={lang.proficiency} onChange={(e) => { const arr=[...cvData.languages]; arr[idx]={...arr[idx], proficiency:e.target.value}; setCVData(prev=>({...prev, languages:arr})); }} className="w-full px-4 py-2 rounded-lg">
-                        <option value={t('native')}>{t('native')}</option>
-                        <option value={t('fluent')}>{t('fluent')}</option>
-                        <option value={t('intermediate')}>{t('intermediate')}</option>
-                        <option value={t('basic')}>{t('basic')}</option>
-                      </select>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Volunteer */}
-                <div className="p-6 card border-l-4 border-l-pink-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">❤️ {t('volunteerism')}</h2>
-                  {cvData.volunteerism.map((v, i) => (
-                    <div key={v.id || i} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <label className="block text-sm font-medium mb-2">{t('activityRole')}</label>
-                      <input type="text" value={v.title} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], title:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} placeholder={t('activityRolePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <label className="block text-sm font-medium mb-2">{t('organization')}</label>
-                      <input type="text" value={v.organization} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], organization:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} placeholder={t('organizationPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <label className="block text-sm font-medium mb-2">{t('description')}</label>
-                      <textarea value={v.description} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], description:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} rows={2} className="w-full px-4 py-2 rounded-lg"></textarea>
-                    </div>
-                  ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, volunteerism: [...prev.volunteerism, { id: Date.now().toString(), title:'', organization:'', description:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addVolunteer')}</button>
-                </div>
-
-                {/* References */}
-                <div className="p-6 card border-l-4 border-l-cyan-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">👥 {t('references')}</h2>
-                  {cvData.references.map((r, idx) => (
-                    <div key={r.id || idx} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <label className="block text-sm font-medium mb-2">{t('referenceName')}</label>
-                      <input type="text" value={r.name} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], name:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referenceNamePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <label className="block text-sm font-medium mb-2">{t('referenceTitle')}</label>
-                      <input type="text" value={r.title} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], title:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referenceTitlePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium mb-2">{t('referenceEmail')}</label>
-                          <input type="email" value={r.email} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], email:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referenceEmailPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-2">{t('referencePhone')}</label>
-                          <input type="tel" value={r.phone} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], phone:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referencePhonePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, references: [...prev.references, { id: Date.now().toString(), name:'', title:'', email:'', phone:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addReference')}</button>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 sticky bottom-4 card p-4 shadow-lg no-print">
-                  <button onClick={handleDownloadClick} disabled={isSubmitting} className="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-90 text-white rounded-lg font-semibold shadow-lg">
-                    ⬇️ {t('downloadPdf')}
-                  </button>
-                  <button onClick={() => {
-                    // quick CSV export of main fields
-                    const csv = [
-                      [t('fullName'), cvData.personalInfo.fullName || ''],
-                      [t('email'), cvData.personalInfo.email || ''],
-                      [t('phone'), cvData.personalInfo.phone || ''],
-                      [t('location'), cvData.personalInfo.location || ''],
-                      [t('professionalSummary'), cvData.professionalSummary || '']
-                    ].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-                    const blob = new Blob([csv], { type: 'text/csv' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a'); a.href = url; a.download = `${(cvData.personalInfo.fullName||'CV').replace(/\s+/g,'_')}_data.csv`; a.click(); URL.revokeObjectURL(url);
-                    showToast(t('dataExported'));
-                  }} className="flex-1 px-6 py-3 border-2 border-white/30 hover:bg-white/10 rounded-lg font-semibold text-white">
-                    📊 {t('exportCsv')}
-                  </button>
-                </div>
-              </div>
-
-              {/* Preview Column */}
-              <div className="hidden lg:block">
-                <div className="sticky top-24">
-                  <div className="mb-4 flex items-center gap-2 text-white">👁️ {t('livePreview')}</div>
-                  <div className="max-h-[calc(100vh-200px)] overflow-auto border-2 border-white/30 rounded-lg shadow-xl">
-                    <div style={{ transform: 'scale(0.38)', transformOrigin: 'top left', width: '263%' }}>
-                      <CVPreview data={cvData} language={language} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-
-          {/* Hidden full-size preview used for PDF generation */}
-          <div id="hidden-preview" aria-hidden="true">
-            <CVPreview ref={previewRef} data={cvData} language={language} />
-          </div>
-        </div>
-      );
-    }
-
-    // App
-    function App() {
-      const [showBuilder, setShowBuilder] = useState(false);
-      const [language, setLanguage] = useState('en');
-      const [theme, setTheme] = useState('light');
-
-      useEffect(() => {
-        if (theme === 'dark') document.documentElement.classList.add('dark');
-        else document.documentElement.classList.remove('dark');
-      }, [theme]);
-
-      return (
-        <div className="min-h-screen transition-colors duration-300 flex flex-col">
-          <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-            <div className="tech-icon"></div>
-            <div className="tech-icon"></div>
-            <div className="blob"></div>
-            <div className="blob"></div>
-            <div className="binary"></div>
-          </div>
-
-          <Header language={language} setLanguage={setLanguage} theme={theme} setTheme={setTheme} />
-
-          <div className="flex-1">
-            {!showBuilder ? <Landing onStart={() => setShowBuilder(true)} language={language} /> : <CVBuilder onBack={() => setShowBuilder(false)} language={language} />}
-          </div>
-
-          <Footer />
-        </div>
-      );
-    }
-
-    // Render app
-    const rootEl = document.getElementById('root');
-    if (rootEl && ReactDOM.createRoot) {
-      const root = ReactDOM.createRoot(rootEl);
-      root.render(<App />);
-    } else {
-      console.error('ReactDOM.createRoot not available');
-    }
-  })();
-  </script>
+          }
+        */
+    </script>
 </body>
 </html>
