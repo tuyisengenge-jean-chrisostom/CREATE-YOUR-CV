@@ -110,15 +110,10 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .nav-logo .orb {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, var(--teal-300), var(--teal-500));
-            box-shadow: 0 0 20px rgba(57, 224, 189, 0.4);
-            display: grid;
-            place-items: center;
-            font-size: 14px;
+        .nav-logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
         }
         .nav-links {
             display: flex;
@@ -381,31 +376,6 @@
         .holo-score small {
             color: var(--slate-400);
             font-size: 10px;
-        }
-        .ai-bubble-hero {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(189, 238, 255, 0.12);
-            border-radius: 14px;
-            padding: 14px 16px;
-            font-size: 13px;
-            color: #d7eaff;
-            line-height: 1.6;
-            margin-top: 20px;
-        }
-        .ai-bubble-hero b {
-            color: var(--teal-300);
-        }
-        .holo-ring {
-            position: absolute;
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            border: 1px solid rgba(101, 223, 248, 0.3);
-            right: -60px;
-            bottom: -80px;
-            transform: rotateX(60deg);
-            box-shadow: 0 0 40px rgba(29, 226, 195, 0.15);
-            pointer-events: none;
         }
         .section {
             padding: 100px 0;
@@ -1142,351 +1112,6 @@
         .cv-document.minimal {
             border-top: 8px solid #0f172a;
         }
-        .ai-panel-builder {
-            margin-top: 24px;
-            background: linear-gradient(145deg, rgba(15, 52, 88, 0.9), rgba(10, 33, 68, 0.9));
-            border: 1px solid rgba(127, 245, 212, 0.2);
-            border-radius: var(--radius);
-            padding: 20px;
-            backdrop-filter: blur(12px);
-        }
-        .ai-panel-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .ai-orb-mini {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, var(--teal-300), #1b6b8a 60%, #0d2a3f);
-            box-shadow: 0 0 30px rgba(57, 224, 189, 0.4);
-            display: grid;
-            place-items: center;
-            animation: orbPulse 3s ease-in-out infinite;
-            position: relative;
-            flex-shrink: 0;
-        }
-        .ai-orb-mini::after {
-            content: '✦';
-            font-size: 18px;
-            color: #0d2a3f;
-            font-weight: 900;
-        }
-        @keyframes orbPulse {
-            0%,
-            100% {
-                box-shadow: 0 0 30px rgba(57, 224, 189, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 50px rgba(57, 224, 189, 0.6);
-            }
-        }
-        .ai-status {
-            font-size: 13px;
-            color: var(--teal-300);
-            font-weight: 600;
-        }
-        .ai-status small {
-            display: block;
-            color: var(--slate-400);
-            font-weight: 400;
-            font-size: 11px;
-        }
-        .thinking-chain {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            font-size: 12px;
-            color: var(--slate-400);
-            line-height: 1.8;
-            border-left: 2px solid var(--teal-500);
-            display: none;
-        }
-        .thinking-chain .step {
-            opacity: 0;
-            transform: translateX(-10px);
-            animation: stepIn 0.4s forwards;
-        }
-        .thinking-chain .step.done {
-            color: var(--teal-300);
-        }
-        .thinking-chain .step.active {
-            color: var(--cyan-300);
-        }
-        @keyframes stepIn {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        .ai-chat-messages {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 12px;
-        }
-        .ai-chat-messages::-webkit-scrollbar {
-            width: 4px;
-        }
-        .ai-chat-messages::-webkit-scrollbar-thumb {
-            background: var(--teal-500);
-            border-radius: 9px;
-        }
-        .msg-bubble {
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 8px;
-            max-width: 90%;
-            word-wrap: break-word;
-        }
-        .msg-bubble.ai {
-            background: rgba(255, 255, 255, 0.06);
-            color: #e2e8f0;
-            border: 1px solid var(--glass-border);
-        }
-        .msg-bubble.user {
-            background: rgba(57, 224, 189, 0.1);
-            color: var(--teal-300);
-            margin-left: auto;
-            border: 1px solid rgba(57, 224, 189, 0.2);
-        }
-        .ai-input-row {
-            display: flex;
-            gap: 8px;
-        }
-        .ai-input-row input {
-            flex: 1;
-            padding: 10px 14px;
-            background: rgba(6, 20, 45, 0.6);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            color: #fff;
-            font-family: inherit;
-            font-size: 13px;
-            outline: none;
-        }
-        .ai-input-row input:focus {
-            border-color: var(--cyan-400);
-        }
-        .ai-input-row button {
-            padding: 10px 18px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, var(--cyan-400), var(--teal-400));
-            color: var(--navy-900);
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .ai-suggestions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        .ai-suggestions button {
-            padding: 5px 10px;
-            border-radius: 6px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--slate-400);
-            font-size: 11px;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-        .ai-suggestions button:hover {
-            border-color: var(--teal-400);
-            color: var(--teal-300);
-            background: rgba(57, 224, 189, 0.08);
-        }
-        .ai-studio {
-            display: grid;
-            grid-template-columns: 260px 1fr 300px;
-            gap: 0;
-            height: calc(100vh - 72px);
-        }
-        .ai-sidebar {
-            background: var(--glass-bg);
-            border-right: 1px solid var(--glass-border);
-            padding: 24px;
-            overflow-y: auto;
-        }
-        .ai-sidebar h3 {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--slate-500);
-            margin-bottom: 16px;
-        }
-        .ai-thread {
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            color: var(--slate-300);
-            cursor: pointer;
-            margin-bottom: 4px;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .ai-thread:hover,
-        .ai-thread.active {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--glass-border);
-        }
-        .ai-thread small {
-            display: block;
-            color: var(--slate-500);
-            font-size: 11px;
-            margin-top: 2px;
-        }
-        .ai-main {
-            display: flex;
-            flex-direction: column;
-            background: rgba(3, 7, 18, 0.3);
-        }
-        .ai-main-header {
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .ai-main-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-        }
-        .ai-main-input {
-            padding: 16px 24px;
-            border-top: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-        }
-        .ai-input-wrap {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-            background: rgba(6, 20, 45, 0.8);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 8px 8px 8px 16px;
-        }
-        .ai-input-wrap textarea {
-            flex: 1;
-            background: none;
-            border: none;
-            color: #fff;
-            font-family: inherit;
-            font-size: 14px;
-            resize: none;
-            max-height: 120px;
-            outline: none;
-            padding: 8px 0;
-        }
-        .ai-input-wrap button {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, var(--cyan-400), var(--teal-400));
-            color: var(--navy-900);
-            cursor: pointer;
-            display: grid;
-            place-items: center;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-        .ai-reasoning {
-            background: var(--glass-bg);
-            border-left: 1px solid var(--glass-border);
-            padding: 24px;
-            overflow-y: auto;
-        }
-        .ai-reasoning h3 {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--slate-500);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .reasoning-step {
-            padding: 12px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            margin-bottom: 10px;
-            font-size: 12px;
-            transition: all 0.3s;
-        }
-        .reasoning-step.active {
-            border-color: rgba(57, 224, 189, 0.3);
-            background: rgba(57, 224, 189, 0.05);
-        }
-        .reasoning-step .step-title {
-            font-weight: 600;
-            color: var(--slate-300);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-        .reasoning-step .step-desc {
-            color: var(--slate-500);
-            line-height: 1.6;
-        }
-        .reasoning-step.active .step-title {
-            color: var(--teal-300);
-        }
-        .message-block {
-            margin-bottom: 24px;
-        }
-        .message-block .msg-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .message-block .msg-header .avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 12px;
-            font-weight: 700;
-        }
-        .message-block.ai .avatar {
-            background: linear-gradient(135deg, var(--teal-400), var(--cyan-400));
-            color: var(--navy-900);
-        }
-        .message-block.user .avatar {
-            background: var(--navy-600);
-            color: #fff;
-        }
-        .message-block .msg-header span {
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .message-block .msg-body {
-            padding-left: 36px;
-            font-size: 14px;
-            line-height: 1.7;
-            color: var(--slate-200);
-        }
-        .message-block.user .msg-body {
-            color: var(--slate-300);
-        }
         .toast-container {
             position: fixed;
             bottom: 24px;
@@ -1875,13 +1500,6 @@
                 top: 0;
                 max-height: none;
             }
-            .ai-studio {
-                grid-template-columns: 1fr;
-            }
-            .ai-sidebar,
-            .ai-reasoning {
-                display: none;
-            }
             .site-footer {
                 grid-template-columns: 1fr 1fr;
             }
@@ -1938,12 +1556,13 @@
                 font-size: 12px;
                 padding: 6px 14px;
             }
+            .nav-logo img {
+                height: 32px;
+            }
         }
         @media print {
             .top-nav,
             .builder-sidebar,
-            .ai-panel-builder,
-            .builder-toolbar,
             .footer-bottom,
             .site-footer,
             .ai-assistant-widget {
@@ -1994,12 +1613,13 @@
 
     <nav class="top-nav" id="topNav">
         <div class="nav-inner">
-            <a class="nav-logo" id="navLogo"> <div class="orb">✦</div>iMENA CV</a>
+            <a class="nav-logo" id="navLogo">
+                <img src="https://i.postimg.cc/76dxBhN8/i-MENA-CV-Builder.png" alt="iMENA CV Builder">
+            </a>
             <div class="nav-links" id="navLinks">
                 <button class="nav-link active" data-view="landing" id="navLanding">Home</button>
                 <button class="nav-link hidden" data-view="dashboard" id="navDashboard">Dashboard</button>
                 <button class="nav-link hidden" data-view="builder" id="navBuilder">Builder</button>
-                <button class="nav-link hidden" data-view="ai-studio" id="navAIStudio">AI Studio</button>
                 <button class="nav-link" id="navTemplates">Templates</button>
                 <div class="nav-user" id="navUser"><img class="nav-avatar" id="navAvatar" src="" alt="User"></div>
                 <button class="nav-cta" id="navLogin">Sign in with Google</button>
@@ -2014,9 +1634,9 @@
         <section class="view active" id="view-landing">
             <div class="hero-landing">
                 <div>
-                    <div class="hero-badge"><div class="pulse"></div>Africa's First Deep-Reasoning AI CV Builder</div>
+                    <div class="hero-badge"><div class="pulse"></div>Africa's First Deep-Reasoning CV Builder</div>
                     <h1 class="hero-title">Build a CV that<br>opens <em>every door.</em></h1>
-                    <p class="hero-sub">iMENA AI doesn't just write — it thinks, reasons, and strategizes with you. From Kigali to Nairobi, Lagos to Brussels, craft a career story that commands attention.</p>
+                    <p class="hero-sub">iMENA doesn't just write — it thinks, reasons, and strategizes with you. From Kigali to Nairobi, Lagos to Brussels, craft a career story that commands attention.</p>
                     <div class="hero-actions">
                         <button class="btn btn-primary" id="heroStartBtn">Start Building Free →</button>
                         <button class="btn btn-ghost" id="heroDemoBtn">Try Demo</button>
@@ -2024,14 +1644,14 @@
                     <div class="hero-trust">
                         <span><div class="check">✓</div> Private by design</span>
                         <span><div class="check">✓</div> ATS-optimized</span>
-                        <span><div class="check">✓</div> Deep-reasoning AI</span>
+                        <span><div class="check">✓</div> Deep-reasoning engine</span>
                     </div>
                 </div>
                 <div class="hero-visual">
                     <div class="holo-card">
                         <div class="holo-inner">
-                            <div class="holo-header"><span class="holo-logo">iMENA AI</span><div class="holo-score"><strong>97</strong><small>CV Score</small></div></div>
-                            <div class="ai-bubble-hero"><b>iMENA AI</b> is thinking...<br>"I've analyzed 12,000+ successful CVs for your industry. Your experience section needs stronger outcome verbs. Let me rewrite bullet 3 to highlight the 40% revenue growth."</div>
+                            <div class="holo-header"><span class="holo-logo">iMENA</span><div class="holo-score"><strong>97</strong><small>CV Score</small></div></div>
+                            <div class="ai-bubble-hero"><b>iMENA</b> is thinking...<br>"I've analyzed 12,000+ successful CVs for your industry. Your experience section needs stronger outcome verbs. Let me rewrite bullet 3 to highlight the 40% revenue growth."</div>
                             <div class="holo-ring"></div>
                         </div>
                     </div>
@@ -2053,7 +1673,7 @@
                 <div class="section-kicker">Why iMENA</div>
                 <h2>More than a builder. <span class="text-gradient">A career strategist.</span></h2>
                 <div class="features-grid">
-                    <div class="feature-card"><div class="feature-icon">🧠</div><h3>Deep Reasoning AI</h3><p>Our AI doesn't template — it thinks. It analyzes your industry, identifies skill gaps, and crafts narratives that hiring managers remember.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🧠</div><h3>Deep Reasoning Engine</h3><p>Our platform doesn't template — it thinks. It analyzes your industry, identifies skill gaps, and crafts narratives that hiring managers remember.</p></div>
                     <div class="feature-card"><div class="feature-icon">⚡</div><h3>Live Generation</h3><p>Describe your role in plain language. iMENA transforms it into powerful achievement statements with metrics, impact, and clarity.</p></div>
                     <div class="feature-card"><div class="feature-icon">🎯</div><h3>Job Match Engine</h3><p>Paste a job description. iMENA scores your fit, suggests missing keywords, and tailors your CV for that specific opportunity.</p></div>
                     <div class="feature-card"><div class="feature-icon">🌍</div><h3>Pan-African, Global-Ready</h3><p>Work in Kinyarwanda, Swahili, French, or English. Export ATS-ready formats accepted from Johannesburg to London.</p></div>
@@ -2087,7 +1707,7 @@
                 <h2>For your first application and your next big move.</h2>
                 <div class="testi-grid">
                     <div class="testi-card"><p>"I finally understood how to explain my experience. My CV sounded like me, only more confident."</p><div class="testi-author"><div class="testi-avatar">A</div><div><b>Aline U.</b><span>Marketing professional · Kigali</span></div></div></div>
-                    <div class="testi-card"><p>"The clean layout and AI suggestions helped me apply for international roles without feeling overwhelmed."</p><div class="testi-author"><div class="testi-avatar">D</div><div><b>David K.</b><span>Software graduate · Nairobi</span></div></div></div>
+                    <div class="testi-card"><p>"The clean layout and suggestions helped me apply for international roles without feeling overwhelmed."</p><div class="testi-author"><div class="testi-avatar">D</div><div><b>David K.</b><span>Software graduate · Nairobi</span></div></div></div>
                     <div class="testi-card"><p>"I love that I could work in French, then export an English CV for an opportunity abroad."</p><div class="testi-author"><div class="testi-avatar">M</div><div><b>Marie N.</b><span>Operations coordinator · Brussels</span></div></div></div>
                 </div>
             </section>
@@ -2098,7 +1718,7 @@
                 <div class="faq-list">
                     <div class="faq-item">
                         <button class="faq-q"><b>Is iMENA CV Builder free to use?</b><span>+</span></button>
-                        <div class="faq-a">The core CV builder, templates, and PDF export are completely free. Advanced AI reasoning and interview coaching are available in iMENA Pro.</div>
+                        <div class="faq-a">The core CV builder, templates, and PDF export are completely free. Advanced reasoning and interview coaching are available in iMENA Pro.</div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-q"><b>Where is my CV information stored?</b><span>+</span></button>
@@ -2109,21 +1729,21 @@
                         <div class="faq-a">Yes. All templates follow international ATS standards and are accepted by companies worldwide.</div>
                     </div>
                     <div class="faq-item">
-                        <button class="faq-q"><b>Does iMENA AI write false information?</b><span>+</span></button>
+                        <button class="faq-q"><b>Does iMENA write false information?</b><span>+</span></button>
                         <div class="faq-a">Never. iMENA only helps you phrase and organize your real experience. You approve every suggestion before it goes on your CV.</div>
                     </div>
                 </div>
                 <div class="cta-section">
                     <div class="section-kicker">Your opportunity deserves a clear introduction</div>
                     <h2>Ready to build a CV with momentum?</h2>
-                    <p>Create it in minutes, refine it with iMENA AI, and take the next step with confidence.</p>
+                    <p>Create it in minutes, refine it with iMENA, and take the next step with confidence.</p>
                     <button class="btn btn-primary" id="ctaStartBtn" style="margin-top:8px;">Start my CV →</button>
                 </div>
             </section>
 
             <footer class="site-footer">
                 <div><h4 style="font-size:18px;font-family:var(--font-serif);margin-bottom:12px;color:#fff;">iMENA CV</h4><p style="color:var(--slate-500);font-size:13px;">Meaningful career tools for ambitious people, wherever opportunity leads.</p></div>
-                <div><h4>Product</h4><a id="footerBuilder">CV Builder</a><a id="footerTemplates">Templates</a><a id="footerAI">iMENA AI</a></div>
+                <div><h4>Product</h4><a id="footerBuilder">CV Builder</a><a id="footerTemplates">Templates</a></div>
                 <div><h4>Support</h4><a>Help centre</a><a>Privacy</a><a>Contact</a></div>
                 <div><h4>Created by</h4><a href="https://imena-hub.vercel.app" target="_blank" class="footer-link">iMENA Hub ↗</a><a id="footerBack">Back to top ↑</a></div>
             </footer>
@@ -2142,7 +1762,7 @@
                 </div>
                 <div class="dash-stats">
                     <div class="dash-stat"><div class="label">CVs Created</div><div class="value" id="dashStatCVs">0</div><div class="change">Sync from cloud</div></div>
-                    <div class="dash-stat"><div class="label">AI Sessions</div><div class="value" id="dashStatAI">0</div><div class="change">+0 today</div></div>
+                    <div class="dash-stat"><div class="label">Sessions</div><div class="value" id="dashStatAI">0</div><div class="change">+0 today</div></div>
                     <div class="dash-stat"><div class="label">CV Score</div><div class="value" id="dashStatScore">—</div><div class="change">—</div></div>
                     <div class="dash-stat"><div class="label">Interviews</div><div class="value" id="dashStatInt">0</div><div class="change">0 upcoming</div></div>
                 </div>
@@ -2158,7 +1778,7 @@
                     </div>
                     <div>
                         <div class="dash-panel" style="margin-bottom:24px;">
-                            <h3>AI Insights</h3>
+                            <h3>Insights</h3>
                             <div class="ai-insight"><h4>🎯 Skill Gap Alert</h4><p>Your target role mentions "Stakeholder Management" 4 times. Consider adding a bullet about cross-functional leadership.</p></div>
                             <div class="ai-insight"><h4>📈 Trending</h4><p>Data Analysis is the #1 requested skill in your industry this month. Your CV currently shows intermediate level.</p></div>
                         </div>
@@ -2244,71 +1864,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="ai-panel-builder">
-                        <div class="ai-panel-header">
-                            <div class="ai-orb-mini"></div>
-                            <div class="ai-status">iMENA AI <small id="aiStatusText">Ready to help you build an outstanding CV</small></div>
-                        </div>
-                        <div class="thinking-chain" id="thinkingChain" style="display:none;"></div>
-                        <div class="ai-chat-messages" id="builderChat"></div>
-                        <div class="ai-input-row">
-                            <input id="builderChatInput" placeholder="Ask iMENA AI to improve your CV...">
-                            <button id="builderSendBtn">Send</button>
-                        </div>
-                        <div class="ai-suggestions" id="builderSuggestions">
-                            <button data-prompt="Improve my summary">Improve my summary</button>
-                            <button data-prompt="Make my bullets stronger">Make bullets stronger</button>
-                            <button data-prompt="Add metrics to experience">Add metrics</button>
-                            <button data-prompt="Check ATS keywords">Check ATS keywords</button>
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- VIEW: AI STUDIO -->
-        <section class="view" id="view-ai-studio">
-            <div class="ai-studio">
-                <aside class="ai-sidebar">
-                    <h3>Conversations</h3>
-                    <div class="ai-thread active" data-thread="0"><div>CV Optimization</div><small>2 hours ago · 12 messages</small></div>
-                    <div class="ai-thread" data-thread="1"><div>Interview Prep</div><small>Yesterday · 8 messages</small></div>
-                    <div class="ai-thread" data-thread="2"><div>Career Strategy</div><small>3 days ago · 5 messages</small></div>
-                    <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--glass-border);">
-                        <h3>Tools</h3>
-                        <div class="ai-thread" data-tool="job-match"><div>🎯 Job Match Engine</div><small>Compare CV to job description</small></div>
-                        <div class="ai-thread" data-tool="interview"><div>🎤 Interview Simulator</div><small>Practice with AI feedback</small></div>
-                        <div class="ai-thread" data-tool="skills"><div>📊 Skills Analysis</div><small>Identify gaps and strengths</small></div>
-                    </div>
-                </aside>
-                <div class="ai-main">
-                    <div class="ai-main-header">
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <div class="ai-orb-mini" style="width:32px;height:32px;"></div>
-                            <div><div style="font-weight:700;font-size:14px;">iMENA AI Studio</div><div style="font-size:11px;color:var(--slate-500);">Deep Reasoning · Chain-of-Thought · Real-time</div></div>
-                        </div>
-                        <button class="btn" id="studioClearBtn" style="padding:6px 12px;font-size:12px;">Clear</button>
-                    </div>
-                    <div class="ai-main-messages" id="studioMessages">
-                        <div class="message-block ai">
-                            <div class="msg-header"><div class="avatar">✦</div><span>iMENA AI</span></div>
-                            <div class="msg-body">Welcome to AI Studio. I'm operating with deep reasoning enabled. I can analyze your CV, compare it against job descriptions, simulate interviews, and provide strategic career advice. What would you like to work on?</div>
-                        </div>
-                    </div>
-                    <div class="ai-main-input">
-                        <div class="ai-input-wrap">
-                            <textarea id="studioInput" placeholder="Ask me anything about your career, CV, or interview prep..."></textarea>
-                            <button id="studioSendBtn">➤</button>
-                        </div>
-                    </div>
-                </div>
-                <aside class="ai-reasoning">
-                    <h3><span style="color:var(--teal-400);">●</span> Reasoning Chain</h3>
-                    <div id="reasoningPanel">
-                        <div class="reasoning-step active"><div class="step-title">🧠 System Ready</div><div class="step-desc">Deep reasoning models loaded. Waiting for input.</div></div>
-                    </div>
-                </aside>
             </div>
         </section>
     </div>
@@ -2329,7 +1885,7 @@
             <div class="ai-panel-body">
                 <div class="ai-conversation-list" id="convList"></div>
                 <div class="ai-chat-messages-widget" id="aiChatMessages">
-                    <div class="msg ai">Hello! I'm iMENA AI. How can I help with your CV today?</div>
+                    <div class="msg ai">Hello! I'm iMENA. How can I help with your CV today?</div>
                 </div>
                 <div class="ai-suggestions-widget">
                     <button data-prompt="Generate CV">📄 Generate CV</button>
@@ -2339,7 +1895,7 @@
                 </div>
             </div>
             <div class="ai-panel-footer">
-                <input id="aiChatInput" placeholder="Ask iMENA AI...">
+                <input id="aiChatInput" placeholder="Ask iMENA...">
                 <button id="aiChatSend">Send</button>
             </div>
         </div>
@@ -2620,9 +2176,6 @@
                         renderBuilder();
                     }
                 }
-                if (view === 'ai-studio') {
-                    // ensure studio shows welcome
-                }
             }
         };
         window.router = router;
@@ -2636,7 +2189,7 @@
             const logoutBtn = document.getElementById('navLogout');
             const userDiv = document.getElementById('navUser');
             const avatar = document.getElementById('navAvatar');
-            const navLinks = ['navDashboard', 'navBuilder', 'navAIStudio'];
+            const navLinks = ['navDashboard', 'navBuilder'];
 
             if (loginBtn) loginBtn.classList.toggle('hidden', isAuth);
             if (logoutBtn) logoutBtn.classList.toggle('hidden', !isAuth);
@@ -2979,7 +2532,7 @@
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // 14. AI ENGINE – CALL VERCELL BACKEND (SECURE)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        async function callOpenAI(prompt, context = 'builder') {
+        async function callAPI(prompt) {
             try {
                 const response = await fetch('/api/ai', {
                     method: 'POST',
@@ -2993,12 +2546,12 @@
                 const data = await response.json();
                 return data.reply || 'Sorry, I could not process that.';
             } catch (error) {
-                console.error('AI error:', error);
-                return simulateAIResponse(prompt);
+                console.error('API error:', error);
+                return simulateResponse(prompt);
             }
         }
 
-        function simulateAIResponse(query) {
+        function simulateResponse(query) {
             const q = query.toLowerCase();
             if (q.includes('summary') || q.includes('profile')) {
                 return "I've rewritten your summary to lead with impact: 'Product leader who scaled fintech platforms to 2M+ users across East Africa. Specialized in zero-to-one launches and cross-functional team leadership.' This opens with metrics and geography — exactly what hiring managers scan for.";
@@ -3022,166 +2575,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 15. BUILDER AI CHAT
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        async function sendBuilderChat() {
-            const input = document.getElementById('builderChatInput');
-            if (!input) return;
-            const msg = input.value.trim();
-            if (!msg) return;
-            addBuilderMessage(msg, 'user');
-            input.value = '';
-            const status = document.getElementById('aiStatusText');
-            if (status) status.textContent = 'Thinking...';
-            showThinkingChain('builder');
-            try {
-                const reply = await callOpenAI(msg, 'builder');
-                addBuilderMessage(reply, 'ai');
-            } catch (e) {
-                addBuilderMessage('Sorry, I encountered an error. Please try again.', 'ai');
-            }
-            if (status) status.textContent = 'Ready to help';
-            hideThinkingChain('builder');
-        }
-
-        function showThinkingChain(context) {
-            const container = document.getElementById(context === 'builder' ? 'thinkingChain' : 'reasoningPanel');
-            if (!container) return;
-            container.style.display = 'block';
-            container.innerHTML = `
-            <div class="step active">🧠 Analyzing your request...</div>
-            <div class="step">🔍 Searching best practices...</div>
-            <div class="step">⚡ Crafting personalized advice...</div>
-          `;
-        }
-
-        function hideThinkingChain(context) {
-            const container = document.getElementById(context === 'builder' ? 'thinkingChain' : 'reasoningPanel');
-            if (container) container.style.display = 'none';
-        }
-
-        function addBuilderMessage(text, who) {
-            const container = document.getElementById('builderChat');
-            if (!container) return;
-            const div = document.createElement('div');
-            div.className = 'msg-bubble ' + who;
-            div.textContent = text;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        const sendBtn = document.getElementById('builderSendBtn');
-        if (sendBtn) sendBtn.addEventListener('click', sendBuilderChat);
-        const chatInput = document.getElementById('builderChatInput');
-        if (chatInput) {
-            chatInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') sendBuilderChat();
-            });
-        }
-
-        document.querySelectorAll('#builderSuggestions button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const input = document.getElementById('builderChatInput');
-                if (input) {
-                    input.value = this.dataset.prompt;
-                    sendBuilderChat();
-                }
-            });
-        });
-
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 16. AI STUDIO
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        async function sendStudioMessage() {
-            const input = document.getElementById('studioInput');
-            if (!input) return;
-            const msg = input.value.trim();
-            if (!msg) return;
-            addStudioMessage(msg, 'user');
-            input.value = '';
-            updateReasoningPanel('start');
-            try {
-                const reply = await callOpenAI(msg, 'studio');
-                addStudioMessage(reply, 'ai');
-                updateReasoningPanel('complete');
-            } catch (e) {
-                addStudioMessage('Sorry, I encountered an error. Please try again.', 'ai');
-                updateReasoningPanel('complete');
-            }
-        }
-
-        function addStudioMessage(text, who) {
-            const container = document.getElementById('studioMessages');
-            if (!container) return;
-            const block = document.createElement('div');
-            block.className = 'message-block ' + who;
-            block.innerHTML = `
-            <div class="msg-header"><div class="avatar">${who==='ai'?'✦':'You'}</div><span>${who==='ai'?'iMENA AI':'You'}</span></div>
-            <div class="msg-body">${text.replace(/\n/g,'<br>')}</div>
-          `;
-            container.appendChild(block);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function clearStudioChat() {
-            const container = document.getElementById('studioMessages');
-            if (!container) return;
-            container.innerHTML = `
-            <div class="message-block ai">
-              <div class="msg-header"><div class="avatar">✦</div><span>iMENA AI</span></div>
-              <div class="msg-body">Welcome to AI Studio. I'm operating with deep reasoning enabled. What would you like to work on?</div>
-            </div>
-          `;
-        }
-
-        function updateReasoningPanel(state) {
-            const panel = document.getElementById('reasoningPanel');
-            if (!panel) return;
-            if (state === 'start') {
-                panel.innerHTML =
-                    '<div class="reasoning-step active"><div class="step-title">🧠 Initializing deep reasoning...</div><div class="step-desc">Loading multi-step analysis pipeline.</div></div>';
-            } else if (state === 'complete') {
-                panel.innerHTML = `
-              <div class="reasoning-step"><div class="step-title" style="color:var(--teal-300);">✅ Analysis complete</div><div class="step-desc">Response generated through chain-of-thought reasoning.</div></div>
-              <div class="reasoning-step"><div class="step-title">📊 Confidence</div><div class="step-desc">High — based on 12,000+ CV patterns analyzed.</div></div>
-            `;
-            }
-        }
-
-        const studioSend = document.getElementById('studioSendBtn');
-        if (studioSend) studioSend.addEventListener('click', sendStudioMessage);
-        const studioInput = document.getElementById('studioInput');
-        if (studioInput) {
-            studioInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault();
-                    sendStudioMessage(); }
-            });
-        }
-        const studioClear = document.getElementById('studioClearBtn');
-        if (studioClear) studioClear.addEventListener('click', clearStudioChat);
-
-        // Studio thread switching
-        document.querySelectorAll('.ai-thread').forEach(el => {
-            el.addEventListener('click', function() {
-                document.querySelectorAll('.ai-thread').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                if (this.dataset.tool) {
-                    const tool = this.dataset.tool;
-                    clearStudioChat();
-                    const prompts = {
-                        'job-match': 'Paste a job description below and I will analyze your CV fit, identify keyword gaps, and suggest tailored improvements.',
-                        'interview': 'I will generate role-specific interview questions based on your CV and coach you through model answers. What role are you preparing for?',
-                        'skills': 'I will analyze your skills against industry trends and identify high-value capabilities to add. Shall I begin?'
-                    };
-                    setTimeout(() => addStudioMessage(prompts[tool] || 'Tool activated.', 'ai'), 300);
-                } else {
-                    clearStudioChat();
-                }
-            });
-        });
-
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 17. NAVIGATION EVENTS
+        // 15. NAVIGATION EVENTS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const navLogo = document.getElementById('navLogo');
         if (navLogo) navLogo.addEventListener('click', () => router.navigate('landing'));
@@ -3191,8 +2585,6 @@
         if (navDashboard) navDashboard.addEventListener('click', () => router.navigate('dashboard'));
         const navBuilder = document.getElementById('navBuilder');
         if (navBuilder) navBuilder.addEventListener('click', () => router.navigate('builder'));
-        const navAIStudio = document.getElementById('navAIStudio');
-        if (navAIStudio) navAIStudio.addEventListener('click', () => router.navigate('ai-studio'));
         const navLogin = document.getElementById('navLogin');
         if (navLogin) navLogin.addEventListener('click', signInWithGoogle);
         const navLogout = document.getElementById('navLogout');
@@ -3233,8 +2625,6 @@
                 document.getElementById('landing-templates').scrollIntoView({ behavior: 'smooth' });
             });
         }
-        const footerAI = document.getElementById('footerAI');
-        if (footerAI) footerAI.addEventListener('click', () => router.navigate('ai-studio'));
         const footerBack = document.getElementById('footerBack');
         if (footerBack) footerBack.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
@@ -3277,7 +2667,7 @@
         if (manualSave) manualSave.addEventListener('click', saveCVToFirestore);
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 18. SCROLL EFFECT
+        // 16. SCROLL EFFECT
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         window.addEventListener('scroll', () => {
             const topNav = document.getElementById('topNav');
@@ -3285,7 +2675,7 @@
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 19. 3D TILT ON CV
+        // 17. 3D TILT ON CV
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const cvCanvasEl = document.getElementById('cvCanvas');
         if (cvCanvasEl) {
@@ -3304,7 +2694,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 20. AI ASSISTANT WIDGET LOGIC
+        // 18. AI ASSISTANT WIDGET LOGIC
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const toggleBtn = document.getElementById('aiToggle');
         const panel = document.getElementById('aiPanel');
@@ -3325,7 +2715,7 @@
             conversations[id] = {
                 title: 'New Chat',
                 messages: [
-                    { role: 'ai', content: 'Hello! I\'m iMENA AI. How can I help with your CV today?' }
+                    { role: 'ai', content: 'Hello! I\'m iMENA. How can I help with your CV today?' }
                 ],
                 updated: new Date().toISOString()
             };
@@ -3352,7 +2742,7 @@
             conversations[id] = {
                 title: 'New Chat',
                 messages: [
-                    { role: 'ai', content: 'Hello! I\'m iMENA AI. How can I help with your CV today?' }
+                    { role: 'ai', content: 'Hello! I\'m iMENA. How can I help with your CV today?' }
                 ],
                 updated: new Date().toISOString()
             };
@@ -3378,21 +2768,9 @@
             renderWidgetMessages(currentConvId);
             renderConversationList();
 
-            // Call AI
+            // Call API
             try {
-                const response = await fetch('/api/ai', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: text })
-                });
-                let reply = 'Sorry, I could not process that.';
-                if (response.ok) {
-                    const data = await response.json();
-                    reply = data.reply || reply;
-                } else {
-                    console.error('AI error:', await response.text());
-                    reply = 'I encountered an error. Please try again.';
-                }
+                const reply = await callAPI(text);
                 conv.messages.push({ role: 'ai', content: reply });
                 conv.updated = new Date().toISOString();
                 localStorage.setItem('ai_conversations', JSON.stringify(conversations));
@@ -3465,7 +2843,6 @@
                 const prompt = btn.dataset.prompt;
                 if (prompt === 'Generate CV') {
                     router.navigate('builder');
-                    // Also send a message to the widget
                     widgetChatInput.value = 'Help me create a compelling CV based on my profile.';
                     sendWidgetMessage();
                 } else {
@@ -3476,21 +2853,21 @@
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 21. PARTICLES (external script)
+        // 19. PARTICLES (external script)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 22. INIT
+        // 20. INIT
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         updateAuthUI();
         if (currentUser) {
             loadCVsList();
         }
 
-        console.log('✅ iMENA CV Builder with AI Assistant widget.');
+        console.log('✅ iMENA CV Builder loaded.');
         console.log('🔐 Authentication: Google (Firebase)');
         console.log('💾 Storage: Firestore');
-        console.log('🧠 AI: Groq via Vercel serverless function');
+        console.log('🧠 Assistant: iMENA AI via Vercel');
     </script>
 
     <!-- Particle animation (non-module) -->
