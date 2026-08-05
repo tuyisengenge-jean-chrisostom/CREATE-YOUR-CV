@@ -8,7 +8,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Prompt is required.' });
   }
 
-  // Use the same environment variable name, but now it holds your Groq key
   const API_KEY = process.env.DEEPSEEK_KEY;
   if (!API_KEY) {
     return res.status(500).json({ error: 'Missing API key.' });
@@ -22,7 +21,7 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${API_KEY}`
       },
       body: JSON.stringify({
-        model: 'llama3-70b-8192',   // fast, free, and smart
+        model: 'mixtral-8x7b-32768',  // one of the free models
         messages: [
           { role: 'system', content: 'You are iMENA AI, an expert CV coach. Provide concise, actionable advice.' },
           { role: 'user', content: prompt }
@@ -31,13 +30,13 @@ export default async function handler(req, res) {
       })
     });
 
+    const responseBody = await response.text();
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Groq API error:', response.status, errorText);
-      return res.status(response.status).json({ error: `Groq error: ${response.status}` });
+      console.error('Groq API error:', response.status, responseBody);
+      return res.status(response.status).json({ error: `Groq error: ${response.status} - ${responseBody}` });
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseBody);
     const reply = data.choices[0].message.content;
     res.status(200).json({ reply });
   } catch (error) {
