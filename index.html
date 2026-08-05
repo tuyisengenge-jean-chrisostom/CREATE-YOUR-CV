@@ -7,14 +7,2019 @@
     <meta name="description" content="Build a world-class CV with Africa's first deep-reasoning AI career co-pilot.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    <!-- ====== All your existing CSS (unchanged) ====== -->
-    <style>/* ... copy all your CSS from above ... */</style>
+    <style>
+        :root {
+            --navy-950: #030712;
+            --navy-900: #071329;
+            --navy-800: #0e1d3a;
+            --navy-700: #14274d;
+            --navy-600: #1e3a66;
+            --teal-400: #39e0bd;
+            --teal-300: #6ef5d6;
+            --teal-500: #2bc4a3;
+            --cyan-400: #42a5ff;
+            --cyan-300: #7ec8ff;
+            --amber-400: #fbbf24;
+            --rose-400: #fb7185;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --glass-bg: rgba(14, 29, 58, 0.65);
+            --glass-border: rgba(148, 163, 184, 0.12);
+            --shadow-glow: 0 0 40px rgba(57, 224, 189, 0.15);
+            --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font-sans);
+            background: var(--navy-950);
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        #particleCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .ambient-light {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(57, 224, 189, 0.08), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(66, 165, 255, 0.06), transparent),
+                radial-gradient(ellipse 50% 50% at 50% 0%, rgba(30, 58, 102, 0.4), transparent);
+        }
+        .app {
+            position: relative;
+            z-index: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 72px;
+            background: rgba(3, 7, 18, 0.7);
+            backdrop-filter: blur(20px) saturate(1.5);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s;
+        }
+        .top-nav.scrolled {
+            background: rgba(3, 7, 18, 0.9);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        .nav-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .nav-logo .orb {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, var(--teal-300), var(--teal-500));
+            box-shadow: 0 0 20px rgba(57, 224, 189, 0.4);
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-link {
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: var(--slate-400);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .nav-cta {
+            padding: 9px 18px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--cyan-400), var(--teal-400));
+            color: var(--navy-900);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 8px;
+            font-family: inherit;
+        }
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(57, 224, 189, 0.3);
+        }
+        .nav-user {
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-user.visible {
+            display: flex;
+        }
+        .nav-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--teal-400);
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .nav-avatar:hover {
+            transform: scale(1.05);
+        }
+        .view {
+            display: none;
+            animation: viewEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            padding-top: 72px;
+            min-height: 100vh;
+        }
+        .view.active {
+            display: block;
+        }
+        @keyframes viewEnter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hero-landing {
+            min-height: calc(100vh - 72px);
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+            padding: 60px 0 80px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 99px;
+            background: rgba(57, 224, 189, 0.1);
+            border: 1px solid rgba(57, 224, 189, 0.2);
+            color: var(--teal-300);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+        .hero-badge .pulse {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--teal-400);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.4;
+            }
+        }
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(40px, 5.5vw, 72px);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .hero-title em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--cyan-300), var(--teal-300));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-sub {
+            font-size: 17px;
+            color: var(--slate-400);
+            max-width: 480px;
+            margin: 20px 0 32px;
+            line-height: 1.7;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan-400), var(--teal-400));
+            border-color: transparent;
+            color: var(--navy-900);
+            font-weight: 700;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 10px 30px rgba(57, 224, 189, 0.25);
+        }
+        .btn-ghost {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .hero-trust {
+            display: flex;
+            gap: 24px;
+            margin-top: 40px;
+            color: var(--slate-500);
+            font-size: 12px;
+        }
+        .hero-trust span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .hero-trust .check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(57, 224, 189, 0.15);
+            color: var(--teal-400);
+            display: grid;
+            place-items: center;
+            font-size: 10px;
+        }
+        .hero-visual {
+            perspective: 1200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .holo-card {
+            width: 100%;
+            max-width: 440px;
+            transform-style: preserve-3d;
+            transform: rotateY(-8deg) rotateX(4deg);
+            transition: transform 0.5s;
+        }
+        .holo-card:hover {
+            transform: rotateY(-4deg) rotateX(2deg);
+        }
+        .holo-inner {
+            background: linear-gradient(145deg, rgba(31, 91, 153, 0.5), rgba(8, 24, 49, 0.7));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(184, 234, 255, 0.15);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .holo-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%);
+            pointer-events: none;
+        }
+        .holo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .holo-logo {
+            font-weight: 800;
+            font-size: 16px;
+            background: linear-gradient(90deg, #fff, var(--cyan-300));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .holo-score {
+            text-align: center;
+            padding: 16px 20px;
+            background: rgba(7, 26, 54, 0.8);
+            border: 1px solid rgba(127, 246, 219, 0.25);
+            border-radius: 16px;
+        }
+        .holo-score strong {
+            font-size: 36px;
+            color: var(--teal-300);
+            display: block;
+            line-height: 1;
+        }
+        .holo-score small {
+            color: var(--slate-400);
+            font-size: 10px;
+        }
+        .ai-bubble-hero {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(189, 238, 255, 0.12);
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 13px;
+            color: #d7eaff;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+        .ai-bubble-hero b {
+            color: var(--teal-300);
+        }
+        .holo-ring {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 1px solid rgba(101, 223, 248, 0.3);
+            right: -60px;
+            bottom: -80px;
+            transform: rotateX(60deg);
+            box-shadow: 0 0 40px rgba(29, 226, 195, 0.15);
+            pointer-events: none;
+        }
+        .section {
+            padding: 100px 0;
+            border-top: 1px solid var(--glass-border);
+        }
+        .section-kicker {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--teal-400);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .section h2 {
+            font-family: var(--font-serif);
+            font-size: clamp(32px, 4vw, 52px);
+            line-height: 1.1;
+            letter-spacing: -1px;
+            max-width: 600px;
+        }
+        .section-lead {
+            color: var(--slate-400);
+            font-size: 16px;
+            max-width: 540px;
+            margin-top: 12px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 48px;
+        }
+        .stat-card {
+            padding: 28px;
+            border-radius: var(--radius);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(57, 224, 189, 0.2);
+            box-shadow: var(--shadow-glow);
+        }
+        .stat-card strong {
+            font-size: 32px;
+            color: var(--teal-300);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .stat-card span {
+            font-size: 13px;
+            color: var(--slate-400);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 48px;
+        }
+        .feature-card {
+            padding: 32px;
+            border-radius: var(--radius);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--teal-400), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(57, 224, 189, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(57, 224, 189, 0.15), rgba(66, 165, 255, 0.1));
+            border: 1px solid rgba(57, 224, 189, 0.2);
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            font-size: 13px;
+            color: var(--slate-400);
+            line-height: 1.7;
+        }
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .template-item {
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.35s;
+        }
+        .template-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            border-color: rgba(57, 224, 189, 0.3);
+        }
+        .template-preview {
+            height: 240px;
+            padding: 24px;
+            background: #f8fafc;
+            position: relative;
+        }
+        .template-preview.modern {
+            border-top: 6px solid #1479c9;
+        }
+        .template-preview.elegant {
+            background: #f5f0e8;
+            border-top: 6px solid #2d5a52;
+        }
+        .template-preview.minimal {
+            background: #f1f1f1;
+            border-top: 6px solid #1a1a1a;
+        }
+        .template-item h3 {
+            padding: 20px 20px 4px;
+            font-size: 15px;
+        }
+        .template-item p {
+            padding: 0 20px 20px;
+            font-size: 12px;
+            color: var(--slate-400);
+            margin: 0;
+        }
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 48px;
+        }
+        .testi-card {
+            padding: 28px;
+            border-radius: var(--radius);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+        }
+        .testi-card p {
+            font-size: 14px;
+            color: var(--slate-300);
+            line-height: 1.7;
+            font-style: italic;
+        }
+        .testi-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .testi-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal-500), var(--cyan-400));
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--navy-900);
+        }
+        .testi-author b {
+            font-size: 13px;
+            display: block;
+        }
+        .testi-author span {
+            font-size: 11px;
+            color: var(--slate-500);
+        }
+        .faq-list {
+            max-width: 800px;
+            margin-top: 40px;
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .faq-q {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+        }
+        .faq-q span {
+            color: var(--teal-400);
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-q span {
+            transform: rotate(45deg);
+        }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            color: var(--slate-400);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .faq-item.open .faq-a {
+            max-height: 200px;
+            padding-bottom: 20px;
+        }
+        .cta-section {
+            margin: 40px 0 0;
+            padding: 60px;
+            border-radius: 28px;
+            background: radial-gradient(circle at 80% 0%, rgba(57, 224, 189, 0.12), transparent 50%), linear-gradient(135deg, rgba(20, 61, 103, 0.6), rgba(10, 36, 68, 0.8));
+            border: 1px solid rgba(120, 234, 208, 0.2);
+            text-align: center;
+        }
+        .cta-section h2 {
+            margin: 0 auto 16px;
+            max-width: 500px;
+        }
+        .cta-section p {
+            color: var(--slate-400);
+            margin-bottom: 28px;
+        }
+        .site-footer {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 40px;
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 80px;
+        }
+        .site-footer h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--slate-300);
+            margin-bottom: 16px;
+        }
+        .site-footer a {
+            display: block;
+            color: var(--slate-500);
+            text-decoration: none;
+            font-size: 13px;
+            margin: 8px 0;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .site-footer a:hover {
+            color: var(--teal-300);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding: 24px 0;
+            color: var(--slate-600);
+            font-size: 12px;
+            border-top: 1px solid var(--glass-border);
+        }
+        .dashboard-hero {
+            padding: 48px 0 32px;
+        }
+        .welcome-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .welcome-text h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(28px, 3.5vw, 42px);
+            margin-bottom: 8px;
+        }
+        .welcome-text p {
+            color: var(--slate-400);
+            font-size: 15px;
+        }
+        .dash-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 32px 0;
+        }
+        .dash-stat {
+            padding: 24px;
+            border-radius: var(--radius);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+        .dash-stat::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan-400), var(--teal-400));
+            opacity: 0.6;
+        }
+        .dash-stat .label {
+            font-size: 12px;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .dash-stat .value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin: 8px 0 4px;
+            line-height: 1;
+        }
+        .dash-stat .change {
+            font-size: 12px;
+            color: var(--teal-400);
+            font-weight: 600;
+        }
+        .dash-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .dash-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+        .dash-panel h3 {
+            font-size: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dash-panel h3 a {
+            font-size: 12px;
+            color: var(--cyan-400);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .cv-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .cv-item-card {
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+        }
+        .cv-item-card:hover {
+            border-color: rgba(57, 224, 189, 0.25);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        .cv-item-card .cv-thumb {
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--navy-700), var(--navy-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .cv-item-card h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .cv-item-card .meta {
+            font-size: 11px;
+            color: var(--slate-500);
+            display: flex;
+            gap: 12px;
+        }
+        .cv-item-card .actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .cv-item-card:hover .actions {
+            opacity: 1;
+        }
+        .cv-item-card .actions button {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            font-size: 12px;
+        }
+        .create-new-card {
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            border: 2px dashed var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 180px;
+            cursor: pointer;
+            transition: all 0.25s;
+            color: var(--slate-400);
+        }
+        .create-new-card:hover {
+            border-color: var(--teal-400);
+            color: var(--teal-300);
+            background: rgba(57, 224, 189, 0.05);
+        }
+        .create-new-card .plus {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(57, 224, 189, 0.1);
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+        }
+        .ai-insight {
+            padding: 14px;
+            border-radius: 10px;
+            background: rgba(57, 224, 189, 0.05);
+            border: 1px solid rgba(57, 224, 189, 0.1);
+            margin-bottom: 12px;
+        }
+        .ai-insight h4 {
+            font-size: 13px;
+            color: var(--teal-300);
+            margin-bottom: 4px;
+        }
+        .ai-insight p {
+            font-size: 12px;
+            color: var(--slate-400);
+            line-height: 1.6;
+            margin: 0;
+        }
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--cyan-400);
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .activity-item p {
+            font-size: 13px;
+            color: var(--slate-300);
+            margin: 0;
+        }
+        .activity-item span {
+            font-size: 11px;
+            color: var(--slate-500);
+        }
+        .builder-workspace {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+            padding: 24px 0 60px;
+        }
+        .builder-sidebar {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            backdrop-filter: blur(17px);
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            position: sticky;
+            top: 90px;
+        }
+        .builder-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .builder-sidebar::-webkit-scrollbar-thumb {
+            background: var(--teal-500);
+            border-radius: 9px;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .sidebar-header h2 {
+            font-size: 17px;
+        }
+        .sidebar-header p {
+            font-size: 12px;
+            color: var(--slate-400);
+            margin: 4px 0 0;
+        }
+        .sidebar-actions {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .sidebar-actions .btn {
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 8px;
+        }
+        .builder-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .builder-tab {
+            flex: 1;
+            padding: 14px;
+            background: none;
+            border: none;
+            color: var(--slate-500);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+        .builder-tab.active {
+            color: var(--teal-300);
+        }
+        .builder-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: var(--teal-400);
+            border-radius: 2px;
+        }
+        .builder-pane {
+            display: none;
+            padding: 20px;
+        }
+        .builder-pane.active {
+            display: block;
+        }
+        .field-group {
+            margin-bottom: 16px;
+        }
+        .field-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            color: var(--slate-400);
+            margin-bottom: 6px;
+        }
+        .field-group input,
+        .field-group textarea,
+        .field-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(6, 20, 45, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .field-group input:focus,
+        .field-group textarea:focus {
+            border-color: var(--cyan-400);
+            box-shadow: 0 0 0 3px rgba(66, 165, 255, 0.1);
+        }
+        .field-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .repeater-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .repeater-item .remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(251, 113, 133, 0.1);
+            color: var(--rose-400);
+            cursor: pointer;
+            font-size: 14px;
+            display: grid;
+            place-items: center;
+        }
+        .add-btn {
+            width: 100%;
+            padding: 10px;
+            border: 1px dashed var(--glass-border);
+            background: rgba(57, 224, 189, 0.05);
+            color: var(--teal-300);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .add-btn:hover {
+            background: rgba(57, 224, 189, 0.1);
+            border-color: var(--teal-400);
+        }
+        .builder-main {
+            position: relative;
+        }
+        .builder-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .template-selector {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+        }
+        .template-selector button {
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            color: var(--slate-400);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .template-selector button.active {
+            background: rgba(57, 224, 189, 0.15);
+            color: var(--teal-300);
+        }
+        .cv-canvas {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            perspective: 1200px;
+        }
+        .cv-document {
+            background: #fff;
+            color: #1e293b;
+            padding: 48px;
+            min-height: 800px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            font-family: Arial, sans-serif;
+            transform-style: preserve-3d;
+        }
+        .cv-document.modern {
+            border-top: 8px solid #1479c9;
+        }
+        .cv-document.elegant {
+            background: #faf6f0;
+            border-top: 8px solid #2d5a52;
+        }
+        .cv-document.minimal {
+            border-top: 8px solid #0f172a;
+        }
+        .ai-panel-builder {
+            margin-top: 24px;
+            background: linear-gradient(145deg, rgba(15, 52, 88, 0.9), rgba(10, 33, 68, 0.9));
+            border: 1px solid rgba(127, 245, 212, 0.2);
+            border-radius: var(--radius);
+            padding: 20px;
+            backdrop-filter: blur(12px);
+        }
+        .ai-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .ai-orb-mini {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, var(--teal-300), #1b6b8a 60%, #0d2a3f);
+            box-shadow: 0 0 30px rgba(57, 224, 189, 0.4);
+            display: grid;
+            place-items: center;
+            animation: orbPulse 3s ease-in-out infinite;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .ai-orb-mini::after {
+            content: '✦';
+            font-size: 18px;
+            color: #0d2a3f;
+            font-weight: 900;
+        }
+        @keyframes orbPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 30px rgba(57, 224, 189, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(57, 224, 189, 0.6);
+            }
+        }
+        .ai-status {
+            font-size: 13px;
+            color: var(--teal-300);
+            font-weight: 600;
+        }
+        .ai-status small {
+            display: block;
+            color: var(--slate-400);
+            font-weight: 400;
+            font-size: 11px;
+        }
+        .thinking-chain {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--slate-400);
+            line-height: 1.8;
+            border-left: 2px solid var(--teal-500);
+            display: none;
+        }
+        .thinking-chain .step {
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: stepIn 0.4s forwards;
+        }
+        .thinking-chain .step.done {
+            color: var(--teal-300);
+        }
+        .thinking-chain .step.active {
+            color: var(--cyan-300);
+        }
+        @keyframes stepIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .ai-chat-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
+        .ai-chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .ai-chat-messages::-webkit-scrollbar-thumb {
+            background: var(--teal-500);
+            border-radius: 9px;
+        }
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
+        .msg-bubble.ai {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            border: 1px solid var(--glass-border);
+        }
+        .msg-bubble.user {
+            background: rgba(57, 224, 189, 0.1);
+            color: var(--teal-300);
+            margin-left: auto;
+            border: 1px solid rgba(57, 224, 189, 0.2);
+        }
+        .ai-input-row {
+            display: flex;
+            gap: 8px;
+        }
+        .ai-input-row input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(6, 20, 45, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+        .ai-input-row input:focus {
+            border-color: var(--cyan-400);
+        }
+        .ai-input-row button {
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--cyan-400), var(--teal-400));
+            color: var(--navy-900);
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .ai-suggestions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .ai-suggestions button {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--slate-400);
+            font-size: 11px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .ai-suggestions button:hover {
+            border-color: var(--teal-400);
+            color: var(--teal-300);
+            background: rgba(57, 224, 189, 0.08);
+        }
+        .ai-studio {
+            display: grid;
+            grid-template-columns: 260px 1fr 300px;
+            gap: 0;
+            height: calc(100vh - 72px);
+        }
+        .ai-sidebar {
+            background: var(--glass-bg);
+            border-right: 1px solid var(--glass-border);
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .ai-sidebar h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--slate-500);
+            margin-bottom: 16px;
+        }
+        .ai-thread {
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--slate-300);
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ai-thread:hover,
+        .ai-thread.active {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--glass-border);
+        }
+        .ai-thread small {
+            display: block;
+            color: var(--slate-500);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        .ai-main {
+            display: flex;
+            flex-direction: column;
+            background: rgba(3, 7, 18, 0.3);
+        }
+        .ai-main-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .ai-main-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        .ai-main-input {
+            padding: 16px 24px;
+            border-top: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+        }
+        .ai-input-wrap {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            background: rgba(6, 20, 45, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 8px 8px 8px 16px;
+        }
+        .ai-input-wrap textarea {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            resize: none;
+            max-height: 120px;
+            outline: none;
+            padding: 8px 0;
+        }
+        .ai-input-wrap button {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--cyan-400), var(--teal-400));
+            color: var(--navy-900);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .ai-reasoning {
+            background: var(--glass-bg);
+            border-left: 1px solid var(--glass-border);
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .ai-reasoning h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--slate-500);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .reasoning-step {
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 10px;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .reasoning-step.active {
+            border-color: rgba(57, 224, 189, 0.3);
+            background: rgba(57, 224, 189, 0.05);
+        }
+        .reasoning-step .step-title {
+            font-weight: 600;
+            color: var(--slate-300);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .reasoning-step .step-desc {
+            color: var(--slate-500);
+            line-height: 1.6;
+        }
+        .reasoning-step.active .step-title {
+            color: var(--teal-300);
+        }
+        .message-block {
+            margin-bottom: 24px;
+        }
+        .message-block .msg-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .message-block .msg-header .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .message-block.ai .avatar {
+            background: linear-gradient(135deg, var(--teal-400), var(--cyan-400));
+            color: var(--navy-900);
+        }
+        .message-block.user .avatar {
+            background: var(--navy-600);
+            color: #fff;
+        }
+        .message-block .msg-header span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .message-block .msg-body {
+            padding-left: 36px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--slate-200);
+        }
+        .message-block.user .msg-body {
+            color: var(--slate-300);
+        }
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            font-size: 13px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 360px;
+        }
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .toast.success {
+            border-color: rgba(57, 224, 189, 0.3);
+        }
+        .toast.error {
+            border-color: rgba(251, 113, 133, 0.3);
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: var(--navy-800);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-body {
+            padding: 24px;
+        }
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: var(--glass-bg);
+            color: var(--slate-400);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            font-size: 16px;
+        }
+        .saving-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--teal-400);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .saving-indicator.visible {
+            opacity: 1;
+        }
+        @media(max-width:1024px) {
+            .hero-landing {
+                grid-template-columns: 1fr;
+            }
+            .hero-visual {
+                display: none;
+            }
+            .stats-grid,
+            .dash-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .features-grid,
+            .template-grid,
+            .testi-grid {
+                grid-template-columns: 1fr;
+            }
+            .dash-grid {
+                grid-template-columns: 1fr;
+            }
+            .builder-workspace {
+                grid-template-columns: 1fr;
+            }
+            .builder-sidebar {
+                position: relative;
+                top: 0;
+                max-height: none;
+            }
+            .ai-studio {
+                grid-template-columns: 1fr;
+            }
+            .ai-sidebar,
+            .ai-reasoning {
+                display: none;
+            }
+            .site-footer {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media(max-width:640px) {
+            .app {
+                padding: 0 16px;
+            }
+            .stats-grid,
+            .dash-stats {
+                grid-template-columns: 1fr;
+            }
+            .cv-list {
+                grid-template-columns: 1fr;
+            }
+            .site-footer {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 36px;
+            }
+            .cta-section {
+                padding: 32px 20px;
+            }
+        }
+        @media print {
+            .top-nav,
+            .builder-sidebar,
+            .ai-panel-builder,
+            .builder-toolbar,
+            .footer-bottom,
+            .site-footer {
+                display: none !important;
+            }
+            .cv-document {
+                box-shadow: none;
+                transform: none !important;
+            }
+            .builder-workspace {
+                display: block;
+            }
+            .cv-canvas {
+                border: none;
+                padding: 0;
+            }
+        }
+        .hidden {
+            display: none !important;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--cyan-300), var(--teal-300));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
 </head>
 <body>
-    <!-- ====== Same HTML structure (unchanged) ====== -->
-    <!-- ... all your views, modals, navigation, etc. ... -->
 
-    <!-- Firebase SDK (importmap) -->
+    <canvas id="particleCanvas"></canvas>
+    <div class="ambient-light"></div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-header"><h3 id="modalTitle">Modal</h3><button class="modal-close" id="modalCloseBtn">✕</button></div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <nav class="top-nav" id="topNav">
+        <div class="nav-inner">
+            <a class="nav-logo" id="navLogo"> <div class="orb">✦</div>iMENA CV</a>
+            <div class="nav-links" id="navLinks">
+                <button class="nav-link active" data-view="landing" id="navLanding">Home</button>
+                <button class="nav-link hidden" data-view="dashboard" id="navDashboard">Dashboard</button>
+                <button class="nav-link hidden" data-view="builder" id="navBuilder">Builder</button>
+                <button class="nav-link hidden" data-view="ai-studio" id="navAIStudio">AI Studio</button>
+                <button class="nav-link" id="navTemplates">Templates</button>
+                <div class="nav-user" id="navUser"><img class="nav-avatar" id="navAvatar" src="" alt="User"></div>
+                <button class="nav-cta" id="navLogin">Sign in with Google</button>
+                <button class="nav-cta hidden" id="navLogout" style="background:var(--navy-700);color:#fff;">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app">
+
+        <!-- VIEW: LANDING -->
+        <section class="view active" id="view-landing">
+            <div class="hero-landing">
+                <div>
+                    <div class="hero-badge"><div class="pulse"></div>Africa's First Deep-Reasoning AI CV Builder</div>
+                    <h1 class="hero-title">Build a CV that<br>opens <em>every door.</em></h1>
+                    <p class="hero-sub">iMENA AI doesn't just write — it thinks, reasons, and strategizes with you. From Kigali to Nairobi, Lagos to Brussels, craft a career story that commands attention.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" id="heroStartBtn">Start Building Free →</button>
+                        <button class="btn btn-ghost" id="heroDemoBtn">Try Demo</button>
+                    </div>
+                    <div class="hero-trust">
+                        <span><div class="check">✓</div> Private by design</span>
+                        <span><div class="check">✓</div> ATS-optimized</span>
+                        <span><div class="check">✓</div> Deep-reasoning AI</span>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="holo-card">
+                        <div class="holo-inner">
+                            <div class="holo-header"><span class="holo-logo">iMENA AI</span><div class="holo-score"><strong>97</strong><small>CV Score</small></div></div>
+                            <div class="ai-bubble-hero"><b>iMENA AI</b> is thinking...<br>"I've analyzed 12,000+ successful CVs for your industry. Your experience section needs stronger outcome verbs. Let me rewrite bullet 3 to highlight the 40% revenue growth."</div>
+                            <div class="holo-ring"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="section">
+                <div class="section-kicker">By the numbers</div>
+                <h2>Built for ambition. <span class="text-gradient">Backed by intelligence.</span></h2>
+                <div class="stats-grid">
+                    <div class="stat-card"><strong>12,400+</strong><span>CVs crafted across Africa</span></div>
+                    <div class="stat-card"><strong>8</strong><span>Deep reasoning models</span></div>
+                    <div class="stat-card"><strong>94%</strong><span>Interview callback rate</span></div>
+                    <div class="stat-card"><strong>4</strong><span>Languages at launch</span></div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-kicker">Why iMENA</div>
+                <h2>More than a builder. <span class="text-gradient">A career strategist.</span></h2>
+                <div class="features-grid">
+                    <div class="feature-card"><div class="feature-icon">🧠</div><h3>Deep Reasoning AI</h3><p>Our AI doesn't template — it thinks. It analyzes your industry, identifies skill gaps, and crafts narratives that hiring managers remember.</p></div>
+                    <div class="feature-card"><div class="feature-icon">⚡</div><h3>Live Generation</h3><p>Describe your role in plain language. iMENA transforms it into powerful achievement statements with metrics, impact, and clarity.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Job Match Engine</h3><p>Paste a job description. iMENA scores your fit, suggests missing keywords, and tailors your CV for that specific opportunity.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🌍</div><h3>Pan-African, Global-Ready</h3><p>Work in Kinyarwanda, Swahili, French, or English. Export ATS-ready formats accepted from Johannesburg to London.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Zero-Trust Privacy</h3><p>Your data is encrypted and yours alone. No selling. No training on your content. Export and delete anytime.</p></div>
+                    <div class="feature-card"><div class="feature-icon">📊</div><h3>Interview Intelligence</h3><p>iMENA generates role-specific questions from your CV and coaches you on answers that showcase your true potential.</p></div>
+                </div>
+            </section>
+
+            <section class="section" id="landing-templates">
+                <div class="section-kicker">Designed to impress</div>
+                <h2>Three styles. <span class="text-gradient">Infinite confidence.</span></h2>
+                <p class="section-lead">Each template is meticulously engineered for ATS compatibility and human readability.</p>
+                <div class="template-grid">
+                    <div class="template-item" data-template="modern">
+                        <div class="template-preview modern"><div style="width:60%;height:10px;background:#243f76;border-radius:2px;margin-bottom:8px;"></div><div style="width:40%;height:5px;background:#71a9d3;border-radius:2px;margin-bottom:20px;"></div><div style="display:grid;grid-template-columns:30% 1fr;gap:12px;"><div><div style="height:4px;background:#d6e1ed;border-radius:2px;margin:6px 0;"></div></div><div><div style="height:4px;background:#d6e1ed;border-radius:2px;margin:6px 0;"></div></div></div></div>
+                        <h3>Modern Cobalt</h3><p>Clean hierarchy for ambitious professionals.</p>
+                    </div>
+                    <div class="template-item" data-template="elegant">
+                        <div class="template-preview elegant"><div style="width:60%;height:10px;background:#2d5a52;border-radius:2px;margin-bottom:8px;"></div><div style="width:40%;height:5px;background:#8ab8a8;border-radius:2px;margin-bottom:20px;"></div><div style="display:grid;grid-template-columns:30% 1fr;gap:12px;"><div><div style="height:4px;background:#d6e1ed;border-radius:2px;margin:6px 0;"></div></div><div><div style="height:4px;background:#d6e1ed;border-radius:2px;margin:6px 0;"></div></div></div></div>
+                        <h3>Editorial Elegance</h3><p>Warm, composed, and distinctly human.</p>
+                    </div>
+                    <div class="template-item" data-template="minimal">
+                        <div class="template-preview minimal"><div style="width:60%;height:10px;background:#1a1a1a;border-radius:2px;margin-bottom:8px;"></div><div style="width:40%;height:5px;background:#666;border-radius:2px;margin-bottom:20px;"></div><div style="display:grid;grid-template-columns:30% 1fr;gap:12px;"><div><div style="height:4px;background:#d6e1ed;border-radius:2px;margin:6px 0;"></div></div><div><div style="height:4px;background:#d6e1ed;border-radius:2px;margin:6px 0;"></div></div></div></div>
+                        <h3>Minimal Mono</h3><p>Quiet confidence with a crisp finish.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-kicker">Built with people in mind</div>
+                <h2>For your first application and your next big move.</h2>
+                <div class="testi-grid">
+                    <div class="testi-card"><p>"I finally understood how to explain my experience. My CV sounded like me, only more confident."</p><div class="testi-author"><div class="testi-avatar">A</div><div><b>Aline U.</b><span>Marketing professional · Kigali</span></div></div></div>
+                    <div class="testi-card"><p>"The clean layout and AI suggestions helped me apply for international roles without feeling overwhelmed."</p><div class="testi-author"><div class="testi-avatar">D</div><div><b>David K.</b><span>Software graduate · Nairobi</span></div></div></div>
+                    <div class="testi-card"><p>"I love that I could work in French, then export an English CV for an opportunity abroad."</p><div class="testi-author"><div class="testi-avatar">M</div><div><b>Marie N.</b><span>Operations coordinator · Brussels</span></div></div></div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-kicker">Answers, before you ask</div>
+                <h2>Frequently asked questions.</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Is iMENA CV Builder free to use?</b><span>+</span></button>
+                        <div class="faq-a">The core CV builder, templates, and PDF export are completely free. Advanced AI reasoning and interview coaching are available in iMENA Pro.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Where is my CV information stored?</b><span>+</span></button>
+                        <div class="faq-a">Your data is encrypted and stored securely in Firebase Firestore. We never sell your information or use it to train models without consent.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Can I use my CV internationally?</b><span>+</span></button>
+                        <div class="faq-a">Yes. All templates follow international ATS standards and are accepted by companies worldwide.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q"><b>Does iMENA AI write false information?</b><span>+</span></button>
+                        <div class="faq-a">Never. iMENA only helps you phrase and organize your real experience. You approve every suggestion before it goes on your CV.</div>
+                    </div>
+                </div>
+                <div class="cta-section">
+                    <div class="section-kicker">Your opportunity deserves a clear introduction</div>
+                    <h2>Ready to build a CV with momentum?</h2>
+                    <p>Create it in minutes, refine it with iMENA AI, and take the next step with confidence.</p>
+                    <button class="btn btn-primary" id="ctaStartBtn" style="margin-top:8px;">Start my CV →</button>
+                </div>
+            </section>
+
+            <footer class="site-footer">
+                <div><h4 style="font-size:18px;font-family:var(--font-serif);margin-bottom:12px;color:#fff;">iMENA CV</h4><p style="color:var(--slate-500);font-size:13px;">Meaningful career tools for ambitious people, wherever opportunity leads.</p></div>
+                <div><h4>Product</h4><a id="footerBuilder">CV Builder</a><a id="footerTemplates">Templates</a><a id="footerAI">iMENA AI</a></div>
+                <div><h4>Support</h4><a>Help centre</a><a>Privacy</a><a>Contact</a></div>
+                <div><h4>Created by</h4><a href="https://imena-hub.vercel.app" target="_blank">iMENA Hub ↗</a><a id="footerBack">Back to top ↑</a></div>
+            </footer>
+            <div class="footer-bottom">© 2026 iMENA CV Builder. Developed by iMENA Hub.</div>
+        </section>
+
+        <!-- VIEW: DASHBOARD -->
+        <section class="view" id="view-dashboard">
+            <div class="dashboard-hero">
+                <div class="welcome-row">
+                    <div class="welcome-text">
+                        <h1>Welcome back, <span id="dashName">Builder</span>.</h1>
+                        <p>Your career command center. <span class="welcome-time" id="dashTime"></span></p>
+                    </div>
+                    <button class="btn btn-primary" id="dashNewCV">+ New CV</button>
+                </div>
+                <div class="dash-stats">
+                    <div class="dash-stat"><div class="label">CVs Created</div><div class="value" id="dashStatCVs">0</div><div class="change">Sync from cloud</div></div>
+                    <div class="dash-stat"><div class="label">AI Sessions</div><div class="value" id="dashStatAI">0</div><div class="change">+0 today</div></div>
+                    <div class="dash-stat"><div class="label">CV Score</div><div class="value" id="dashStatScore">—</div><div class="change">—</div></div>
+                    <div class="dash-stat"><div class="label">Interviews</div><div class="value" id="dashStatInt">0</div><div class="change">0 upcoming</div></div>
+                </div>
+                <div class="dash-grid">
+                    <div class="dash-panel">
+                        <h3>Your CVs <a id="dashViewAll">View all →</a></h3>
+                        <div class="cv-list" id="dashCVList">
+                            <div class="create-new-card" id="dashCreateNew">
+                                <div class="plus">+</div>
+                                <span>Create new CV</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="dash-panel" style="margin-bottom:24px;">
+                            <h3>AI Insights</h3>
+                            <div class="ai-insight"><h4>🎯 Skill Gap Alert</h4><p>Your target role mentions "Stakeholder Management" 4 times. Consider adding a bullet about cross-functional leadership.</p></div>
+                            <div class="ai-insight"><h4>📈 Trending</h4><p>Data Analysis is the #1 requested skill in your industry this month. Your CV currently shows intermediate level.</p></div>
+                        </div>
+                        <div class="dash-panel">
+                            <h3>Recent Activity</h3>
+                            <div id="dashActivity">
+                                <div class="activity-item"><div class="activity-dot"></div><div><p>Welcome! Start building your first CV.</p><span>Just now</span></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: BUILDER -->
+        <section class="view" id="view-builder">
+            <div class="builder-workspace">
+                <aside class="builder-sidebar">
+                    <div class="sidebar-header"><h2>Your CV Studio</h2><p>Edit on the left. Preview updates instantly.</p></div>
+                    <div class="sidebar-actions">
+                        <button class="btn btn-primary" id="manualSaveBtn" style="padding:6px 14px;font-size:11px;">💾 Save to Cloud</button>
+                        <span class="saving-indicator" id="saveIndicator">✓ Saved</span>
+                    </div>
+                    <div class="builder-tabs">
+                        <button class="builder-tab active" data-tab="identity">Identity</button>
+                        <button class="builder-tab" data-tab="experience">Experience</button>
+                        <button class="builder-tab" data-tab="education">Education</button>
+                        <button class="builder-tab" data-tab="skills">Skills</button>
+                    </div>
+                    <div class="builder-pane active" id="tab-identity">
+                        <div class="field-group"><label>Full Name</label><input id="f-name" placeholder="Aline Uwase"></div>
+                        <div class="field-group"><label>Professional Title</label><input id="f-title" placeholder="Senior Product Manager"></div>
+                        <div class="field-group"><label>Location</label><input id="f-location" placeholder="Kigali, Rwanda"></div>
+                        <div class="field-group"><label>Email</label><input id="f-email" placeholder="you@email.com"></div>
+                        <div class="field-group"><label>Phone</label><input id="f-phone" placeholder="+250 7xx xxx xxx"></div>
+                        <div class="field-group"><label>Website / LinkedIn</label><input id="f-site" placeholder="linkedin.com/in/you"></div>
+                        <div class="field-group"><label>Professional Summary</label><textarea id="f-summary" placeholder="A brief, compelling introduction..."></textarea></div>
+                    </div>
+                    <div class="builder-pane" id="tab-experience">
+                        <div id="experience-list"></div>
+                        <button class="add-btn" id="addExpBtn">+ Add Experience</button>
+                    </div>
+                    <div class="builder-pane" id="tab-education">
+                        <div id="education-list"></div>
+                        <button class="add-btn" id="addEduBtn">+ Add Education</button>
+                    </div>
+                    <div class="builder-pane" id="tab-skills">
+                        <div class="field-group"><label>Skills (comma separated)</label><textarea id="f-skills" placeholder="Product Strategy, Data Analysis, Stakeholder Management..."></textarea></div>
+                        <div class="field-group"><label>Languages</label><input id="f-languages" placeholder="English — Fluent, Kinyarwanda — Native"></div>
+                    </div>
+                </aside>
+                <div class="builder-main">
+                    <div class="builder-toolbar">
+                        <b style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate-400);">Live Preview</b>
+                        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                            <div class="template-selector">
+                                <button class="active" data-tpl="modern">Modern</button>
+                                <button data-tpl="elegant">Elegant</button>
+                                <button data-tpl="minimal">Minimal</button>
+                            </div>
+                            <button class="btn btn-primary" id="exportPdfBtn" style="padding:8px 16px;font-size:12px;">Export PDF</button>
+                        </div>
+                    </div>
+                    <div class="cv-canvas" id="cvCanvas">
+                        <div class="cv-document modern" id="cvDoc">
+                            <div style="display:grid;grid-template-columns:1fr auto;gap:20px;padding-bottom:20px;border-bottom:1px solid #dce4ee;">
+                                <div>
+                                    <div style="font-size:31px;font-weight:800;text-transform:uppercase;color:#123e72;letter-spacing:-1px;" id="p-name">YOUR NAME</div>
+                                    <div style="font-size:10px;text-transform:uppercase;font-weight:700;letter-spacing:0.14em;color:#4483b7;margin-top:8px;" id="p-title">Professional Title</div>
+                                </div>
+                                <div style="text-align:right;color:#5d697b;font-size:10px;line-height:1.7;" id="p-contact"></div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:28% 1fr;gap:28px;padding-top:20px;">
+                                <aside>
+                                    <div style="margin-bottom:18px;"><h3 style="font-size:10px;color:#3272aa;letter-spacing:0.13em;text-transform:uppercase;border-bottom:1px solid #dce4ee;padding-bottom:5px;margin:0 0 8px;">Skills</h3><div id="p-skills" style="display:flex;flex-wrap:wrap;gap:5px;"></div></div>
+                                    <div style="margin-bottom:18px;"><h3 style="font-size:10px;color:#3272aa;letter-spacing:0.13em;text-transform:uppercase;border-bottom:1px solid #dce4ee;padding-bottom:5px;margin:0 0 8px;">Languages</h3><p id="p-languages" style="font-size:10.5px;color:#425067;margin:0;"></p></div>
+                                </aside>
+                                <div>
+                                    <div style="margin-bottom:18px;"><h3 style="font-size:10px;color:#3272aa;letter-spacing:0.13em;text-transform:uppercase;border-bottom:1px solid #dce4ee;padding-bottom:5px;margin:0 0 8px;">Profile</h3><p id="p-summary" style="font-size:10.5px;line-height:1.52;color:#425067;margin:0;"></p></div>
+                                    <div style="margin-bottom:18px;"><h3 style="font-size:10px;color:#3272aa;letter-spacing:0.13em;text-transform:uppercase;border-bottom:1px solid #dce4ee;padding-bottom:5px;margin:0 0 8px;">Experience</h3><div id="p-experience"></div></div>
+                                    <div><h3 style="font-size:10px;color:#3272aa;letter-spacing:0.13em;text-transform:uppercase;border-bottom:1px solid #dce4ee;padding-bottom:5px;margin:0 0 8px;">Education</h3><div id="p-education"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-panel-builder">
+                        <div class="ai-panel-header">
+                            <div class="ai-orb-mini"></div>
+                            <div class="ai-status">iMENA AI <small id="aiStatusText">Ready to help you build an outstanding CV</small></div>
+                        </div>
+                        <div class="thinking-chain" id="thinkingChain" style="display:none;"></div>
+                        <div class="ai-chat-messages" id="builderChat"></div>
+                        <div class="ai-input-row">
+                            <input id="builderChatInput" placeholder="Ask iMENA AI to improve your CV...">
+                            <button id="builderSendBtn">Send</button>
+                        </div>
+                        <div class="ai-suggestions" id="builderSuggestions">
+                            <button data-prompt="Improve my summary">Improve my summary</button>
+                            <button data-prompt="Make my bullets stronger">Make bullets stronger</button>
+                            <button data-prompt="Add metrics to experience">Add metrics</button>
+                            <button data-prompt="Check ATS keywords">Check ATS keywords</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: AI STUDIO -->
+        <section class="view" id="view-ai-studio">
+            <div class="ai-studio">
+                <aside class="ai-sidebar">
+                    <h3>Conversations</h3>
+                    <div class="ai-thread active" data-thread="0"><div>CV Optimization</div><small>2 hours ago · 12 messages</small></div>
+                    <div class="ai-thread" data-thread="1"><div>Interview Prep</div><small>Yesterday · 8 messages</small></div>
+                    <div class="ai-thread" data-thread="2"><div>Career Strategy</div><small>3 days ago · 5 messages</small></div>
+                    <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--glass-border);">
+                        <h3>Tools</h3>
+                        <div class="ai-thread" data-tool="job-match"><div>🎯 Job Match Engine</div><small>Compare CV to job description</small></div>
+                        <div class="ai-thread" data-tool="interview"><div>🎤 Interview Simulator</div><small>Practice with AI feedback</small></div>
+                        <div class="ai-thread" data-tool="skills"><div>📊 Skills Analysis</div><small>Identify gaps and strengths</small></div>
+                    </div>
+                </aside>
+                <div class="ai-main">
+                    <div class="ai-main-header">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <div class="ai-orb-mini" style="width:32px;height:32px;"></div>
+                            <div><div style="font-weight:700;font-size:14px;">iMENA AI Studio</div><div style="font-size:11px;color:var(--slate-500);">Deep Reasoning · Chain-of-Thought · Real-time</div></div>
+                        </div>
+                        <button class="btn" id="studioClearBtn" style="padding:6px 12px;font-size:12px;">Clear</button>
+                    </div>
+                    <div class="ai-main-messages" id="studioMessages">
+                        <div class="message-block ai">
+                            <div class="msg-header"><div class="avatar">✦</div><span>iMENA AI</span></div>
+                            <div class="msg-body">Welcome to AI Studio. I'm operating with deep reasoning enabled. I can analyze your CV, compare it against job descriptions, simulate interviews, and provide strategic career advice. What would you like to work on?</div>
+                        </div>
+                    </div>
+                    <div class="ai-main-input">
+                        <div class="ai-input-wrap">
+                            <textarea id="studioInput" placeholder="Ask me anything about your career, CV, or interview prep..."></textarea>
+                            <button id="studioSendBtn">➤</button>
+                        </div>
+                    </div>
+                </div>
+                <aside class="ai-reasoning">
+                    <h3><span style="color:var(--teal-400);">●</span> Reasoning Chain</h3>
+                    <div id="reasoningPanel">
+                        <div class="reasoning-step active"><div class="step-title">🧠 System Ready</div><div class="step-desc">Deep reasoning models loaded. Waiting for input.</div></div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </div>
+
+    <!-- Firebase SDK (modular via importmap) -->
     <script type="importmap">
         {
             "imports": {
@@ -27,14 +2032,14 @@
 
     <script type="module">
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 1. IMPORTS (Firebase only)
+        // 1. IMPORTS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         import { initializeApp } from 'firebase/app';
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
         import { getFirestore, doc, setDoc, getDoc, collection, query, getDocs } from 'firebase/firestore';
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 2. FIREBASE CONFIG (your own)
+        // 2. FIREBASE CONFIG
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const firebaseConfig = {
             apiKey: "AIzaSyBf5M38U2u_jX126FxFcJgGZGZFnYX78R0",
@@ -52,7 +2057,7 @@
         const provider = new GoogleAuthProvider();
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 3. STATE (unchanged)
+        // 3. STATE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         let currentUser = null;
         let currentView = 'landing';
@@ -68,11 +2073,12 @@
         const saveIndicator = document.getElementById('saveIndicator');
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 4. UI HELPERS (same as before)
+        // 4. UI HELPERS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const ui = {
             toast(msg, type = 'success') {
                 const container = document.getElementById('toastContainer');
+                if (!container) return;
                 const el = document.createElement('div');
                 el.className = `toast ${type}`;
                 el.innerHTML = (type === 'success' ? '✓' : '⚠') + ' ' + msg;
@@ -80,21 +2086,33 @@
                 setTimeout(() => el.remove(), 4000);
             },
             openModal(title, html) {
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalBody').innerHTML = html;
-                document.getElementById('modalOverlay').classList.add('open');
+                const titleEl = document.getElementById('modalTitle');
+                const bodyEl = document.getElementById('modalBody');
+                const overlay = document.getElementById('modalOverlay');
+                if (titleEl) titleEl.textContent = title;
+                if (bodyEl) bodyEl.innerHTML = html;
+                if (overlay) overlay.classList.add('open');
             },
             closeModal() {
-                document.getElementById('modalOverlay').classList.remove('open');
+                const overlay = document.getElementById('modalOverlay');
+                if (overlay) overlay.classList.remove('open');
             }
         };
-        document.getElementById('modalCloseBtn').addEventListener('click', ui.closeModal);
-        document.getElementById('modalOverlay').addEventListener('click', e => {
-            if (e.target === document.getElementById('modalOverlay')) ui.closeModal();
+
+        // Safely attach modal event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalClose = document.getElementById('modalCloseBtn');
+            if (modalClose) modalClose.addEventListener('click', ui.closeModal);
+            const overlay = document.getElementById('modalOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) ui.closeModal();
+                });
+            }
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 5. AUTHENTICATION (same as before)
+        // 5. AUTHENTICATION
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         async function signInWithGoogle() {
             try {
@@ -165,7 +2183,7 @@
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 6. FIRESTORE OPERATIONS (same)
+        // 6. FIRESTORE OPERATIONS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         async function saveCVToFirestore() {
             if (!currentUser) {
@@ -173,20 +2191,26 @@
                 return;
             }
             try {
-                saveIndicator.textContent = 'Saving...';
-                saveIndicator.classList.add('visible');
+                if (saveIndicator) {
+                    saveIndicator.textContent = 'Saving...';
+                    saveIndicator.classList.add('visible');
+                }
                 const cvRef = doc(db, 'users', currentUser.uid, 'cvs', 'main');
                 await setDoc(cvRef, {
                     ...cvData,
                     updatedAt: new Date()
                 }, { merge: true });
-                saveIndicator.textContent = '✓ Saved';
-                setTimeout(() => saveIndicator.classList.remove('visible'), 2000);
+                if (saveIndicator) {
+                    saveIndicator.textContent = '✓ Saved';
+                    setTimeout(() => saveIndicator.classList.remove('visible'), 2000);
+                }
                 ui.toast('CV saved to cloud!', 'success');
             } catch (error) {
                 console.error('Save error:', error);
-                saveIndicator.textContent = '⚠ Error';
-                setTimeout(() => saveIndicator.classList.remove('visible'), 2000);
+                if (saveIndicator) {
+                    saveIndicator.textContent = '⚠ Error';
+                    setTimeout(() => saveIndicator.classList.remove('visible'), 2000);
+                }
                 ui.toast('Failed to save CV: ' + error.message, 'error');
             }
         }
@@ -220,7 +2244,8 @@
                         id: doc.id,
                         name: data.name || 'Untitled CV',
                         template: data.template || 'modern',
-                        updated: data.updatedAt ? new Date(data.updatedAt.seconds * 1000).toLocaleDateString() : 'Unknown',
+                        updated: data.updatedAt ? new Date(data.updatedAt.seconds * 1000).toLocaleDateString() :
+                            'Unknown',
                         score: data.score || '—'
                     });
                 });
@@ -232,7 +2257,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 7. ROUTER (same)
+        // 7. ROUTER
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const router = {
             async navigate(view) {
@@ -273,7 +2298,7 @@
         window.router = router;
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 8. UI UPDATE (same)
+        // 8. UI UPDATE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function updateAuthUI() {
             const isAuth = !!currentUser;
@@ -283,9 +2308,9 @@
             const avatar = document.getElementById('navAvatar');
             const navLinks = ['navDashboard', 'navBuilder', 'navAIStudio'];
 
-            loginBtn.classList.toggle('hidden', isAuth);
-            logoutBtn.classList.toggle('hidden', !isAuth);
-            userDiv.classList.toggle('visible', isAuth);
+            if (loginBtn) loginBtn.classList.toggle('hidden', isAuth);
+            if (logoutBtn) logoutBtn.classList.toggle('hidden', !isAuth);
+            if (userDiv) userDiv.classList.toggle('visible', isAuth);
 
             navLinks.forEach(id => {
                 const el = document.getElementById(id);
@@ -303,20 +2328,25 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 9. DASHBOARD (same)
+        // 9. DASHBOARD
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function updateDashboard() {
             const hour = new Date().getHours();
             let greeting = 'Good evening';
             if (hour < 12) greeting = 'Good morning';
             else if (hour < 17) greeting = 'Good afternoon';
-            document.getElementById('dashTime').textContent = greeting;
+            const timeEl = document.getElementById('dashTime');
+            if (timeEl) timeEl.textContent = greeting;
 
-            document.getElementById('dashStatCVs').textContent = savedCVs.length;
-            document.getElementById('dashStatAI').textContent = Math.floor(Math.random() * 20) + 5;
-            document.getElementById('dashStatScore').textContent = savedCVs.length > 0 ? '92' : '—';
+            const cvsEl = document.getElementById('dashStatCVs');
+            if (cvsEl) cvsEl.textContent = savedCVs.length;
+            const aiEl = document.getElementById('dashStatAI');
+            if (aiEl) aiEl.textContent = Math.floor(Math.random() * 20) + 5;
+            const scoreEl = document.getElementById('dashStatScore');
+            if (scoreEl) scoreEl.textContent = savedCVs.length > 0 ? '92' : '—';
 
             const list = document.getElementById('dashCVList');
+            if (!list) return;
             if (savedCVs.length === 0) {
                 list.innerHTML = `
               <div class="create-new-card" id="dashCreateNew">
@@ -361,18 +2391,19 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 10. BUILDER – DATA & RENDER (same)
+        // 10. BUILDER – DATA & RENDER
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function populateFormFromData(data) {
-            document.getElementById('f-name').value = data.name || '';
-            document.getElementById('f-title').value = data.title || '';
-            document.getElementById('f-location').value = data.location || '';
-            document.getElementById('f-email').value = data.email || '';
-            document.getElementById('f-phone').value = data.phone || '';
-            document.getElementById('f-site').value = data.site || '';
-            document.getElementById('f-summary').value = data.summary || '';
-            document.getElementById('f-skills').value = data.skills || '';
-            document.getElementById('f-languages').value = data.languages || '';
+            const fields = ['f-name', 'f-title', 'f-location', 'f-email', 'f-phone', 'f-site', 'f-summary', 'f-skills',
+                'f-languages'
+            ];
+            const values = [data.name, data.title, data.location, data.email, data.phone, data.site, data.summary, data
+                .skills, data.languages
+            ];
+            fields.forEach((id, idx) => {
+                const el = document.getElementById(id);
+                if (el) el.value = values[idx] || '';
+            });
             cvData.experience = data.experience || [{ role: '', company: '', start: '', end: '', description: '' }];
             cvData.education = data.education || [{ degree: '', school: '', year: '' }];
             cvData.template = data.template || 'modern';
@@ -380,7 +2411,7 @@
                 b.classList.toggle('active', b.dataset.tpl === cvData.template);
             });
             const doc = document.getElementById('cvDoc');
-            doc.className = 'cv-document ' + cvData.template;
+            if (doc) doc.className = 'cv-document ' + cvData.template;
         }
 
         function loadDemo() {
@@ -417,9 +2448,10 @@
             updateCV();
         }
 
-        // Experience & Education rendering (same as before, using event delegation)
+        // Experience & Education rendering
         function renderExperience() {
             const container = document.getElementById('experience-list');
+            if (!container) return;
             container.innerHTML = cvData.experience.map((exp, i) => `
             <div class="repeater-item" data-idx="${i}">
               <button class="remove-btn exp-remove" data-idx="${i}">×</button>
@@ -458,6 +2490,7 @@
 
         function renderEducation() {
             const container = document.getElementById('education-list');
+            if (!container) return;
             container.innerHTML = cvData.education.map((edu, i) => `
             <div class="repeater-item" data-idx="${i}">
               <button class="remove-btn edu-remove" data-idx="${i}">×</button>
@@ -505,51 +2538,74 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 11. CV PREVIEW UPDATE (same)
+        // 11. CV PREVIEW UPDATE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function updateCV() {
-            cvData.name = document.getElementById('f-name').value;
-            cvData.title = document.getElementById('f-title').value;
-            cvData.location = document.getElementById('f-location').value;
-            cvData.email = document.getElementById('f-email').value;
-            cvData.phone = document.getElementById('f-phone').value;
-            cvData.site = document.getElementById('f-site').value;
-            cvData.summary = document.getElementById('f-summary').value;
-            cvData.skills = document.getElementById('f-skills').value;
-            cvData.languages = document.getElementById('f-languages').value;
+            const nameEl = document.getElementById('f-name');
+            const titleEl = document.getElementById('f-title');
+            const locEl = document.getElementById('f-location');
+            const emailEl = document.getElementById('f-email');
+            const phoneEl = document.getElementById('f-phone');
+            const siteEl = document.getElementById('f-site');
+            const summaryEl = document.getElementById('f-summary');
+            const skillsEl = document.getElementById('f-skills');
+            const langEl = document.getElementById('f-languages');
 
-            document.getElementById('p-name').textContent = cvData.name || 'YOUR NAME';
-            document.getElementById('p-title').textContent = cvData.title || 'Professional Title';
-            document.getElementById('p-contact').innerHTML = [cvData.email, cvData.phone, cvData.location, cvData.site]
-                .filter(Boolean).join('<br>') || '';
-            document.getElementById('p-summary').textContent = cvData.summary || '';
-            document.getElementById('p-languages').textContent = cvData.languages || '';
+            if (nameEl) cvData.name = nameEl.value;
+            if (titleEl) cvData.title = titleEl.value;
+            if (locEl) cvData.location = locEl.value;
+            if (emailEl) cvData.email = emailEl.value;
+            if (phoneEl) cvData.phone = phoneEl.value;
+            if (siteEl) cvData.site = siteEl.value;
+            if (summaryEl) cvData.summary = summaryEl.value;
+            if (skillsEl) cvData.skills = skillsEl.value;
+            if (langEl) cvData.languages = langEl.value;
 
-            const skillsEl = document.getElementById('p-skills');
-            if (cvData.skills) {
-                skillsEl.innerHTML = cvData.skills.split(',').filter(s => s.trim()).map(s =>
-                    `<span style="font-size:9px;border-radius:99px;background:#eaf2fa;padding:3px 8px;color:#3b5c82;">${s.trim()}</span>`
-                ).join('');
-            } else skillsEl.innerHTML = '';
+            const pName = document.getElementById('p-name');
+            if (pName) pName.textContent = cvData.name || 'YOUR NAME';
+            const pTitle = document.getElementById('p-title');
+            if (pTitle) pTitle.textContent = cvData.title || 'Professional Title';
+            const pContact = document.getElementById('p-contact');
+            if (pContact) {
+                pContact.innerHTML = [cvData.email, cvData.phone, cvData.location, cvData.site]
+                    .filter(Boolean).join('<br>') || '';
+            }
+            const pSummary = document.getElementById('p-summary');
+            if (pSummary) pSummary.textContent = cvData.summary || '';
+            const pLanguages = document.getElementById('p-languages');
+            if (pLanguages) pLanguages.textContent = cvData.languages || '';
 
-            const expEl = document.getElementById('p-experience');
-            expEl.innerHTML = cvData.experience.filter(e => e.role || e.company).map(e => `
-            <div style="margin-bottom:13px;">
-              <span style="float:right;font-size:9px;color:#63728b;">${e.start}${e.end?' — '+e.end:''}</span>
-              <b style="font-size:11px;color:#19263c;display:block;">${e.role||'Role'}</b>
-              <div style="font-size:9.5px;color:#6a7a91;">${e.company}</div>
-              <div style="font-size:9.5px;line-height:1.45;color:#4e5b70;margin-top:3px;white-space:pre-line;">${e.description}</div>
-            </div>
-          `).join('');
+            const pSkills = document.getElementById('p-skills');
+            if (pSkills) {
+                if (cvData.skills) {
+                    pSkills.innerHTML = cvData.skills.split(',').filter(s => s.trim()).map(s =>
+                        `<span style="font-size:9px;border-radius:99px;background:#eaf2fa;padding:3px 8px;color:#3b5c82;">${s.trim()}</span>`
+                    ).join('');
+                } else pSkills.innerHTML = '';
+            }
 
-            const eduEl = document.getElementById('p-education');
-            eduEl.innerHTML = cvData.education.filter(e => e.degree || e.school).map(e => `
-            <div style="margin-bottom:13px;">
-              <span style="float:right;font-size:9px;color:#63728b;">${e.year}</span>
-              <b style="font-size:11px;color:#19263c;display:block;">${e.degree||'Degree'}</b>
-              <div style="font-size:9.5px;color:#6a7a91;">${e.school}</div>
-            </div>
-          `).join('');
+            const pExp = document.getElementById('p-experience');
+            if (pExp) {
+                pExp.innerHTML = cvData.experience.filter(e => e.role || e.company).map(e => `
+                <div style="margin-bottom:13px;">
+                  <span style="float:right;font-size:9px;color:#63728b;">${e.start}${e.end?' — '+e.end:''}</span>
+                  <b style="font-size:11px;color:#19263c;display:block;">${e.role||'Role'}</b>
+                  <div style="font-size:9.5px;color:#6a7a91;">${e.company}</div>
+                  <div style="font-size:9.5px;line-height:1.45;color:#4e5b70;margin-top:3px;white-space:pre-line;">${e.description}</div>
+                </div>
+              `).join('');
+            }
+
+            const pEdu = document.getElementById('p-education');
+            if (pEdu) {
+                pEdu.innerHTML = cvData.education.filter(e => e.degree || e.school).map(e => `
+                <div style="margin-bottom:13px;">
+                  <span style="float:right;font-size:9px;color:#63728b;">${e.year}</span>
+                  <b style="font-size:11px;color:#19263c;display:block;">${e.degree||'Degree'}</b>
+                  <div style="font-size:9.5px;color:#6a7a91;">${e.school}</div>
+                </div>
+              `).join('');
+            }
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -564,7 +2620,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 13. TEMPLATE SELECTOR (same)
+        // 13. TEMPLATE SELECTOR
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function setTemplate(tpl) {
             cvData.template = tpl;
@@ -572,11 +2628,15 @@
                 b.classList.toggle('active', b.dataset.tpl === tpl);
             });
             const doc = document.getElementById('cvDoc');
-            doc.className = 'cv-document ' + tpl;
-            const nameColor = tpl === 'modern' ? '#123e72' : tpl === 'elegant' ? '#21424a' : '#151515';
-            const titleColor = tpl === 'modern' ? '#4483b7' : tpl === 'elegant' ? '#4a7c72' : '#555';
-            document.getElementById('p-name').style.color = nameColor;
-            document.getElementById('p-title').style.color = titleColor;
+            if (doc) {
+                doc.className = 'cv-document ' + tpl;
+                const nameColor = tpl === 'modern' ? '#123e72' : tpl === 'elegant' ? '#21424a' : '#151515';
+                const titleColor = tpl === 'modern' ? '#4483b7' : tpl === 'elegant' ? '#4a7c72' : '#555';
+                const pName = document.getElementById('p-name');
+                const pTitle = document.getElementById('p-title');
+                if (pName) pName.style.color = nameColor;
+                if (pTitle) pTitle.style.color = titleColor;
+            }
             autoSaveCV();
         }
 
@@ -589,8 +2649,6 @@
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // 14. AI ENGINE – CALL VERCELL BACKEND (SECURE)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // The API key is stored as a Vercel environment variable (DEEPSEEK_KEY)
-        // and is never exposed to the frontend.
         async function callOpenAI(prompt, context = 'builder') {
             try {
                 const response = await fetch('/api/ai', {
@@ -606,12 +2664,10 @@
                 return data.reply || 'Sorry, I could not process that.';
             } catch (error) {
                 console.error('AI error:', error);
-                // Fallback to simulated response (so the app never breaks)
                 return simulateAIResponse(prompt);
             }
         }
 
-        // Fallback simulation (same as before)
         function simulateAIResponse(query) {
             const q = query.toLowerCase();
             if (q.includes('summary') || q.includes('profile')) {
@@ -636,15 +2692,17 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 15. BUILDER AI CHAT (uses the secure callOpenAI)
+        // 15. BUILDER AI CHAT
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         async function sendBuilderChat() {
             const input = document.getElementById('builderChatInput');
+            if (!input) return;
             const msg = input.value.trim();
             if (!msg) return;
             addBuilderMessage(msg, 'user');
             input.value = '';
-            document.getElementById('aiStatusText').textContent = 'Thinking...';
+            const status = document.getElementById('aiStatusText');
+            if (status) status.textContent = 'Thinking...';
             showThinkingChain('builder');
             try {
                 const reply = await callOpenAI(msg, 'builder');
@@ -652,7 +2710,7 @@
             } catch (e) {
                 addBuilderMessage('Sorry, I encountered an error. Please try again.', 'ai');
             }
-            document.getElementById('aiStatusText').textContent = 'Ready to help';
+            if (status) status.textContent = 'Ready to help';
             hideThinkingChain('builder');
         }
 
@@ -674,6 +2732,7 @@
 
         function addBuilderMessage(text, who) {
             const container = document.getElementById('builderChat');
+            if (!container) return;
             const div = document.createElement('div');
             div.className = 'msg-bubble ' + who;
             div.textContent = text;
@@ -681,23 +2740,31 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        document.getElementById('builderSendBtn').addEventListener('click', sendBuilderChat);
-        document.getElementById('builderChatInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') sendBuilderChat();
-        });
+        const sendBtn = document.getElementById('builderSendBtn');
+        if (sendBtn) sendBtn.addEventListener('click', sendBuilderChat);
+        const chatInput = document.getElementById('builderChatInput');
+        if (chatInput) {
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendBuilderChat();
+            });
+        }
 
         document.querySelectorAll('#builderSuggestions button').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.getElementById('builderChatInput').value = this.dataset.prompt;
-                sendBuilderChat();
+                const input = document.getElementById('builderChatInput');
+                if (input) {
+                    input.value = this.dataset.prompt;
+                    sendBuilderChat();
+                }
             });
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 16. AI STUDIO (uses the same secure callOpenAI)
+        // 16. AI STUDIO
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         async function sendStudioMessage() {
             const input = document.getElementById('studioInput');
+            if (!input) return;
             const msg = input.value.trim();
             if (!msg) return;
             addStudioMessage(msg, 'user');
@@ -715,6 +2782,7 @@
 
         function addStudioMessage(text, who) {
             const container = document.getElementById('studioMessages');
+            if (!container) return;
             const block = document.createElement('div');
             block.className = 'message-block ' + who;
             block.innerHTML = `
@@ -726,7 +2794,9 @@
         }
 
         function clearStudioChat() {
-            document.getElementById('studioMessages').innerHTML = `
+            const container = document.getElementById('studioMessages');
+            if (!container) return;
+            container.innerHTML = `
             <div class="message-block ai">
               <div class="msg-header"><div class="avatar">✦</div><span>iMENA AI</span></div>
               <div class="msg-body">Welcome to AI Studio. I'm operating with deep reasoning enabled. What would you like to work on?</div>
@@ -736,6 +2806,7 @@
 
         function updateReasoningPanel(state) {
             const panel = document.getElementById('reasoningPanel');
+            if (!panel) return;
             if (state === 'start') {
                 panel.innerHTML =
                     '<div class="reasoning-step active"><div class="step-title">🧠 Initializing deep reasoning...</div><div class="step-desc">Loading multi-step analysis pipeline.</div></div>';
@@ -747,12 +2818,17 @@
             }
         }
 
-        document.getElementById('studioSendBtn').addEventListener('click', sendStudioMessage);
-        document.getElementById('studioInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault();
-                sendStudioMessage(); }
-        });
-        document.getElementById('studioClearBtn').addEventListener('click', clearStudioChat);
+        const studioSend = document.getElementById('studioSendBtn');
+        if (studioSend) studioSend.addEventListener('click', sendStudioMessage);
+        const studioInput = document.getElementById('studioInput');
+        if (studioInput) {
+            studioInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault();
+                    sendStudioMessage(); }
+            });
+        }
+        const studioClear = document.getElementById('studioClearBtn');
+        if (studioClear) studioClear.addEventListener('click', clearStudioChat);
 
         // Studio thread switching
         document.querySelectorAll('.ai-thread').forEach(el => {
@@ -775,43 +2851,70 @@
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 17. NAVIGATION EVENTS (unchanged)
+        // 17. NAVIGATION EVENTS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        document.getElementById('navLogo').addEventListener('click', () => router.navigate('landing'));
-        document.getElementById('navLanding').addEventListener('click', () => router.navigate('landing'));
-        document.getElementById('navDashboard').addEventListener('click', () => router.navigate('dashboard'));
-        document.getElementById('navBuilder').addEventListener('click', () => router.navigate('builder'));
-        document.getElementById('navAIStudio').addEventListener('click', () => router.navigate('ai-studio'));
-        document.getElementById('navLogin').addEventListener('click', signInWithGoogle);
-        document.getElementById('navLogout').addEventListener('click', signOutUser);
+        const navLogo = document.getElementById('navLogo');
+        if (navLogo) navLogo.addEventListener('click', () => router.navigate('landing'));
+        const navLanding = document.getElementById('navLanding');
+        if (navLanding) navLanding.addEventListener('click', () => router.navigate('landing'));
+        const navDashboard = document.getElementById('navDashboard');
+        if (navDashboard) navDashboard.addEventListener('click', () => router.navigate('dashboard'));
+        const navBuilder = document.getElementById('navBuilder');
+        if (navBuilder) navBuilder.addEventListener('click', () => router.navigate('builder'));
+        const navAIStudio = document.getElementById('navAIStudio');
+        if (navAIStudio) navAIStudio.addEventListener('click', () => router.navigate('ai-studio'));
+        const navLogin = document.getElementById('navLogin');
+        if (navLogin) navLogin.addEventListener('click', signInWithGoogle);
+        const navLogout = document.getElementById('navLogout');
+        if (navLogout) navLogout.addEventListener('click', signOutUser);
 
         // Hero & CTA
-        document.getElementById('heroStartBtn').addEventListener('click', () => {
-            if (currentUser) router.navigate('builder');
-            else signInWithGoogle();
-        });
-        document.getElementById('heroDemoBtn').addEventListener('click', () => router.navigate('builder'));
-        document.getElementById('ctaStartBtn').addEventListener('click', () => {
-            if (currentUser) router.navigate('builder');
-            else signInWithGoogle();
-        });
+        const heroStart = document.getElementById('heroStartBtn');
+        if (heroStart) {
+            heroStart.addEventListener('click', () => {
+                if (currentUser) router.navigate('builder');
+                else signInWithGoogle();
+            });
+        }
+        const heroDemo = document.getElementById('heroDemoBtn');
+        if (heroDemo) heroDemo.addEventListener('click', () => router.navigate('builder'));
+        const ctaStart = document.getElementById('ctaStartBtn');
+        if (ctaStart) {
+            ctaStart.addEventListener('click', () => {
+                if (currentUser) router.navigate('builder');
+                else signInWithGoogle();
+            });
+        }
 
-        document.getElementById('navTemplates').addEventListener('click', () => {
-            document.getElementById('landing-templates').scrollIntoView({ behavior: 'smooth' });
-        });
+        // Templates scroll
+        const navTemplates = document.getElementById('navTemplates');
+        if (navTemplates) {
+            navTemplates.addEventListener('click', () => {
+                document.getElementById('landing-templates').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
 
         // Footer
-        document.getElementById('footerBuilder').addEventListener('click', () => router.navigate('builder'));
-        document.getElementById('footerTemplates').addEventListener('click', () => {
-            document.getElementById('landing-templates').scrollIntoView({ behavior: 'smooth' });
-        });
-        document.getElementById('footerAI').addEventListener('click', () => router.navigate('ai-studio'));
-        document.getElementById('footerBack').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        const footerBuilder = document.getElementById('footerBuilder');
+        if (footerBuilder) footerBuilder.addEventListener('click', () => router.navigate('builder'));
+        const footerTemplates = document.getElementById('footerTemplates');
+        if (footerTemplates) {
+            footerTemplates.addEventListener('click', () => {
+                document.getElementById('landing-templates').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+        const footerAI = document.getElementById('footerAI');
+        if (footerAI) footerAI.addEventListener('click', () => router.navigate('ai-studio'));
+        const footerBack = document.getElementById('footerBack');
+        if (footerBack) footerBack.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
         // Dashboard events
-        document.getElementById('dashNewCV').addEventListener('click', () => router.navigate('builder'));
-        document.getElementById('dashViewAll').addEventListener('click', () => router.navigate('builder'));
+        const dashNewCV = document.getElementById('dashNewCV');
+        if (dashNewCV) dashNewCV.addEventListener('click', () => router.navigate('builder'));
+        const dashViewAll = document.getElementById('dashViewAll');
+        if (dashViewAll) dashViewAll.addEventListener('click', () => router.navigate('builder'));
 
+        // Template items on landing
         document.querySelectorAll('.template-item').forEach(el => {
             el.addEventListener('click', function() {
                 const tpl = this.dataset.template;
@@ -822,48 +2925,123 @@
             });
         });
 
+        // FAQ toggle
         document.querySelectorAll('.faq-q').forEach(btn => {
             btn.addEventListener('click', function() {
                 this.parentElement.classList.toggle('open');
             });
         });
 
-        document.getElementById('exportPdfBtn').addEventListener('click', () => window.print());
+        // Export PDF
+        const exportPdf = document.getElementById('exportPdfBtn');
+        if (exportPdf) exportPdf.addEventListener('click', () => window.print());
 
-        document.getElementById('addExpBtn').addEventListener('click', addExperience);
-        document.getElementById('addEduBtn').addEventListener('click', addEducation);
+        // Add/remove experience/education
+        const addExp = document.getElementById('addExpBtn');
+        if (addExp) addExp.addEventListener('click', addExperience);
+        const addEdu = document.getElementById('addEduBtn');
+        if (addEdu) addEdu.addEventListener('click', addEducation);
 
-        document.getElementById('manualSaveBtn').addEventListener('click', saveCVToFirestore);
+        // Manual Save button
+        const manualSave = document.getElementById('manualSaveBtn');
+        if (manualSave) manualSave.addEventListener('click', saveCVToFirestore);
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 18. SCROLL EFFECT, 3D TILT, PARTICLES (same)
+        // 18. SCROLL EFFECT
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         window.addEventListener('scroll', () => {
-            document.getElementById('topNav').classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        const cvCanvasEl = document.getElementById('cvCanvas');
-        cvCanvasEl.addEventListener('mousemove', e => {
-            if (window.innerWidth < 1024) return;
-            const r = cvCanvasEl.getBoundingClientRect();
-            const x = (e.clientX - r.left) / r.width - 0.5;
-            const y = (e.clientY - r.top) / r.height - 0.5;
-            document.getElementById('cvDoc').style.transform = `rotateY(${x*4}deg) rotateX(${y*-4}deg)`;
-        });
-        cvCanvasEl.addEventListener('mouseleave', () => {
-            document.getElementById('cvDoc').style.transform = '';
+            const topNav = document.getElementById('topNav');
+            if (topNav) topNav.classList.toggle('scrolled', window.scrollY > 50);
         });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 19. INIT
+        // 19. 3D TILT ON CV
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const cvCanvasEl = document.getElementById('cvCanvas');
+        if (cvCanvasEl) {
+            cvCanvasEl.addEventListener('mousemove', e => {
+                if (window.innerWidth < 1024) return;
+                const r = cvCanvasEl.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width - 0.5;
+                const y = (e.clientY - r.top) / r.height - 0.5;
+                const doc = document.getElementById('cvDoc');
+                if (doc) doc.style.transform = `rotateY(${x*4}deg) rotateX(${y*-4}deg)`;
+            });
+            cvCanvasEl.addEventListener('mouseleave', () => {
+                const doc = document.getElementById('cvDoc');
+                if (doc) doc.style.transform = '';
+            });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 20. PARTICLES (external script)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // The particle canvas is animated by the non-module script below.
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 21. INIT
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         updateAuthUI();
-        if (currentUser) loadCVsList();
+        if (currentUser) {
+            loadCVsList();
+        }
 
         console.log('✅ iMENA CV Builder with Vercel + DeepSeek backend (secure).');
         console.log('🔐 Authentication: Google (Firebase)');
         console.log('💾 Storage: Firestore');
         console.log('🧠 AI: DeepSeek via Vercel serverless function');
     </script>
+
+    <!-- Particle animation (non-module) -->
+    <script>
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // PARTICLE BACKGROUND
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const canvas = document.getElementById('particleCanvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.3;
+                    this.opacity = Math.random() * 0.5 + 0.1;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(100, 200, 255, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+        }
+    </script>
+
 </body>
 </html>
